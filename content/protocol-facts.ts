@@ -107,4 +107,30 @@ export const protocolFacts = {
   councilVotingPeriodWeeks: 2,
   councilProposalThresholdCst: 100,
   councilQuorumPercent: 3,
+  /**
+   * CosmicSignatureGameV3 — the upcoming proxy upgrade (not yet live on Arbitrum One).
+   * Version-aware UI (e.g. the Protocol Configuration page, which detects V3 via its
+   * new getters) should prefer these once the upgrade lands; the top-level facts above
+   * keep describing the live V2 deployment until then.
+   *
+   * Verified against the v3-2026-06-23 branch Solidity defaults
+   * (`CosmicSignatureConstants.sol`, `docs/v3-vs-v2-changes.md`).
+   */
+  v3: {
+    /** Linear Participation CST (replaces the V2 sqrt formula). */
+    dynamicCstRewardFormula:
+      'elapsedSinceLastGesture * bidCstRewardAmountMultiplier / mainPrizeTimeIncrementInMicroSeconds',
+    /** Initial accrual with launch parameters: ~1 CST per minute (declines ~1% per cycle). */
+    dynamicCstRewardPerMinuteAtLaunch: 1,
+    /** Share of each Participation CST imprint minted to the participant being outbid. */
+    lastBidderCstRewardPercentDefault: 90,
+    /** Signature Allocation recipient receives this many sequential Cosmic Signature NFTs. */
+    mainPrizeNftsPerCycleDefault: 3,
+    /** 24 V2-era NFTs + 2 extra Signature Allocation NFTs; CST imprint totals are unchanged. */
+    typicalNftsPerCycle: 26,
+    /** Late-gesture window before the Cycle Finalization Time (Solidity default: ~20 minutes). */
+    lateGestureWindowMinutesAtLaunch: 20,
+    /** Gesture cost at the end of the late window is about 5x the unadjusted cost. */
+    lateGestureMaxCostMultiplier: 5,
+  },
 } as const;

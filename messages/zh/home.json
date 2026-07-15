@@ -308,6 +308,8 @@
       "previewTitle": "CST 铭刻预览",
       "economicsDescription": "净 CST 即参与 CST 铭刻量减去当前 CST 落笔价格。",
       "previewDescription": "这一笔预计铭刻的动态参与 CST。数量取决于距上一笔经过的时间；每种落笔方式都有双重保护：价格上限与 CST 铭刻下限。",
+      "previewDescriptionV3": "这一笔预计产生的动态参与 CST 总量。您将立即获得其中约 {share}%；其余归被您超越的参与者所有——当有人超越您时，您将获得下一笔 CST 的较大份额。价格上限与 CST 铭刻下限保护仍适用于总量。",
+      "immediateShare": "您的即时份额（约 {share}%）：",
       "rewardLabel": "铭刻量",
       "costLabel": "价格",
       "netLabel": "净 CST",

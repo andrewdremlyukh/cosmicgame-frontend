@@ -35,10 +35,16 @@ describe('cosmicGameContractCompat', () => {
   test('pickGestureWriteAbi selects overload by argument count', () => {
     const v1 = pickGestureWriteAbi('bidWithEth', [-1n, 'hello']);
     const v2 = pickGestureWriteAbi('bidWithEth', [-1n, 'hello', 0n]);
-    expect(v1).toHaveLength(1);
-    expect(v2).toHaveLength(1);
-    expect((v1[0] as AbiFunction).inputs?.length).toBe(2);
-    expect((v2[0] as AbiFunction).inputs?.length).toBe(3);
+    // Exactly one function fragment (the matched overload) — the rest are error
+    // definitions carried along so custom revert reasons decode into readable text.
+    const v1Functions = v1.filter((item) => item.type === 'function');
+    const v2Functions = v2.filter((item) => item.type === 'function');
+    expect(v1Functions).toHaveLength(1);
+    expect(v2Functions).toHaveLength(1);
+    expect((v1Functions[0] as AbiFunction).inputs?.length).toBe(2);
+    expect((v2Functions[0] as AbiFunction).inputs?.length).toBe(3);
+    expect(v1.some((item) => item.type === 'error' && item.name === 'RoundIsInactive')).toBe(true);
+    expect(v1.every((item) => item.type !== 'event')).toBe(true);
   });
 
   test('readCosmicGameWithFallback tries later readers after selector errors', async () => {

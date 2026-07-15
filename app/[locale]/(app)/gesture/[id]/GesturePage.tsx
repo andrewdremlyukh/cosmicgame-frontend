@@ -82,6 +82,21 @@ function formatParticipationCST(gestureInfo: GestureInfo): string {
   return formatAmount(getParticipationCST(gestureInfo), 'CST', { fractional: 7, standard: 2 });
 }
 
+/**
+ * V3 Participation CST split: the outbid (previous) participant receives most of the
+ * imprint (90% by default) and the participant placing the gesture receives the rest.
+ * Returns undefined for V1/V2 gestures (no split recorded) so the rows can be hidden.
+ */
+function getCstRewardSplit(
+  gestureInfo: GestureInfo,
+): { previous: number; current: number } | undefined {
+  const previous = gestureInfo.PreviousBidderCstRewardAmountEth;
+  const current = gestureInfo.ThisBidderCstRewardAmountEth;
+  if (typeof previous !== 'number' || typeof current !== 'number') return undefined;
+  if (previous <= 0) return undefined; // V1/V2 gesture or opening gesture of a cycle: no split occurred.
+  return { previous, current };
+}
+
 const GesturePage = ({ gestureId }: { gestureId: number }) => {
   const t = useTranslations('gesture');
   const tCommon = useTranslations('common');
@@ -191,6 +206,24 @@ const GesturePage = ({ gestureId }: { gestureId: number }) => {
                     {formatParticipationCST(gestureInfo)}
                   </span>
                 </DetailRow>
+                {(() => {
+                  const split = getCstRewardSplit(gestureInfo);
+                  if (!split) return null;
+                  return (
+                    <>
+                      <DetailRow label={t('rows.cstToOutbid')}>
+                        <span className="font-mono tabular-nums">
+                          {formatAmount(split.previous, 'CST', { fractional: 7, standard: 2 })}
+                        </span>
+                      </DetailRow>
+                      <DetailRow label={t('rows.cstToThis')}>
+                        <span className="font-mono tabular-nums">
+                          {formatAmount(split.current, 'CST', { fractional: 7, standard: 2 })}
+                        </span>
+                      </DetailRow>
+                    </>
+                  );
+                })()}
               </DefinitionList>
             </SectionCard>
 

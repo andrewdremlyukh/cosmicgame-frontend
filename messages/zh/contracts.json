@@ -130,6 +130,18 @@
       "message": {
         "label": "消息长度上限",
         "tooltip": "落笔消息允许输入的最大字符数。"
+      },
+      "v3OutbidShare": {
+        "label": "被超越参与者 CST 份额",
+        "tooltip": "每次参与 CST 铭刻中记入被超越参与者的份额；落笔者立即获得其余部分。"
+      },
+      "v3SignatureNfts": {
+        "label": "签名配额 NFT 数量",
+        "tooltip": "周期收官时为签名配额获配者铭刻的 Cosmic Signature NFT 数量（连续编号）。"
+      },
+      "v3LateWindow": {
+        "label": "临近收官落笔窗口",
+        "tooltip": "周期收官倒计时结束前的一段时间，期间落笔价格附加以指数加速的溢价（最高约 5 倍）。"
       }
     }
   },

@@ -195,6 +195,9 @@ export const RoundInfoSchema = z
     WinnerAddr: AddressSchema,
     AmountEth: z.number(),
     TokenId: z.number(),
+    /** V3 multi-NFT main prize (1 on V1/V2 cycles, default 3 on V3). */
+    NumCSNfts: z.number().optional(),
+    NftTokenIds: z.array(z.number()).optional(),
     /**
      * Claim-transaction fields, hoisted by `flattenRoundInfo` from
      * `ClaimPrizeTx.Tx`. A cycle that has not been finalized has no claim

@@ -246,8 +246,61 @@ const SUPPLEMENTAL_ERROR_ABI = [
 /** Full ABI used only for decoding revert data (game ABI + supplemental V2 errors). */
 const ERROR_DECODE_ABI = [...cosmicGameAbi, ...SUPPLEMENTAL_ERROR_ABI] as Abi;
 
-/** Pulls the raw revert data (`0x<selector><args>`) out of a viem/wagmi error chain. */
-function extractRevertData(err: unknown): Hex | undefined {
+/**
+ * Some nodes expose the revert bytes as a nested object with a `.data` string,
+ * e.g. `{ data: { data: '0x<selector>...' } }` (Hardhat / MetaMask relays).
+ * Pull the innermost `0x...` string out of such a value.
+ */
+function hexFromNestedData(value: unknown, depth = 0): Hex | undefined {
+  if (depth > 6) return undefined;
+  if (typeof value === 'string' && value.startsWith('0x') && value.length >= 10) {
+    return value as Hex;
+  }
+  if (value && typeof value === 'object') {
+    const node = value as { data?: unknown };
+    return hexFromNestedData(node.data, depth + 1);
+  }
+  return undefined;
+}
+
+/**
+ * Last-resort extraction: some providers (notably Hardhat behind the wallet's RPC
+ * relay) surface the revert bytes ONLY inside the error's message text, e.g.
+ * `...VM Exception... (return data: 0x16df8bd8...)`. Scan any string for a long
+ * 0x-hex run whose length is consistent with an ABI-encoded custom error.
+ */
+function hexFromMessageText(err: unknown): Hex | undefined {
+  const seen = new Set<unknown>();
+  const stack: unknown[] = [err];
+  const hexRe = /0x[0-9a-fA-F]{72,}/g; // >=4-byte selector + at least one 32-byte word
+  while (stack.length) {
+    const e = stack.pop();
+    if (!e || typeof e !== 'object' || seen.has(e)) continue;
+    seen.add(e);
+    const node = e as Record<string, unknown>;
+    for (const key of ['message', 'shortMessage', 'details', 'reason'] as const) {
+      const text = node[key];
+      if (typeof text === 'string') {
+        const matches = text.match(hexRe);
+        if (matches && matches.length > 0) {
+          // Prefer the longest match (the full return-data payload).
+          return matches.sort((a, b) => b.length - a.length)[0] as Hex;
+        }
+      }
+    }
+    if (Array.isArray(node.metaMessages)) {
+      for (const m of node.metaMessages) if (typeof m === 'string') stack.push({ message: m });
+    }
+    if (node.cause) stack.push(node.cause);
+    if (node.error) stack.push(node.error);
+  }
+  return undefined;
+}
+
+/** Pulls the raw revert data (`0x<selector><args>`) out of a viem/wagmi error chain.
+ * Exported for unit testing (the surrounding `formatCustomContractError` relies on
+ * viem's `decodeErrorResult`, which is mocked out in the jsdom test environment). */
+export function extractRevertData(err: unknown): Hex | undefined {
   const seen = new Set<unknown>();
   let e: unknown = err;
   while (e && typeof e === 'object' && !seen.has(e)) {
@@ -256,9 +309,8 @@ function extractRevertData(err: unknown): Hex | undefined {
     if (typeof node.raw === 'string' && node.raw.startsWith('0x') && node.raw.length >= 10) {
       return node.raw as Hex;
     }
-    if (typeof node.data === 'string' && node.data.startsWith('0x') && node.data.length >= 10) {
-      return node.data as Hex;
-    }
+    const fromData = hexFromNestedData(node.data);
+    if (fromData) return fromData;
     e = node.cause;
   }
   const walkable = err as { walk?: (fn: (e: unknown) => boolean) => unknown };
@@ -267,13 +319,14 @@ function extractRevertData(err: unknown): Hex | undefined {
       const n = x as { raw?: unknown; data?: unknown };
       return (
         (typeof n?.raw === 'string' && n.raw.startsWith('0x')) ||
-        (typeof n?.data === 'string' && n.data.startsWith('0x'))
+        hexFromNestedData(n?.data) !== undefined
       );
     }) as { raw?: unknown; data?: unknown } | null;
-    const hex = (found?.raw ?? found?.data) as string | undefined;
+    const hex = (found?.raw as string | undefined) ?? hexFromNestedData(found?.data);
     if (typeof hex === 'string' && hex.startsWith('0x') && hex.length >= 10) return hex as Hex;
   }
-  return undefined;
+  // Providers that only embed the bytes in the message string (Hardhat + MetaMask relay).
+  return hexFromMessageText(err);
 }
 
 /** Renders a single decoded argument value as a readable string. */

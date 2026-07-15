@@ -70,7 +70,7 @@ const files: FileEntry[] = UTIL_FILES.map((name) => {
 const EXPECTED_COUNTS: Record<string, number> = {
   'alert.ts': 1,
   'analytics.ts': 3,
-  'contractErrors.ts': 5,
+  'contractErrors.ts': 6,
   'contractWrite.ts': 1,
   'endurance.ts': 3,
   'errors.ts': 6,

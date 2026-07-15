@@ -47,6 +47,8 @@
     "cycleValue": "第 {round} 个周期",
     "gestureCost": "落笔价格",
     "participationCst": "参与 CST",
+    "cstToOutbid": "归被超越的参与者",
+    "cstToThis": "归本笔参与者",
     "attachedRandomWalk": "ETH 落笔是否附加 Random Walk NFT",
     "paidWithCst": "是否使用 CST（ERC-20）支付",
     "randomWalkId": "Random Walk NFT ID",

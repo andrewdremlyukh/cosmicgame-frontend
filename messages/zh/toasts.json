@@ -47,7 +47,8 @@
       "notErc20": "所选合约不符合 ERC-20 标准。",
       "insufficientAttachedToken": "钱包中的代币余额不足，无法附加至本次落笔。",
       "insufficientEth": "钱包中的 ETH 余额不足。",
-      "insufficientCst": "钱包中的 CST（ERC-20）余额不足。"
+      "insufficientCst": "钱包中的 CST（ERC-20）余额不足。",
+      "cycleNotStarted": "下一周期尚未开始，{duration}后可落笔。"
     },
     "transaction": {
       "failed": "未能提交落笔。请检查钱包与网络连接，刷新当前落笔价格后重试。",

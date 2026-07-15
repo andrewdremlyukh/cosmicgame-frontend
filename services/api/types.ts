@@ -220,7 +220,12 @@ export interface RoundInfo {
   RoundNum: number;
   WinnerAddr: string;
   AmountEth: number;
+  /** First (or only) main-prize Cosmic Signature NFT id. On V3 cycles, additional ids are sequential. */
   TokenId: number;
+  /** Number of main-prize Cosmic Signature NFTs awarded to the winner (1 on V1/V2 cycles, 3 by default on V3). */
+  NumCSNfts?: number;
+  /** All main-prize NFT ids (TokenId .. TokenId+NumCSNfts-1); provided by the V3-aware backend. */
+  NftTokenIds?: number[];
   TxHash: string;
   TimeStamp: number;
   DateTime: string;
@@ -277,6 +282,16 @@ export interface GestureInfo extends TxInfo {
   /** Legacy Participation CST alias from older UI/API wiring. */
   ERC20RewardAmountEth?: number;
   CSTRewardEth?: number;
+  /**
+   * V3 gesture CST reward split (90/10 by default). The outbid (previous last) gesture
+   * participant receives `PreviousBidder*`; the participant placing this gesture receives
+   * `ThisBidder*`. For V1/V2 gestures the backend reports the whole reward under
+   * `ThisBidder*` and `PreviousBidder*` is 0, so one rendering path covers both eras.
+   */
+  PreviousBidderCstRewardAmount?: string;
+  PreviousBidderCstRewardAmountEth?: number;
+  ThisBidderCstRewardAmount?: string;
+  ThisBidderCstRewardAmountEth?: number;
   EthPriceEth?: number;
   CstPriceEth?: number;
   RWalkNFTId?: number;

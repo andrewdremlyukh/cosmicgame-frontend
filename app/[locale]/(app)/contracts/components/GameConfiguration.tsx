@@ -19,6 +19,12 @@ interface GameConfigurationProps {
   maxMessageLength: number;
   claimTimeout: number;
   initialIncrement: number;
+  /** V3-only parameters; null on V2 deployments (cards hidden). */
+  v3Config?: {
+    lastBidderRewardPercent: number;
+    mainPrizeNumNfts: number;
+    lateBidDurationSeconds: number;
+  } | null;
   loading?: boolean;
 }
 
@@ -40,6 +46,7 @@ export function GameConfiguration({
   maxMessageLength,
   claimTimeout,
   initialIncrement,
+  v3Config = null,
   loading = false,
 }: GameConfigurationProps) {
   const locale = useLocale();
@@ -98,6 +105,32 @@ export function GameConfiguration({
       icon: <MessageSquare className="h-4 w-4" />,
       tooltip: t('configuration.cards.message.tooltip'),
     },
+    // V3-only parameters — present once the protocol runs the V3 implementation.
+    ...(v3Config
+      ? [
+          {
+            label: t('configuration.cards.v3OutbidShare.label'),
+            value: `${v3Config.lastBidderRewardPercent}%`,
+            icon: <Coins className="h-4 w-4" />,
+            tooltip: t('configuration.cards.v3OutbidShare.tooltip'),
+          },
+          {
+            label: t('configuration.cards.v3SignatureNfts.label'),
+            value: v3Config.mainPrizeNumNfts,
+            icon: <Zap className="h-4 w-4" />,
+            tooltip: t('configuration.cards.v3SignatureNfts.tooltip'),
+          },
+          {
+            label: t('configuration.cards.v3LateWindow.label'),
+            value:
+              v3Config.lateBidDurationSeconds > 0
+                ? formatSeconds(v3Config.lateBidDurationSeconds, locale)
+                : '--',
+            icon: <Timer className="h-4 w-4" />,
+            tooltip: t('configuration.cards.v3LateWindow.tooltip'),
+          },
+        ]
+      : []),
   ];
 
   return (

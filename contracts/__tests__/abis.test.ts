@@ -58,6 +58,24 @@ describe('generated ABI barrel', () => {
     expect(signatures).toContain('bidWithEth(int256,string,uint256)');
   });
 
+  it('exposes V3 configuration getters (late-bid premium, reward split, multi-NFT prize)', () => {
+    const signatures = functionSignatures(abis.cosmicGameAbi);
+    expect(signatures).toContain('lastBidderBidCstRewardAmountPercentage()');
+    expect(signatures).toContain('mainPrizeNumCosmicSignatureNfts()');
+    expect(signatures).toContain('getRoundLateBidDuration()');
+    expect(signatures).toContain('roundLateBidDurationDivisor()');
+    expect(signatures).toContain('roundLateBidPricePremiumAmountBaseMultiplier()');
+    expect(signatures).toContain('roundLateBidPricePremiumAmountExponent()');
+  });
+
+  it('exposes both BidPlaced overloads so the live refresh watcher matches V1 and V2/V3 topics', () => {
+    const bidPlaced = abis.cosmicGameAbi.filter(
+      (item): item is AbiEvent => item.type === 'event' && item.name === 'BidPlaced',
+    );
+    const inputCounts = bidPlaced.map((e) => (e.inputs ?? []).length).sort();
+    expect(inputCounts).toEqual([7, 9]);
+  });
+
   it('parses the human-readable CosmicDAO ABI into structured entries', () => {
     expect(functionNames(abis.cosmicDaoAbi).length).toBeGreaterThan(0);
     expect(eventNames(abis.cosmicDaoAbi)).toContain('ProposalCreated');

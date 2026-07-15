@@ -130,6 +130,18 @@
       "message": {
         "label": "Max Message Length",
         "tooltip": "Maximum character length allowed in gesture messages"
+      },
+      "v3OutbidShare": {
+        "label": "Outbid Participant CST Share",
+        "tooltip": "Share of each Participation CST imprint credited to the participant being outbid; the gesturer receives the remainder immediately."
+      },
+      "v3SignatureNfts": {
+        "label": "Signature Allocation NFTs",
+        "tooltip": "Number of Cosmic Signature NFTs (sequential ids) imprinted for the Signature Allocation recipient when a cycle finalizes."
+      },
+      "v3LateWindow": {
+        "label": "Late-Gesture Window",
+        "tooltip": "Duration before the Cycle Finalization Time during which gesture costs carry an exponentially accelerating premium (up to ~5x)."
       }
     }
   },

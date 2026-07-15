@@ -216,6 +216,7 @@ function RecipientCard({
   address,
   rewards,
   tokenId,
+  tokenIds,
   tokenLabel,
   testId,
   featured,
@@ -226,12 +227,17 @@ function RecipientCard({
   address: string;
   rewards: { label: string; value: string }[];
   tokenId?: number;
+  /** V3 multi-NFT allocations (e.g. Signature Allocation awards several sequential NFTs). Takes precedence over `tokenId`. */
+  tokenIds?: number[];
   tokenLabel?: string;
   testId: string;
   featured?: boolean;
 }) {
   const t = useTranslations('allocation');
 
+  const tokenIdList = (tokenIds?.length ? tokenIds : [tokenId]).filter(
+    (id): id is number => id !== undefined && id > 0,
+  );
   return (
     <motion.div
       variants={cardFade}
@@ -303,20 +309,24 @@ function RecipientCard({
           ))}
         </div>
 
-        {tokenId !== undefined && tokenId > 0 && (
+        {tokenIdList.length > 0 && (
           <div>
             <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/60">
               {tokenLabel ?? t('details.recipientCard.nftToken')}
+              {tokenIdList.length > 1 ? ` (×${tokenIdList.length})` : ''}
             </span>
-            <Link
-              href={`/detail/${tokenId}`}
-              className={cn(
-                'mt-0.5 block text-sm text-primary hover:underline',
-                TOUCH_TARGET_TEXT_LINK_CLASS,
-              )}
-            >
-              {t('formats.token', { token: tokenId })}
-            </Link>
+            {tokenIdList.map((id) => (
+              <Link
+                key={id}
+                href={`/detail/${id}`}
+                className={cn(
+                  'mt-0.5 block text-sm text-primary hover:underline',
+                  TOUCH_TARGET_TEXT_LINK_CLASS,
+                )}
+              >
+                {t('formats.token', { token: id })}
+              </Link>
+            ))}
           </div>
         )}
       </div>
@@ -671,17 +681,25 @@ const AllocationInfoPage = ({ roundNum }: AllocationInfoPageProps) => {
                   {allocationInfo.TokenId > 0 && (
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground/60">
-                        {t('details.hero.nft')}
+                        {(allocationInfo.NftTokenIds?.length ?? 0) > 1
+                          ? t('details.hero.nfts')
+                          : t('details.hero.nft')}
                       </span>
-                      <Link
-                        href={`/detail/${allocationInfo.TokenId}`}
-                        className={cn(
-                          'text-sm text-primary hover:underline',
-                          TOUCH_TARGET_TEXT_LINK_CLASS,
-                        )}
-                      >
-                        {t('formats.cosmicSignatureToken', { token: allocationInfo.TokenId })}
-                      </Link>
+                      {(allocationInfo.NftTokenIds?.length
+                        ? allocationInfo.NftTokenIds
+                        : [allocationInfo.TokenId]
+                      ).map((id) => (
+                        <Link
+                          key={id}
+                          href={`/detail/${id}`}
+                          className={cn(
+                            'text-sm text-primary hover:underline',
+                            TOUCH_TARGET_TEXT_LINK_CLASS,
+                          )}
+                        >
+                          {t('formats.cosmicSignatureToken', { token: id })}
+                        </Link>
+                      ))}
                       <InfoTooltip content={t('details.hero.nftTooltip')} />
                     </div>
                   )}
@@ -761,6 +779,7 @@ const AllocationInfoPage = ({ roundNum }: AllocationInfoPageProps) => {
               },
             ]}
             tokenId={allocationInfo.TokenId}
+            tokenIds={allocationInfo.NftTokenIds}
             tokenLabel={t('details.recipientSection.labels.cosmicSignatureNft')}
             testId="signature-allocation"
             featured

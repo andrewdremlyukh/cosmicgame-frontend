@@ -68,6 +68,35 @@ export function isUnrecognizedSelectorError(err: unknown): boolean {
 }
 
 /**
+ * Marker texts produced when a version-probe READ hits a contract that lacks the selector,
+ * but the node cannot say so explicitly. Behind the UUPS proxy, Hardhat's
+ * "function selector was not recognized" is lost — the delegatecall reverts with empty
+ * data ("Transaction reverted without a reason string"); geth-style nodes return no data.
+ * Kept separate from UNRECOGNIZED_SELECTOR_MARKERS: for WRITES a reasonless revert can be
+ * a genuine failure, so only argless-getter probes may treat it as "selector absent".
+ */
+const MISSING_READ_FUNCTION_MARKERS = [
+  'reverted without a reason string',
+  'returned no data ("0x")',
+] as const;
+
+/**
+ * True when a no-argument getter probe failed in a way consistent with the selector not
+ * existing on the deployed implementation (e.g. probing a V3 getter on a V2 contract).
+ * Such getters cannot legitimately revert on a version that implements them, so a
+ * reasonless/empty revert means "older version" rather than an application error.
+ */
+export function isMissingFunctionReadError(err: unknown): boolean {
+  if (isUnrecognizedSelectorError(err)) return true;
+  const text = errorText(err).toLowerCase();
+  if (MISSING_READ_FUNCTION_MARKERS.some((m) => text.includes(m))) return true;
+
+  const walkable = err as Error & { cause?: unknown };
+  if (walkable.cause) return isMissingFunctionReadError(walkable.cause);
+  return false;
+}
+
+/**
  * Try readers in order; skip unrecognized-selector failures and rethrow other errors.
  */
 export async function readCosmicGameWithFallback<T>(
@@ -94,7 +123,9 @@ export function preferV2GestureArgsFirst(): boolean {
   return [42161, 421614, 31337].includes(networkConfig.chainId);
 }
 
-/** Narrow ABI slice for a single bid overload (avoids duplicate-name encoding ambiguity). */
+/** Narrow ABI slice for a single bid overload (avoids duplicate-name encoding ambiguity).
+ * Custom error definitions ride along so reverts (e.g. RoundIsInactive) decode into
+ * readable messages instead of raw return data. */
 export function pickGestureWriteAbi(
   functionName: CosmicGameGestureFunctionName,
   callArgs: readonly unknown[],
@@ -105,7 +136,9 @@ export function pickGestureWriteAbi(
       item.name === functionName &&
       (item.inputs?.length ?? 0) === callArgs.length,
   );
-  return match ? [match] : cosmicGameAbiFull;
+  if (!match) return cosmicGameAbiFull;
+  const errorItems = cosmicGameAbiFull.filter((item) => item.type === 'error');
+  return [match, ...errorItems];
 }
 
 /** Coerce gesture args to viem-friendly shapes before encoding. */

@@ -73,15 +73,23 @@ interface RawLog {
 /**
  * Maps `topic0` (keccak of the event signature) → event name for the watched
  * CosmicGame events, derived from the contract ABI.
+ *
+ * The merged V1+V2+V3 ABI carries multiple overloads for some events (e.g.
+ * `BidPlaced` is 7-field on V1 and 9-field on V2/V3; `MainPrizeClaimed` gained
+ * a field in V3), and each overload has a distinct `topic0`. Every overload is
+ * mapped so the poller keeps working across contract upgrades without a
+ * frontend release.
  */
 export function buildEventTopicMap(): Map<string, WatchedCosmicEventName> {
   const map = new Map<string, WatchedCosmicEventName>();
   for (const name of WATCHED_COSMIC_EVENTS) {
-    const item = cosmicGameAbi.find((entry) => entry.type === 'event' && entry.name === name) as
-      | AbiEvent
-      | undefined;
-    if (!item) throw new Error(`cosmicGameAbi is missing event ${name}`);
-    map.set(toEventSelector(item).toLowerCase(), name);
+    const overloads = cosmicGameAbi.filter(
+      (entry): entry is AbiEvent => entry.type === 'event' && entry.name === name,
+    );
+    if (overloads.length === 0) throw new Error(`cosmicGameAbi is missing event ${name}`);
+    for (const item of overloads) {
+      map.set(toEventSelector(item).toLowerCase(), name);
+    }
   }
   return map;
 }

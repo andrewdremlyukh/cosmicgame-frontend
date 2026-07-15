@@ -308,6 +308,8 @@
       "previewTitle": "CST Reward Preview",
       "economicsDescription": "Net CST is the Participation CST reward minus the current CST gesture cost.",
       "previewDescription": "Estimated dynamic CST you receive if this gesture lands. The amount depends on time since the previous gesture, and every gesture method has two protections: maximum cost and minimum CST reward.",
+      "previewDescriptionV3": "Estimated total dynamic CST this gesture generates. You immediately receive ~{share}% of it; the rest goes to the participant you outbid — and you receive the larger share of the next gesture's CST when someone outbids you. Maximum cost and minimum CST reward protections still apply to the total.",
+      "immediateShare": "Your immediate share (~{share}%):",
       "rewardLabel": "Reward",
       "costLabel": "Cost",
       "netLabel": "Net CST",

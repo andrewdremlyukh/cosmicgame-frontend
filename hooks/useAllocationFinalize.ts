@@ -125,7 +125,25 @@ export function useAllocationFinalize({ data, offset }: UseAllocationFinalizeOpt
       /** Completed cycle is the on-chain round before advance — matches `api.get_round_info`. */
       const claimedRound = Number(roundBefore);
 
-      let count = (data?.NumRaffleNFTWinnersBidding ?? 0) + 3 + (hasFinalCstGesture ? 1 : 0);
+      // V3 awards `mainPrizeNumCosmicSignatureNfts` Signature Allocation NFTs (default 3);
+      // V1/V2 award exactly 1 (the getter does not exist there, so the read fails and we keep 1).
+      let signatureAllocationNftCount = 1;
+      try {
+        const value = (await cosmicGameContract.read.mainPrizeNumCosmicSignatureNfts?.()) as
+          | bigint
+          | undefined;
+        if (value !== undefined && value > 0n) signatureAllocationNftCount = Number(value);
+      } catch {
+        // V2 deployment — selector not recognized; keep the single-NFT count.
+      }
+
+      // Imprinted per finalize: Signature Allocation NFT(s) + Endurance Champion + Chrono-Warrior
+      // + participant Stellar NFTs + (final CST gesturer, if any) + (RWLK anchor Stellar, if staked).
+      let count =
+        (data?.NumRaffleNFTWinnersBidding ?? 0) +
+        2 +
+        signatureAllocationNftCount +
+        (hasFinalCstGesture ? 1 : 0);
       if ((data?.MainStats?.StakeStatisticsRWalk?.TotalTokensStaked ?? 0) > 0) {
         count += data?.NumRaffleNFTWinnersStakingRWalk ?? 0;
       }

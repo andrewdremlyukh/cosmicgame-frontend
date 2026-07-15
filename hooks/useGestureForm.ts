@@ -7,6 +7,7 @@ import { formatEther, isAddress, maxUint256, parseEther, parseUnits } from 'viem
 import { randomWalkNftAbi as NFT_ABI, cosmicTokenAbi as ERC20_ABI } from '@/contracts/abis';
 import { cosmicGameAbi } from '@/contracts/abis';
 
+import { formatSeconds } from '@/utils/format';
 import api from '@/services/api';
 import useCosmicGameContract from '@/hooks/useCosmicGameContract';
 import useRWLKNFTContract from '@/hooks/useRWLKNFTContract';
@@ -28,6 +29,7 @@ import {
 import { assertSuccessfulTransactionReceipt } from '@/utils/transactions';
 import {
   type CosmicGameGestureFunctionName,
+  isMissingFunctionReadError,
   pickGestureWriteAbi,
   readCosmicGameWithFallback,
   withGestureArgsV1ThenV2,
@@ -112,6 +114,13 @@ export function useGestureForm() {
   const [isCstRewardLoading, setIsCstRewardLoading] = useState(false);
   const [cstRewardTolerancePercent, setCstRewardTolerancePercent] = useState(1);
   const [acceptAnyCstReward, setAcceptAnyCstReward] = useState(false);
+  /**
+   * V3 Participation CST split: percentage of the quoted reward minted to the OUTBID
+   * participant (default 90); the participant placing the gesture receives the rest.
+   * `null` on V2 contracts (no split) — the UI then shows the whole reward as the
+   * participant's own, matching V2 behavior.
+   */
+  const [lastBidderCstRewardPercent, setLastBidderCstRewardPercent] = useState<number | null>(null);
 
   const cstGestureData = useMemo<CSTGestureData>(() => {
     return mapCTPriceInfo(ctPriceData, contractCstDurations, contractCstPriceWei);
@@ -296,6 +305,36 @@ export function useGestureForm() {
       window.removeEventListener('cosmic:gesture-placed', handleGesturePlaced);
     };
   }, [contractAddrs.cosmicGame, cosmicGameContract, publicClient, uxScenario]);
+
+  // One-shot read of the V3 reward split percentage; the selector does not exist on V2,
+  // in which case the state stays null and the UI keeps V2 semantics (whole reward to gesturer).
+  useEffect(() => {
+    if (uxScenario || !cosmicGameContract) {
+      setLastBidderCstRewardPercent(null);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const value = (await cosmicGameContract.read.lastBidderBidCstRewardAmountPercentage?.()) as
+          | bigint
+          | undefined;
+        if (!cancelled && value !== undefined) {
+          setLastBidderCstRewardPercent(Number(value));
+        }
+      } catch (err) {
+        // Expected on V2 deployments (selector absent; behind the proxy this surfaces as a
+        // reasonless revert rather than "unrecognized selector"). Anything else is worth reporting.
+        if (!cancelled && !isMissingFunctionReadError(err)) {
+          reportError(err, 'lastBidderBidCstRewardAmountPercentage');
+        }
+        if (!cancelled) setLastBidderCstRewardPercent(null);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [cosmicGameContract, uxScenario]);
 
   const handleTx = async (hashPromise: Promise<`0x${string}`>) => {
     const hash = await hashPromise;
@@ -581,6 +620,35 @@ export function useGestureForm() {
     );
 
   /**
+   * Pre-flight guard: refuse to submit a gesture while the round is still inactive
+   * (e.g. in the delay window right after a cycle was finalized). Compares against
+   * CHAIN time via getDurationUntilRoundActivation() — authoritative even when the
+   * UI's cached activation state is stale or the chain clock differs from the wall
+   * clock (local Hardhat). Fails open on read errors: the transaction itself is the
+   * final authority, so an RPC hiccup must not lock users out of bidding.
+   */
+  const ensureRoundIsActive = async (): Promise<boolean> => {
+    try {
+      const duration = (await cosmicGameContract!.read.getDurationUntilRoundActivation?.()) as
+        | bigint
+        | undefined;
+      if (duration !== undefined && duration > 0n) {
+        notify(
+          'warning',
+          t('gesture.validation.cycleNotStarted', {
+            duration: formatSeconds(Number(duration), locale),
+          }),
+        );
+        return false;
+      }
+      return true;
+    } catch (err) {
+      reportError(err, 'getDurationUntilRoundActivation');
+      return true;
+    }
+  };
+
+  /**
    * Submit an ETH bid (with optional NFT/token donation).
    * Returns `true` on success so the caller can trigger a post-tx refresh.
    */
@@ -596,6 +664,9 @@ export function useGestureForm() {
       }
       if (!cosmicGameContract) {
         notify('error', t('wallet.connectCorrectNetwork'));
+        return false;
+      }
+      if (!(await ensureRoundIsActive())) {
         return false;
       }
 
@@ -726,13 +797,22 @@ export function useGestureForm() {
         notify('error', t('wallet.connectCorrectNetwork'));
         return false;
       }
+      if (!(await ensureRoundIsActive())) {
+        return false;
+      }
       const signerAddress =
         (signerClient as { account?: { address: `0x${string}` } } | undefined)?.account?.address ??
         (account as `0x${string}`);
 
-      const priceMaxLimit =
+      const quotedCstPrice =
         ((await cosmicGameContract.read.getNextCstBidPrice?.()) as bigint | undefined) ??
         cstGestureData.CSTPriceWei;
+      // Apply the user's max-cost tolerance (same knob as ETH gestures). On V2 the CST cost
+      // only declines between quote and confirmation, but inside the V3 late-gesture window it
+      // rises every second — without headroom the transaction would revert on a stale quote.
+      // The contract charges the actual cost; the limit is only a cap.
+      const priceMaxLimit =
+        (quotedCstPrice * BigInt(Math.round((100 + gestureCostPlus) * 100))) / 10_000n;
       submittedCstPriceMaxLimit = priceMaxLimit;
 
       if (priceMaxLimit > 0n) {
@@ -855,6 +935,7 @@ export function useGestureForm() {
     gestureCstRewardAmountMin,
     gestureCstRewardAmountMinLimitWei,
     isCstRewardLoading,
+    lastBidderCstRewardPercent,
     cstRewardTolerancePercent,
     setCstRewardTolerancePercent: updateCstRewardTolerancePercent,
     acceptAnyCstReward,

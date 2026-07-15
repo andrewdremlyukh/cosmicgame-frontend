@@ -779,7 +779,9 @@ describe('useGestureForm', () => {
       expect.anything(),
       expect.objectContaining({
         functionName: 'bidWithCst',
-        args: [BigInt('1000000000000000000'), '', BigInt('95000000000000000000')],
+        // priceMaxLimit carries the default 2% max-cost headroom over the 1 CST quote, so a
+        // cost rising between quote and confirmation (V3 late-gesture premium) does not revert.
+        args: [BigInt('1020000000000000000'), '', BigInt('95000000000000000000')],
       }),
     );
   });
@@ -800,7 +802,8 @@ describe('useGestureForm', () => {
       expect.anything(),
       expect.objectContaining({
         functionName: 'bidWithCst',
-        args: [BigInt('1000000000000000000'), '', 0n],
+        // Quote + default 2% max-cost headroom (see the previous test).
+        args: [BigInt('1020000000000000000'), '', 0n],
       }),
     );
   });
