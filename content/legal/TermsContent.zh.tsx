@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { TermsContent, type TermsCopy } from './TermsContent';
 
@@ -55,12 +55,16 @@ export const termsCopyZh = {
         {
           id: 'dynamic-cst',
           subtitle: '动态 CST 铭刻',
-          text: '每笔落笔铭刻的参与 CST 并非固定数量，而是取决于距上一笔落笔经过的时间，并按平方根公式计算。极短间隔的落笔可能铭刻 0 CST。',
+          text: isV3Mechanics
+            ? '每笔落笔铭刻的参与 CST 并非固定数量，而是随距上一笔落笔经过的时间线性累积，且每次铭刻的一部分会记入被超越的参与者。极短间隔的落笔可能铭刻 0 CST。'
+            : '每笔落笔铭刻的参与 CST 并非固定数量，而是取决于距上一笔落笔经过的时间，并按平方根公式计算。极短间隔的落笔可能铭刻 0 CST。',
         },
         {
           id: 'cst-window',
           subtitle: 'CST 校准窗口',
-          text: `CST 落笔价格会在链上存储的校准窗口中逐步下降。每笔 CST 落笔会使该窗口增加约 ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%，每笔 ETH 落笔会使其减少约 ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%。`,
+          text: isV3Mechanics
+            ? 'CST 落笔价格会在校准窗口中逐步下降。每笔 CST 落笔会以其成交价的两倍（受链上最低值约束）重启该窗口，之后价格按链上恒定速率下降，直至归零或另一笔 CST 落笔成交。'
+            : `CST 落笔价格会在链上存储的校准窗口中逐步下降。每笔 CST 落笔会使该窗口增加约 ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%，每笔 ETH 落笔会使其减少约 ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%。`,
         },
         {
           id: 'smart-contract',

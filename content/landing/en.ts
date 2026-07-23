@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { CST_GECKOTERMINAL_POOL_URL } from '@/config/geckoterminal';
 import { COSMIC_SIGNATURE_MARKETPLACE_URL } from '@/config/marketplace';
@@ -66,7 +66,9 @@ export const landingContentEn = {
       {
         number: '02',
         title: 'Gestures',
-        body: `Participants make gestures with ETH or CST. Every gesture extends the Cycle Finalization Time, records a Stellar Selection entry, and may imprint dynamic Participation CST based on the square root of the time since the previous gesture. ETH gestures shorten the CST Calibration Window by about ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%; CST gestures lengthen it by about ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%.`,
+        body: isV3Mechanics
+          ? 'Participants make gestures with ETH or CST. Every gesture extends the Cycle Finalization Time, records a Stellar Selection entry, and may imprint dynamic Participation CST that accrues at a steady rate with the time since the previous gesture. Each CST gesture restarts the CST Calibration Window at twice the price it paid; the price then declines at the same steady rate.'
+          : `Participants make gestures with ETH or CST. Every gesture extends the Cycle Finalization Time, records a Stellar Selection entry, and may imprint dynamic Participation CST based on the square root of the time since the previous gesture. ETH gestures shorten the CST Calibration Window by about ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%; CST gestures lengthen it by about ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%.`,
       },
       {
         number: '03',
@@ -307,7 +309,9 @@ export const landingContentEn = {
       },
       {
         question: 'Why does the Participation CST amount change?',
-        answer: `The Participation CST imprint uses a square-root formula based on how long it has been since the previous gesture. Longer quiet periods create larger CST imprints, but the square root makes the increase sublinear. Very rapid gestures can imprint 0 CST. The app previews the current amount before you submit.`,
+        answer: isV3Mechanics
+          ? `The Participation CST imprint accrues linearly with how long it has been since the previous gesture — about ${protocolFacts.v3.dynamicCstRewardPerMinuteAtLaunch} CST per minute at the launch parameters. Longer quiet periods create proportionally larger CST imprints, and gestures made immediately after another imprint close to 0 CST. The app previews the current amount before you submit.`
+          : `The Participation CST imprint uses a square-root formula based on how long it has been since the previous gesture. Longer quiet periods create larger CST imprints, but the square root makes the increase sublinear. Very rapid gestures can imprint 0 CST. The app previews the current amount before you submit.`,
       },
       {
         question: 'How do ETH and CST gestures affect the CST Calibration Window?',

@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { TermsContent, type TermsCopy } from './TermsContent';
 
@@ -56,12 +56,16 @@ export const termsCopyEn = {
         {
           id: 'dynamic-cst',
           subtitle: 'Dynamic CST Imprints',
-          text: 'Participation CST imprinted by a gesture is not fixed. The amount depends on how much time has elapsed since the previous gesture and is calculated with a square-root formula. Very rapid gestures may imprint 0 CST.',
+          text: isV3Mechanics
+            ? 'Participation CST imprinted by a gesture is not fixed. The amount accrues linearly with how much time has elapsed since the previous gesture, and part of each imprint is credited to the participant being outbid. Very rapid gestures may imprint 0 CST.'
+            : 'Participation CST imprinted by a gesture is not fixed. The amount depends on how much time has elapsed since the previous gesture and is calculated with a square-root formula. Very rapid gestures may imprint 0 CST.',
         },
         {
           id: 'cst-window',
           subtitle: 'CST Calibration Window',
-          text: `The CST Gesture Cost descends through a Calibration Window stored on-chain. Each CST gesture increases that window by about ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%, and each ETH gesture decreases it by about ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%.`,
+          text: isV3Mechanics
+            ? 'The CST Gesture Cost descends through a Calibration Window. Each CST gesture restarts the window at twice the price it paid (subject to an on-chain minimum), and the cost then declines at a steady on-chain rate until it reaches zero or another CST gesture lands.'
+            : `The CST Gesture Cost descends through a Calibration Window stored on-chain. Each CST gesture increases that window by about ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%, and each ETH gesture decreases it by about ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%.`,
         },
         {
           id: 'smart-contract',

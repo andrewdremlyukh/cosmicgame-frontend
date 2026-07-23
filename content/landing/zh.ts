@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { CST_GECKOTERMINAL_POOL_URL } from '@/config/geckoterminal';
 import { COSMIC_SIGNATURE_MARKETPLACE_URL } from '@/config/marketplace';
@@ -68,7 +68,9 @@ export const landingContentZh = {
       {
         number: '02',
         title: '落笔',
-        body: `参与者使用 ETH 或 CST 落笔。每一笔都会延长收官倒计时，计入一次星选资格，还可能铭刻参与 CST；具体数量取决于距上一笔经过的时间，并按其平方根计算。ETH 落笔会使 CST 校准窗口缩短约 ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%；CST 落笔则使其延长约 ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%。`,
+        body: isV3Mechanics
+          ? '参与者使用 ETH 或 CST 落笔。每一笔都会延长收官倒计时，计入一次星选资格，还可能铭刻参与 CST；具体数量随距上一笔经过的时间以恒定速率累积。每笔 CST 落笔会以其成交价的两倍重启 CST 校准窗口，之后价格按同一恒定速率下降。'
+          : `参与者使用 ETH 或 CST 落笔。每一笔都会延长收官倒计时，计入一次星选资格，还可能铭刻参与 CST；具体数量取决于距上一笔经过的时间，并按其平方根计算。ETH 落笔会使 CST 校准窗口缩短约 ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%；CST 落笔则使其延长约 ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%。`,
       },
       {
         number: '03',
@@ -308,8 +310,9 @@ export const landingContentZh = {
       },
       {
         question: '为什么参与 CST 的数量会变化？',
-        answer:
-          '参与 CST 的铭刻量采用平方根公式，取决于距上一笔经过的时间。沉寂越久，CST 铭刻量越大；平方根会让增幅逐渐放缓。落笔间隔极短时，可能铭刻 0 CST。提交前，应用会预览当前数额。',
+        answer: isV3Mechanics
+          ? `参与 CST 的铭刻量随距上一笔经过的时间线性累积——按协议上线参数约为每分钟 ${protocolFacts.v3.dynamicCstRewardPerMinuteAtLaunch} CST。沉寂越久，CST 铭刻量按比例越大；紧随他人之后落笔则铭刻量接近 0 CST。提交前，应用会预览当前数额。`
+          : '参与 CST 的铭刻量采用平方根公式，取决于距上一笔经过的时间。沉寂越久，CST 铭刻量越大；平方根会让增幅逐渐放缓。落笔间隔极短时，可能铭刻 0 CST。提交前，应用会预览当前数额。',
       },
       {
         question: 'ETH 与 CST 落笔会怎样影响 CST 校准窗口？',

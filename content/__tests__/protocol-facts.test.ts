@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { contractMechanicsVersion, cstRewardFacts, protocolFacts } from '@/content/protocol-facts';
 
 /**
  * Deployed Solidity constants these facts are derived from
@@ -101,6 +101,48 @@ describe('protocolFacts', () => {
         // Quoted examples are rounded for prose; allow 1% relative tolerance.
         expect(Math.abs(rewardCst - quoted) / quoted).toBeLessThan(0.01);
       }
+    }
+  });
+
+  it('V3 dynamic CST examples match the linear accrual at the stated launch parameters', () => {
+    // V3 accrues linearly: INITIAL_BID_CST_REWARD_AMOUNT_PER_MINUTE = 1 ether
+    // (exactly 1 CST per minute at launch; CosmicSignatureConstants.sol).
+    const elapsedSeconds: Record<string, number> = {
+      '0 seconds': 0,
+      '1 second': 1,
+      '60 seconds': 60,
+      '1 hour': 3600,
+      '1 day': 86400,
+    };
+    const cstPerSecond = protocolFacts.v3.dynamicCstRewardPerMinuteAtLaunch / 60;
+
+    for (const example of protocolFacts.v3.dynamicCstRewardExamples) {
+      const elapsed = elapsedSeconds[example.elapsed];
+      expect(elapsed).toBeDefined();
+      const rewardCst = elapsed! * cstPerSecond;
+      const quoted = Number(example.cst.replace(/,/g, ''));
+      expect(Number.isNaN(quoted)).toBe(false);
+      if (quoted === 0) {
+        expect(rewardCst).toBe(0);
+      } else {
+        // Quoted examples are rounded for prose; allow 2% relative tolerance.
+        expect(Math.abs(rewardCst - quoted) / quoted).toBeLessThan(0.02);
+      }
+    }
+  });
+
+  it('cstRewardFacts follows the configured contract mechanics version', () => {
+    // Production copy describes V2 until the proxy upgrade lands
+    // (flip contractMechanicsVersion / NEXT_PUBLIC_CONTRACT_MECHANICS_VERSION on upgrade day).
+    if (contractMechanicsVersion === 3) {
+      expect(cstRewardFacts.curve).toBe('linear');
+      expect(cstRewardFacts.formula).toBe(protocolFacts.v3.dynamicCstRewardFormula);
+      expect(cstRewardFacts.examples).toBe(protocolFacts.v3.dynamicCstRewardExamples);
+    } else {
+      expect(contractMechanicsVersion).toBe(2);
+      expect(cstRewardFacts.curve).toBe('sqrt');
+      expect(cstRewardFacts.formula).toBe(protocolFacts.dynamicCstRewardFormula);
+      expect(cstRewardFacts.examples).toBe(protocolFacts.dynamicCstRewardExamples);
     }
   });
 

@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { cstRewardFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { COSMIC_SIGNATURE_MARKETPLACE_URL } from '@/config/marketplace';
 import { CHAOS_ZERO_PREDICTIONS_URL } from '@/config/predictions';
@@ -88,7 +88,7 @@ const baseLearnArticles: LearnArticle[] = [
       {
         heading: '落笔会带来什么',
         body: [
-          `每一笔都会写入当前周期，可能铭刻参与 CST，延长收官倒计时，并成为最终签名历史的一部分。参与 CST 的数量按平方根公式计算：${protocolFacts.dynamicCstRewardFormula}。`,
+          `每一笔都会写入当前周期，可能铭刻参与 CST，延长收官倒计时，并成为最终签名历史的一部分。参与 CST 的数量按${isV3Mechanics ? '线性' : '平方根'}公式计算：${cstRewardFacts.formula}。`,
           `落笔价格会在周期中持续变化。ETH 落笔与 CST 落笔彼此关联，但各有机制；校准窗口会清楚显示价格如何变化。每笔 CST 落笔会使 CST 校准窗口延长约 ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%；每笔 ETH 落笔则会使其缩短约 ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%。`,
         ],
       },
@@ -201,7 +201,9 @@ const baseLearnArticles: LearnArticle[] = [
         heading: 'CST 在协议中的作用',
         body: [
           '落笔时可能铭刻参与 CST；CST 也可用于落笔，其价格由专属校准窗口决定。用于落笔的 CST 会直接销毁，永久从供应量中移除，不会汇入资金池。',
-          '参与 CST 的数量会动态变化：它取决于距上一笔的时间，并采用平方根公式。间隔越久，铭刻量通常越大；连续快速落笔则可能铭刻 0 CST。',
+          isV3Mechanics
+            ? '参与 CST 的数量会动态变化：它随距上一笔的时间线性累积。间隔越久，铭刻量按比例越大；连续快速落笔则铭刻量接近 0 CST。'
+            : '参与 CST 的数量会动态变化：它取决于距上一笔的时间，并采用平方根公式。间隔越久，铭刻量通常越大；连续快速落笔则可能铭刻 0 CST。',
           '完成委托后，CST 可在宇宙议会中用作协调权重；持有者也可将权重委托给自己。参与者依照链上规则协调协议变更。',
         ],
       },

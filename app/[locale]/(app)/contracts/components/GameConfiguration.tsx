@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { TrendingUp, Clock, Coins, MessageSquare, Timer, Zap } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { protocolFacts } from '@/content/protocol-facts';
+import { cstRewardFacts } from '@/content/protocol-facts';
 import { formatSeconds } from '@/utils';
 
 import { formatCstAmount } from '@/utils/cstGesture';
@@ -84,7 +84,7 @@ export function GameConfiguration({
       value: `${formatCstAmount(cstRewardPerBid)} CST`,
       icon: <Coins className="h-4 w-4" />,
       tooltip: t('configuration.cards.cstPreview.tooltip', {
-        formula: protocolFacts.dynamicCstRewardFormula,
+        formula: cstRewardFacts.formula,
       }),
     },
     {

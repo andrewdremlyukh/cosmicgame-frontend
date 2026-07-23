@@ -120,6 +120,19 @@ export const protocolFacts = {
     /** Linear Participation CST (replaces the V2 sqrt formula). */
     dynamicCstRewardFormula:
       'elapsedSinceLastGesture * bidCstRewardAmountMultiplier / mainPrizeTimeIncrementInMicroSeconds',
+    /**
+     * Computed at the launch parameters (time increment = exactly 1 hour,
+     * accrual ~1 CST per minute). The increment grows 1% per cycle, so live
+     * amounts drift slightly lower over time; the app preview and the
+     * contract are the source of truth.
+     */
+    dynamicCstRewardExamples: [
+      { elapsed: '0 seconds', cst: '0' },
+      { elapsed: '1 second', cst: '0.017' },
+      { elapsed: '60 seconds', cst: '1' },
+      { elapsed: '1 hour', cst: '60' },
+      { elapsed: '1 day', cst: '1,440' },
+    ],
     /** Initial accrual with launch parameters: ~1 CST per minute (declines ~1% per cycle). */
     dynamicCstRewardPerMinuteAtLaunch: 1,
     /** Share of each Participation CST imprint minted to the participant being outbid. */
@@ -134,3 +147,41 @@ export const protocolFacts = {
     lateGestureMaxCostMultiplier: 5,
   },
 } as const;
+
+/**
+ * Which contract mechanics version the static copy describes.
+ *
+ * Production runs V2 until the UUPS proxy upgrade lands, so this stays 2.
+ * Flip it to 3 on upgrade day (or set NEXT_PUBLIC_CONTRACT_MECHANICS_VERSION=3
+ * in an environment that points at a V3 node, e.g. local Hardhat testing).
+ * V1 is history: the proxy was already upgraded to V2 and cannot roll back,
+ * so only 2 and 3 are representable.
+ */
+export const contractMechanicsVersion: 2 | 3 =
+  Number(process.env.NEXT_PUBLIC_CONTRACT_MECHANICS_VERSION ?? '2') === 3 ? 3 : 2;
+
+/** True once the copy should describe V3 mechanics (linear CST accrual, reward split, multi-NFT allocation). */
+export const isV3Mechanics = contractMechanicsVersion === 3;
+
+/**
+ * Version-appropriate dynamic Participation CST facts. Static content must use
+ * this instead of reading `protocolFacts.dynamicCstRewardFormula` directly, so
+ * that FAQ/learn/landing/legal copy flips from the V2 square-root wording to
+ * the V3 linear wording together with `contractMechanicsVersion`.
+ */
+export const cstRewardFacts: {
+  formula: string;
+  examples: readonly { elapsed: string; cst: string }[];
+  /** 'sqrt' = V2 (sublinear, slowing growth); 'linear' = V3 (constant accrual rate). */
+  curve: 'sqrt' | 'linear';
+} = isV3Mechanics
+  ? {
+      formula: protocolFacts.v3.dynamicCstRewardFormula,
+      examples: protocolFacts.v3.dynamicCstRewardExamples,
+      curve: 'linear',
+    }
+  : {
+      formula: protocolFacts.dynamicCstRewardFormula,
+      examples: protocolFacts.dynamicCstRewardExamples,
+      curve: 'sqrt',
+    };

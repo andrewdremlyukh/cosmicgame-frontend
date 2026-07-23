@@ -94,6 +94,7 @@
   "rules": {
     "howItWorks": "运作原理",
     "participation": "落笔时，你可能铭刻<em>动态的参与 CST</em>，具体数量取决于距上一笔经过的时间，并按其平方根计算。",
+    "participationV3": "落笔时，你可能铭刻<em>动态的参与 CST</em>，具体数量随距上一笔经过的时间以恒定速率累积。",
     "calibration": "ETH 落笔会使 CST 校准窗口缩短约 {decreasePercent}%；CST 落笔则使其延长约 {increasePercent}%。",
     "stellarSelection": "每一笔都计入一次星选资格。周期收官时，周期储备的 {rafflePercent}% 将由程序化随机选出的 {ethEntries} 位 ETH 星选获配者均分；另有 {nftEntries} 位星选获配者与 {anchorHolders} 位 Random Walk NFT 锚定者，各获配一枚 Cosmic Signature NFT。",
     "publicGoods": "每个周期，Protocol Guild 都会收到周期储备的 {percent}%（至少 {amount} ETH）。"

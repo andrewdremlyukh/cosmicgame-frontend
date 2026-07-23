@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { cstRewardFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import type { FAQContent } from './types';
 
@@ -78,7 +78,7 @@ export const faqContentZh = {
         {
           id: 'what-rewards-per-bid',
           question: '每次落笔会带来什么？',
-          answer: `每笔落笔都会记录 1 次周期末星选资格，更新坚守窗口对坚守冠军和时之勇士轨道的贡献，并可能铭刻参与 CST。参与 CST 按平方根公式计算：${protocolFacts.dynamicCstRewardFormula}。简单来说，距上一笔落笔越久，数量越多，但增长速度会逐渐放缓。极短间隔可能得到 0 CST；较长的静默期则可能产生更多 CST 铭刻。`,
+          answer: `每笔落笔都会记录 1 次周期末星选资格，更新坚守窗口对坚守冠军和时之勇士轨道的贡献，并可能铭刻参与 CST。参与 CST 按${isV3Mechanics ? '线性' : '平方根'}公式计算：${cstRewardFacts.formula}。简单来说，距上一笔落笔越久，数量越多${isV3Mechanics ? '，且按恒定速率增长' : '，但增长速度会逐渐放缓'}。极短间隔可能得到 0 CST；较长的静默期则可能产生更多 CST 铭刻。`,
         },
         {
           id: 'how-does-the-stellarSelection-work',
@@ -150,7 +150,9 @@ export const faqContentZh = {
         {
           id: 'how-is-participation-cst-calculated',
           question: '参与 CST 如何计算？',
-          answer: `参与 CST 按距上一笔落笔的时间，以平方根公式计算：${protocolFacts.dynamicCstRewardFormula}。采用平方根，是为了让较长的静默期获得更多 CST，同时避免数量永远线性增长。按协议上线时恰为 1 小时的时间增量计算，示例约为：${protocolFacts.dynamicCstRewardExamples.map((example) => `${example.elapsed} 后为 ${example.cst} CST`).join('、')}。每个周期收官后，时间增量会增长 ${protocolFacts.cycleTimeIncrementIncreasePercentPerCycle}%，因此实时数量会随时间逐渐略低于这些示例。落笔实际成交时，应以应用中的实时预览和合约计算为准。`,
+          answer: isV3Mechanics
+            ? `参与 CST 随距上一笔落笔的时间线性累积：${cstRewardFacts.formula}。按协议上线时恰为 1 小时的时间增量计算，速率约为每分钟 ${protocolFacts.v3.dynamicCstRewardPerMinuteAtLaunch} CST，示例约为：${cstRewardFacts.examples.map((example) => `${example.elapsed} 后为 ${example.cst} CST`).join('、')}。每个周期收官后，时间增量会增长 ${protocolFacts.cycleTimeIncrementIncreasePercentPerCycle}%，因此实时数量会随时间逐渐略低于这些示例。落笔实际成交时，应以应用中的实时预览和合约计算为准。`
+            : `参与 CST 按距上一笔落笔的时间，以平方根公式计算：${cstRewardFacts.formula}。采用平方根，是为了让较长的静默期获得更多 CST，同时避免数量永远线性增长。按协议上线时恰为 1 小时的时间增量计算，示例约为：${cstRewardFacts.examples.map((example) => `${example.elapsed} 后为 ${example.cst} CST`).join('、')}。每个周期收官后，时间增量会增长 ${protocolFacts.cycleTimeIncrementIncreasePercentPerCycle}%，因此实时数量会随时间逐渐略低于这些示例。落笔实际成交时，应以应用中的实时预览和合约计算为准。`,
         },
         {
           id: 'why-minimum-cst-reward-protection',

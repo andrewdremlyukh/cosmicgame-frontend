@@ -94,6 +94,7 @@
   "rules": {
     "howItWorks": "How it works",
     "participation": "When you gesture, you may imprint <em>dynamic Participation CST</em>. The amount uses a square-root formula based on how long it has been since the previous gesture.",
+    "participationV3": "When you gesture, you may imprint <em>dynamic Participation CST</em>. The amount accrues at a steady rate based on how long it has been since the previous gesture.",
     "calibration": "ETH gestures shorten the CST Calibration Window by about {decreasePercent}%; CST gestures lengthen it by about {increasePercent}%.",
     "stellarSelection": "Each gesture records one Stellar Selection entry. {ethEntries} entries receive {rafflePercent}% of the Cycle Reserve. {nftEntries} additional Selection recipients and {anchorHolders} Random Walk NFT anchor-holders receive a Cosmic Signature NFT.",
     "publicGoods": "Protocol Guild receives {percent}% of the Cycle Reserve (at least {amount} ETH) each cycle."

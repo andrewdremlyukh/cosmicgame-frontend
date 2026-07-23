@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { cstRewardFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { HOW_IT_WORKS_PATH, type HowItWorksContent } from './types';
 
@@ -61,7 +61,7 @@ export const howItWorksContentZh = {
       {
         title: '动态参与 CST',
         description: '每一笔都可能铭刻 CST，数量取决于距上一笔经过的时间。',
-        tooltip: `参与 CST 采用平方根公式：${protocolFacts.dynamicCstRewardFormula}。连续快速落笔可能铭刻 0 CST；沉寂越久，铭刻量越大。`,
+        tooltip: `参与 CST 采用${isV3Mechanics ? '线性' : '平方根'}公式：${cstRewardFacts.formula}。连续快速落笔可能铭刻 0 CST；沉寂越久，铭刻量越大。`,
       },
       {
         title: '星选资格',
@@ -92,9 +92,12 @@ export const howItWorksContentZh = {
       },
       {
         label: '参与者落笔',
-        description: `每一笔都会按当前时间增量延长收官倒计时。参与 CST 动态变化；ETH 落笔会使 CST 校准窗口缩短约 ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%，CST 落笔则使其延长约 ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%。`,
-        tooltip:
-          '参与 CST 按平方根公式计算，取决于距上一笔经过的时间。确切数量以应用中的实时预览为准。',
+        description: isV3Mechanics
+          ? '每一笔都会按当前时间增量延长收官倒计时。参与 CST 动态变化；每笔 CST 落笔会以其成交价的两倍重启 CST 校准窗口，之后价格按恒定速率下降。'
+          : `每一笔都会按当前时间增量延长收官倒计时。参与 CST 动态变化；ETH 落笔会使 CST 校准窗口缩短约 ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%，CST 落笔则使其延长约 ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%。`,
+        tooltip: isV3Mechanics
+          ? '参与 CST 随距上一笔经过的时间线性累积。确切数量以应用中的实时预览为准。'
+          : '参与 CST 按平方根公式计算，取决于距上一笔经过的时间。确切数量以应用中的实时预览为准。',
       },
       {
         label: '收官倒计时归零',
@@ -191,7 +194,9 @@ export const howItWorksContentZh = {
       {
         title: '使用 CST 落笔',
         description: 'CST 也可用于落笔，价格由专属的 CST 校准窗口决定。',
-        tooltip: `CST 落笔同样会计入一次星选资格、延长收官倒计时，还可能铭刻动态的参与 CST，并使 CST 校准窗口延长约 ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%。`,
+        tooltip: isV3Mechanics
+          ? 'CST 落笔同样会计入一次星选资格、延长收官倒计时，还可能铭刻动态的参与 CST，并以其成交价的两倍重启 CST 校准窗口。'
+          : `CST 落笔同样会计入一次星选资格、延长收官倒计时，还可能铭刻动态的参与 CST，并使 CST 校准窗口延长约 ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%。`,
       },
     ],
   },

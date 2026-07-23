@@ -15,6 +15,8 @@ jest.mock('../../nft/PaginationRWLKGrid', () => ({
   default: ({ data }: { data: number[] }) => <div data-testid="rwlk-grid">{data.length} NFTs</div>,
 }));
 
+import { isV3Mechanics } from '@/content/protocol-facts';
+
 import type { DashboardInfo } from '@/services/api/types';
 import { CST_UNISWAP_SWAP_URL } from '@/config/uniswap';
 
@@ -501,7 +503,13 @@ describe('GestureForm', () => {
   it('shows minimum CST reward protection control for every unlocked gesture type', () => {
     render(<GestureForm {...defaultProps} advancedExpanded={true} gestureType="ETH" />);
     expect(screen.getByText('home.form.advanced.minCstProtection.title')).toBeInTheDocument();
-    expect(screen.getByText('home.form.advanced.minCstProtection.body')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        isV3Mechanics
+          ? 'home.form.advanced.minCstProtection.bodyV3'
+          : 'home.form.advanced.minCstProtection.body',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('updates CST reward tolerance from advanced options', () => {

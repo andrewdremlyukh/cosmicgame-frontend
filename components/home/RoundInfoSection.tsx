@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { BookOpen, Wallet, Clock, Users } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { protocolFacts } from '@/content/protocol-facts';
+import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 import { formatEthValue, formatSeconds, type EnduranceChampion } from '@/utils';
 
 import Allocation from '@/components/common/Allocation';
@@ -192,7 +192,7 @@ export function RoundInfoSection({
               <AccordionContent className="px-5 pb-5">
                 <div className="text-sm text-muted-foreground space-y-3">
                   <p>
-                    {t.rich('rules.participation', {
+                    {t.rich(isV3Mechanics ? 'rules.participationV3' : 'rules.participation', {
                       em: (chunks) => <span className="text-white font-medium">{chunks}</span>,
                     })}
                   </p>

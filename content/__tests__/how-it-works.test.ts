@@ -3,7 +3,7 @@ import {
   howItWorksContentEn,
   howItWorksContentZh,
 } from '@/content/how-it-works';
-import { protocolFacts } from '@/content/protocol-facts';
+import { cstRewardFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 describe('how-it-works content', () => {
   it('selects the requested locale', () => {
@@ -69,11 +69,29 @@ describe('how-it-works protocol-fact interpolation', () => {
     expect(howItWorksContentEn.gameCycle.phases[0].description).toContain(
       `${protocolFacts.initialCstCalibrationWindowHours}-hour`,
     );
-    expect(howItWorksContentEn.gameCycle.phases[1].description).toContain(
-      `about ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}% down or ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}% up`,
-    );
-    expect(howItWorksContentEn.proTips.tips[5].tooltip).toContain(
-      `by about ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%`,
+    if (isV3Mechanics) {
+      // V3 retired the per-gesture drift: the window restarts at 2x the paid price.
+      expect(howItWorksContentEn.gameCycle.phases[1].description).toContain(
+        'restarts the CST Calibration Window at twice the price it paid',
+      );
+      expect(howItWorksContentEn.proTips.tips[5].tooltip).toContain(
+        'restarts the CST Calibration Window at twice the price it paid',
+      );
+    } else {
+      expect(howItWorksContentEn.gameCycle.phases[1].description).toContain(
+        `about ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}% down or ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}% up`,
+      );
+      expect(howItWorksContentEn.proTips.tips[5].tooltip).toContain(
+        `by about ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%`,
+      );
+    }
+  });
+
+  it('quotes the version-appropriate dynamic Participation CST formula', () => {
+    // V2 copy quotes the sqrt formula; V3 copy quotes the linear one
+    // (isV3Mechanics flips with contractMechanicsVersion on upgrade day).
+    expect(howItWorksContentEn.rewardBreakdown.items[0].tooltip).toContain(
+      isV3Mechanics ? 'linear formula' : 'square-root formula',
     );
   });
 
@@ -108,9 +126,7 @@ describe('how-it-works protocol-fact interpolation', () => {
   });
 
   it('quotes the dynamic Participation CST formula from protocolFacts', () => {
-    expect(howItWorksContentEn.rewardBreakdown.items[0].tooltip).toContain(
-      protocolFacts.dynamicCstRewardFormula,
-    );
+    expect(howItWorksContentEn.rewardBreakdown.items[0].tooltip).toContain(cstRewardFacts.formula);
   });
 
   it('interpolates the same protocolFacts into the Chinese copy', () => {
@@ -120,15 +136,17 @@ describe('how-it-works protocol-fact interpolation', () => {
     expect(howItWorksContentZh.gameCycle.phases[0].description).toContain(
       `${protocolFacts.initialCstCalibrationWindowHours} 小时`,
     );
-    expect(howItWorksContentZh.gameCycle.phases[1].description).toContain(
-      `${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%`,
-    );
+    if (isV3Mechanics) {
+      expect(howItWorksContentZh.gameCycle.phases[1].description).toContain('两倍');
+    } else {
+      expect(howItWorksContentZh.gameCycle.phases[1].description).toContain(
+        `${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}%`,
+      );
+    }
     expect(howItWorksContentZh.gameCycle.phases[2].tooltip).toContain(
       `${protocolFacts.finalGestureExclusivityHours} 小时`,
     );
-    expect(howItWorksContentZh.rewardBreakdown.items[0].tooltip).toContain(
-      protocolFacts.dynamicCstRewardFormula,
-    );
+    expect(howItWorksContentZh.rewardBreakdown.items[0].tooltip).toContain(cstRewardFacts.formula);
     expect(howItWorksContentZh.rewardBreakdown.items[3].description).toContain(
       `${protocolFacts.specialAllocationCst.toLocaleString()} CST`,
     );

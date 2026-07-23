@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { cstRewardFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { HOW_IT_WORKS_PATH, type HowItWorksContent } from './types';
 
@@ -63,7 +63,7 @@ export const howItWorksContentEn = {
         title: 'Dynamic Participation CST',
         description:
           'Each gesture may imprint CST based on how long it has been since the previous gesture.',
-        tooltip: `Participation CST uses a square-root formula: ${protocolFacts.dynamicCstRewardFormula}. Rapid gestures can receive 0 CST; longer quiet periods create larger imprints.`,
+        tooltip: `Participation CST uses a ${isV3Mechanics ? 'linear' : 'square-root'} formula: ${cstRewardFacts.formula}. Rapid gestures can receive 0 CST; longer quiet periods create larger imprints.`,
       },
       {
         title: 'Stellar Selection Entry',
@@ -96,9 +96,12 @@ export const howItWorksContentEn = {
       },
       {
         label: 'Participants Gesture',
-        description: `Each gesture adds the current time increment to Cycle Finalization Time. Participation CST is dynamic, and ETH/CST gestures move the CST Calibration Window by about ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}% down or ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}% up.`,
-        tooltip:
-          'Participation CST follows a square-root formula based on elapsed time since the previous gesture. The current app preview is the source of truth for the exact CST amount.',
+        description: isV3Mechanics
+          ? 'Each gesture adds the current time increment to Cycle Finalization Time. Participation CST is dynamic, and each CST gesture restarts the CST Calibration Window at twice the price it paid; the cost then declines at a steady rate.'
+          : `Each gesture adds the current time increment to Cycle Finalization Time. Participation CST is dynamic, and ETH/CST gestures move the CST Calibration Window by about ${protocolFacts.cstCalibrationWindowDecreasePercentPerEthGesture}% down or ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}% up.`,
+        tooltip: isV3Mechanics
+          ? 'Participation CST accrues linearly with elapsed time since the previous gesture. The current app preview is the source of truth for the exact CST amount.'
+          : 'Participation CST follows a square-root formula based on elapsed time since the previous gesture. The current app preview is the source of truth for the exact CST amount.',
       },
       {
         label: 'Cycle Finalization Time Expires',
@@ -208,7 +211,9 @@ export const howItWorksContentEn = {
         title: 'Gesture with CST',
         description:
           'Use CST as an alternative gesture currency through the CST Calibration Window.',
-        tooltip: `A CST gesture records a Stellar Selection entry, extends the timer, may imprint dynamic Participation CST, and lengthens the CST Calibration Window by about ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%.`,
+        tooltip: isV3Mechanics
+          ? 'A CST gesture records a Stellar Selection entry, extends the timer, may imprint dynamic Participation CST, and restarts the CST Calibration Window at twice the price it paid.'
+          : `A CST gesture records a Stellar Selection entry, extends the timer, may imprint dynamic Participation CST, and lengthens the CST Calibration Window by about ${protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture}%.`,
       },
     ],
   },

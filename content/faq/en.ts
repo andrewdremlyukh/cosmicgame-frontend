@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { cstRewardFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import type { FAQContent } from './types';
 
@@ -78,7 +78,7 @@ export const faqContentEn = {
         {
           id: 'what-rewards-per-bid',
           question: 'What do I receive for each gesture?',
-          answer: `Every gesture records one entry in end-of-cycle Stellar Selections, updates your Endurance Window contribution toward the Endurance Champion and Chrono-Warrior tracks, and may imprint Participation CST. Participation CST is calculated with a square-root formula: ${protocolFacts.dynamicCstRewardFormula}. In plain English, the amount grows with the time since the previous gesture, but at a slowing rate. Very rapid gestures can receive 0 CST; a longer gap can produce a much larger CST imprint.`,
+          answer: `Every gesture records one entry in end-of-cycle Stellar Selections, updates your Endurance Window contribution toward the Endurance Champion and Chrono-Warrior tracks, and may imprint Participation CST. Participation CST is calculated with a ${isV3Mechanics ? 'linear' : 'square-root'} formula: ${cstRewardFacts.formula}. In plain English, the amount grows with the time since the previous gesture${isV3Mechanics ? ' at a steady rate' : ', but at a slowing rate'}. Very rapid gestures can receive 0 CST; a longer gap can produce a much larger CST imprint.`,
         },
         {
           id: 'how-does-the-stellarSelection-work',
@@ -150,7 +150,9 @@ export const faqContentEn = {
         {
           id: 'how-is-participation-cst-calculated',
           question: 'How is Participation CST calculated?',
-          answer: `Participation CST uses a square-root formula based on elapsed time since the previous gesture: ${protocolFacts.dynamicCstRewardFormula}. The square root matters because it rewards longer quiet periods without making the reward grow linearly forever. At the launch parameters (a time increment of exactly one hour), examples are approximately ${protocolFacts.dynamicCstRewardExamples.map((example) => `${example.cst} CST after ${example.elapsed}`).join(', ')}. The increment grows ${protocolFacts.cycleTimeIncrementIncreasePercentPerCycle}% per finalized cycle, so live amounts drift slightly below these over time. The live app preview and the contract are the source of truth for the exact amount at the moment your gesture lands.`,
+          answer: isV3Mechanics
+            ? `Participation CST accrues linearly with elapsed time since the previous gesture: ${cstRewardFacts.formula}. At the launch parameters (a time increment of exactly one hour) the rate is about ${protocolFacts.v3.dynamicCstRewardPerMinuteAtLaunch} CST per minute — examples are approximately ${cstRewardFacts.examples.map((example) => `${example.cst} CST after ${example.elapsed}`).join(', ')}. The increment grows ${protocolFacts.cycleTimeIncrementIncreasePercentPerCycle}% per finalized cycle, so live amounts drift slightly below these over time. The live app preview and the contract are the source of truth for the exact amount at the moment your gesture lands.`
+            : `Participation CST uses a square-root formula based on elapsed time since the previous gesture: ${cstRewardFacts.formula}. The square root matters because it rewards longer quiet periods without making the reward grow linearly forever. At the launch parameters (a time increment of exactly one hour), examples are approximately ${cstRewardFacts.examples.map((example) => `${example.cst} CST after ${example.elapsed}`).join(', ')}. The increment grows ${protocolFacts.cycleTimeIncrementIncreasePercentPerCycle}% per finalized cycle, so live amounts drift slightly below these over time. The live app preview and the contract are the source of truth for the exact amount at the moment your gesture lands.`,
         },
         {
           id: 'why-minimum-cst-reward-protection',

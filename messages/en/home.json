@@ -335,6 +335,7 @@
       "minCstProtection": {
         "title": "Minimum CST Reward Protection",
         "body": "Participation CST uses a square-root formula based on elapsed time. This setting protects you if another gesture lands first and lowers the amount before your transaction confirms.",
+        "bodyV3": "Participation CST accrues linearly with elapsed time. This setting protects you if another gesture lands first and lowers the amount before your transaction confirms.",
         "acceptAnyAria": "Accept any CST reward",
         "acceptAnyTitle": "Accept any CST reward, including 0",
         "acceptAnyBody": "Sends a minimum accepted CST reward of 0. Use this when you prefer the gesture to land even if the dynamic CST amount changes before confirmation.",
