@@ -68,10 +68,17 @@ afterEach(() => {
 });
 
 describe('buildEventTopicMap', () => {
-  it('derives one 32-byte selector per watched event from the ABI', () => {
+  it('derives a 32-byte selector for every overload of each watched event', () => {
     const map = buildEventTopicMap();
-    expect(map.size).toBe(WATCHED_COSMIC_EVENTS.length);
+    // The merged V1+V2+V3 ABI has two overloads each for BidPlaced (7- and
+    // 9-field) and MainPrizeClaimed (6- and 7-field), so the map is larger
+    // than the watched-name list. Every watched name must be represented.
+    expect(map.size).toBeGreaterThanOrEqual(WATCHED_COSMIC_EVENTS.length);
     expect(new Set(map.values())).toEqual(new Set(WATCHED_COSMIC_EVENTS));
+    const bidPlacedTopics = [...map.entries()].filter(([, name]) => name === 'BidPlaced');
+    expect(bidPlacedTopics).toHaveLength(2);
+    const mainPrizeTopics = [...map.entries()].filter(([, name]) => name === 'MainPrizeClaimed');
+    expect(mainPrizeTopics).toHaveLength(2);
     for (const topic of map.keys()) {
       expect(topic).toMatch(/^0x[0-9a-f]{64}$/);
     }

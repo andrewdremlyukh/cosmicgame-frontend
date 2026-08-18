@@ -102,9 +102,9 @@ describe('Utils JSDoc coverage', () => {
   });
 
   describe('no function is missing from the inventory', () => {
-    it('total exported functions/constants across all util files is 53', () => {
+    it('total exported functions/constants across all util files is 54', () => {
       const total = files.reduce((sum, f) => sum + f.exports.length, 0);
-      expect(total).toBe(53);
+      expect(total).toBe(54);
     });
   });
 
