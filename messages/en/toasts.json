@@ -63,7 +63,9 @@
       "wrongBidType": "Wrong gesture type selected.",
       "fundTransferFailed": "Fund transfer failed.",
       "ethCostChanged": "Gesture Cost rose by {increase} ETH while your transaction was in transit. The new required cost is {required} ETH. Please try again.",
-      "cstCostChanged": "CST Gesture Cost changed while your transaction was in transit, likely because another gesture landed first. The contract required {required} CST, above your {maximum} CST maximum. Refresh and try again."
+      "cstCostChanged": "CST Gesture Cost changed while your transaction was in transit, likely because another gesture landed first. The contract required {required} CST, above your {maximum} CST maximum. Refresh and try again.",
+      "bidPlacedWithinCurrentSecond": "Another gesture landed in the same second. Wait a moment and try again.",
+      "bidHasBeenPlacedInCurrentRound": "A gesture has already been made in the current cycle."
     }
   },
   "anchor": {

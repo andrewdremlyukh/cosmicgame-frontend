@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { Coins, Users, Layers, TrendingUp, ArrowRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { protocolFacts } from '@/content/protocol-facts';
+import { ethDistributionFacts } from '@/content/protocol-facts';
 
 import { Link } from '@/i18n/navigation';
 import { GlobalAnchorDistributionsTable } from '@/components/anchoring/GlobalAnchorDistributionsTable';
@@ -132,7 +132,7 @@ const AnchoringPage = () => {
       >
         <p className="type-body-md text-muted-foreground">
           {t('overview.intro.description', {
-            percentage: protocolFacts.anchorDistributionPercentage,
+            percentage: ethDistributionFacts.anchorDistributionPercentage,
           })}
         </p>
         <div className="relative min-h-[160px] overflow-hidden rounded-[var(--radius-surface)] border border-white/[0.08] bg-black/20">
@@ -147,7 +147,7 @@ const AnchoringPage = () => {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="rounded-full bg-[rgb(var(--impact-green-rgb)/0.14)] px-4 py-2 text-sm font-semibold text-[rgb(var(--impact-green-rgb))]">
               {t('overview.intro.flow', {
-                percentage: protocolFacts.anchorDistributionPercentage,
+                percentage: ethDistributionFacts.anchorDistributionPercentage,
               })}
             </div>
           </div>

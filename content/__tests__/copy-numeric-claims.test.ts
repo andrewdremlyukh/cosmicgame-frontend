@@ -60,11 +60,19 @@ const sources: CopySource[] = [
 const allowedPercents = new Set<number>([
   // Chart prose uses the neutral zero boundary ("no activity shows 0%").
   0,
+  // Both the live V2 split and the V3 reinitialize defaults are verified facts:
+  // gated copy prints the version-appropriate values while the static public
+  // docs keep describing the live deployment.
   protocolFacts.mainEthPercentage,
   protocolFacts.chronoWarriorEthPercentage,
   protocolFacts.stellarSelectionEthPercentage,
   protocolFacts.anchorDistributionPercentage,
   protocolFacts.publicGoodsPercentage,
+  protocolFacts.v3.mainEthPercentage,
+  protocolFacts.v3.chronoWarriorEthPercentage,
+  protocolFacts.v3.stellarSelectionEthPercentage,
+  protocolFacts.v3.anchorDistributionPercentage,
+  protocolFacts.v3.publicGoodsPercentage,
   protocolFacts.compoundingReservePercentage,
   protocolFacts.randomWalkDiscountPercentage,
   protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture,
@@ -188,7 +196,7 @@ describe('copy numeric claims stay pinned to protocolFacts', () => {
 
   it('the key deployed percentages are actually present in the public docs', () => {
     // Guards against accidental deletion: llms.txt must keep quoting the
-    // allocation split so crawlers see the verified numbers.
+    // live-deployment allocation split so crawlers see the verified numbers.
     const llms = readPublicFile('llms.txt');
     for (const percent of [
       protocolFacts.mainEthPercentage,

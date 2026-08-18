@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { Trophy, Gavel, Layers, Users } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { protocolFacts } from '@/content/protocol-facts';
+import { ethDistributionFacts, protocolFacts } from '@/content/protocol-facts';
 
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageShell } from '@/components/ui/page-shell';
@@ -24,40 +24,40 @@ const AllocationRecipientsPage = () => {
     {
       id: 'signature',
       label: t('recipients.reserveSplit.tracks.signature.label'),
-      value: `${protocolFacts.mainEthPercentage}%`,
-      width: `${protocolFacts.mainEthPercentage}%`,
+      value: `${ethDistributionFacts.mainEthPercentage}%`,
+      width: `${ethDistributionFacts.mainEthPercentage}%`,
       color: 'bg-[rgb(var(--aurora-cyan-rgb))]',
       tooltip: t('recipients.reserveSplit.tracks.signature.tooltip'),
     },
     {
       id: 'chrono',
       label: t('recipients.reserveSplit.tracks.chrono.label'),
-      value: `${protocolFacts.chronoWarriorEthPercentage}%`,
-      width: `${protocolFacts.chronoWarriorEthPercentage}%`,
+      value: `${ethDistributionFacts.chronoWarriorEthPercentage}%`,
+      width: `${ethDistributionFacts.chronoWarriorEthPercentage}%`,
       color: 'bg-[rgb(var(--nebula-violet-rgb))]',
       tooltip: t('recipients.reserveSplit.tracks.chrono.tooltip'),
     },
     {
       id: 'stellar',
       label: t('recipients.reserveSplit.tracks.stellar.label'),
-      value: `${protocolFacts.stellarSelectionEthPercentage}%`,
-      width: `${protocolFacts.stellarSelectionEthPercentage}%`,
+      value: `${ethDistributionFacts.stellarSelectionEthPercentage}%`,
+      width: `${ethDistributionFacts.stellarSelectionEthPercentage}%`,
       color: 'bg-[rgb(var(--solar-gold-rgb))]',
       tooltip: t('recipients.reserveSplit.tracks.stellar.tooltip'),
     },
     {
       id: 'anchor',
       label: t('recipients.reserveSplit.tracks.anchor.label'),
-      value: `${protocolFacts.anchorDistributionPercentage}%`,
-      width: `${protocolFacts.anchorDistributionPercentage}%`,
+      value: `${ethDistributionFacts.anchorDistributionPercentage}%`,
+      width: `${ethDistributionFacts.anchorDistributionPercentage}%`,
       color: 'bg-[rgb(var(--impact-green-rgb))]',
       tooltip: t('recipients.reserveSplit.tracks.anchor.tooltip'),
     },
     {
       id: 'public-goods',
       label: t('recipients.reserveSplit.tracks.publicGoods.label'),
-      value: `${protocolFacts.publicGoodsPercentage}%`,
-      width: `${protocolFacts.publicGoodsPercentage}%`,
+      value: `${ethDistributionFacts.publicGoodsPercentage}%`,
+      width: `${ethDistributionFacts.publicGoodsPercentage}%`,
       color: 'bg-[rgb(var(--chrono-rose-rgb))]',
       tooltip: t('recipients.reserveSplit.tracks.publicGoods.tooltip'),
     },
@@ -121,7 +121,7 @@ const AllocationRecipientsPage = () => {
         className="mb-10 grid gap-6 lg:grid-cols-[1fr_360px] lg:items-center"
       >
         <p className="type-body-md text-muted-foreground">
-          {t('recipients.intro', { percentage: protocolFacts.mainEthPercentage })}
+          {t('recipients.intro', { percentage: ethDistributionFacts.mainEthPercentage })}
         </p>
         <div className="space-y-3">
           <div className="flex items-center gap-2">

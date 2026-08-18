@@ -1,4 +1,9 @@
-import { cstRewardFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import {
+  cstRewardFacts,
+  ethDistributionFacts,
+  isV3Mechanics,
+  protocolFacts,
+} from '@/content/protocol-facts';
 
 import { HOW_IT_WORKS_PATH, type HowItWorksContent } from './types';
 
@@ -50,7 +55,7 @@ export const howItWorksContentZh = {
         number: '03',
         title: '获配',
         description: '周期收官后，即可参与各项分配——签名分配、星选、锚定派发等。',
-        tooltip: `写下收官之笔的参与者会获得周期储备的 ${protocolFacts.mainEthPercentage}%、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。星选获配者、锚定者及其他参与者也会获得相应分配。`,
+        tooltip: `写下收官之笔的参与者会获得周期储备的 ${ethDistributionFacts.mainEthPercentage}%、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。星选获配者、锚定者及其他参与者也会获得相应分配。`,
       },
     ],
   },
@@ -66,7 +71,7 @@ export const howItWorksContentZh = {
       {
         title: '星选资格',
         description: '每一笔都会计入一次星选资格，参与周期收官时的分配。',
-        tooltip: `周期收官后，协议会从星选资格中程序化随机选出获配者：3 位参与者均分周期储备中 ${protocolFacts.stellarSelectionEthPercentage}% 的 ETH。`,
+        tooltip: `周期收官后，协议会从星选资格中程序化随机选出获配者：3 位参与者均分周期储备中 ${ethDistributionFacts.stellarSelectionEthPercentage}% 的 ETH。`,
       },
       {
         title: 'Cosmic Signature NFT 星选',
@@ -75,7 +80,7 @@ export const howItWorksContentZh = {
       },
       {
         title: '签名分配',
-        description: `写下收官之笔的参与者，可取回周期储备中 ${protocolFacts.mainEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。`,
+        description: `写下收官之笔的参与者，可取回周期储备中 ${ethDistributionFacts.mainEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。`,
         tooltip: '周期储备随每一笔增长。写下收官之笔的参与者通过协议合约取回签名分配。',
       },
     ],
@@ -106,12 +111,12 @@ export const howItWorksContentZh = {
       },
       {
         label: '周期收官',
-        description: `写下收官之笔的参与者取回签名分配：周期储备的 ${protocolFacts.mainEthPercentage}%、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。`,
+        description: `写下收官之笔的参与者取回签名分配：周期储备的 ${ethDistributionFacts.mainEthPercentage}%、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。`,
         tooltip: '签名分配经由协议合约取回；CST 与 Cosmic Signature NFT 会自动完成铭刻。',
       },
       {
         label: '星选',
-        description: `3 位 ETH 星选获配者均分周期储备的 ${protocolFacts.stellarSelectionEthPercentage}%；参与者 NFT 星选与锚定 NFT 星选各选出 10 位获配者，每位获配 ${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。`,
+        description: `3 位 ETH 星选获配者均分周期储备的 ${ethDistributionFacts.stellarSelectionEthPercentage}%；参与者 NFT 星选与锚定 NFT 星选各选出 10 位获配者，每位获配 ${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。`,
         tooltip:
           '星选资格随每一笔计入；落笔越多，入选频次越高。Random Walk NFT 锚定者另有单独的星选。',
       },
@@ -179,7 +184,7 @@ export const howItWorksContentZh = {
       {
         title: '积累星选资格',
         description: '每一笔都会计入一次星选资格；落笔越多，入选频次越高。',
-        tooltip: `3 位 ETH 星选获配者均分周期储备的 ${protocolFacts.stellarSelectionEthPercentage}%；10 位参与者 NFT 获配者与 10 位 Random Walk NFT 锚定者，每位获配 ${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。`,
+        tooltip: `3 位 ETH 星选获配者均分周期储备的 ${ethDistributionFacts.stellarSelectionEthPercentage}%；10 位参与者 NFT 获配者与 10 位 Random Walk NFT 锚定者，每位获配 ${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。`,
       },
       {
         title: '使用专用钱包',

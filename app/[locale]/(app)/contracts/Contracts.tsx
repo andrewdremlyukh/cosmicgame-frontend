@@ -95,9 +95,9 @@ const Contracts = () => {
     useState(0);
   /** V3-only parameters; stays null on V2 deployments (selectors absent), hiding the V3 cards. */
   const [v3Config, setV3Config] = useState<{
-    lastBidderRewardPercent: number;
     mainPrizeNumNfts: number;
     lateBidDurationSeconds: number;
+    cstBidPriceDeclinePerSecond: number;
   } | null>(null);
 
   const charityWalletContract = useContractNoSigner(charity, CHARITY_WALLET_ABI);
@@ -173,20 +173,18 @@ const Contracts = () => {
     // errors — expected, so they are swallowed rather than reported.
     void (async () => {
       try {
-        const [percent, numNfts, lateBidDuration] = await Promise.all([
-          cosmicGameContract.read.lastBidderBidCstRewardAmountPercentage?.() as Promise<
-            bigint | undefined
-          >,
+        const [declineMultiplier, numNfts, lateBidDuration] = await Promise.all([
+          cosmicGameContract.read.cstBidPriceDeclineMultiplier?.() as Promise<bigint | undefined>,
           cosmicGameContract.read.mainPrizeNumCosmicSignatureNfts?.() as Promise<
             bigint | undefined
           >,
           cosmicGameContract.read.getRoundLateBidDuration?.() as Promise<bigint | undefined>,
         ]);
-        if (percent === undefined || numNfts === undefined) return;
+        if (declineMultiplier === undefined || numNfts === undefined) return;
         setV3Config({
-          lastBidderRewardPercent: Number(percent),
           mainPrizeNumNfts: Number(numNfts),
           lateBidDurationSeconds: Number(lateBidDuration ?? 0n),
+          cstBidPriceDeclinePerSecond: Number(formatEther(declineMultiplier)),
         });
       } catch (e) {
         // On V2 the selectors are absent; behind the proxy this surfaces as a reasonless revert.

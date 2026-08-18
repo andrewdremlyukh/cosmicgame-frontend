@@ -2844,13 +2844,6 @@ export const cosmicGameAbi = [
   {
     type: 'function',
     inputs: [],
-    name: 'lastBidderBidCstRewardAmountPercentage',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
     name: 'mainPrizeNumCosmicSignatureNfts',
     outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
     stateMutability: 'view',
@@ -2923,7 +2916,7 @@ export const cosmicGameAbi = [
         indexed: false,
       },
       {
-        name: 'cstDutchAuctionDuration',
+        name: 'cstBidPriceDeclineMultiplier',
         internalType: 'uint256',
         type: 'uint256',
         indexed: false,
@@ -2985,6 +2978,233 @@ export const cosmicGameAbi = [
       },
     ],
     name: 'MainPrizeClaimed',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: 'bidCstRewardAmount', internalType: 'uint256', type: 'uint256' },
+      {
+        name: 'bidCstRewardAmountMinLimit',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+    ],
+    name: 'BidCstRewardAmountMinLimitNotReached',
+  },
+  { type: 'error', inputs: [], name: 'BidPlacedWithinCurrentSecond' },
+  { type: 'error', inputs: [], name: 'NotImplemented' },
+  { type: 'error', inputs: [], name: 'ZeroValue' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newValue',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'BidCstRewardAmountMultiplierChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newValue',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'CstBidPriceDeclineMultiplierChangeDivisorChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newValue',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'CstBidPriceDeclineMultiplierChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newValue',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'CstDutchAuctionDurationChangeDivisorChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newValue',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'CstDutchAuctionDurationChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newValue',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'MainPrizeNumCosmicSignatureNftsChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newValue',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'RoundLateBidDurationDivisorChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newValue',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'RoundLateBidPricePremiumAmountBaseMultiplierChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'newValue',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'RoundLateBidPricePremiumAmountExponentChanged',
+  },
+  { type: 'fallback', stateMutability: 'payable' },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'roundNum', internalType: 'uint256', type: 'uint256' },
+      { name: 'bidNum', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'bidRaffleCumulativeWeights',
+    outputs: [{ name: 'cumulativeWeight', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'cstBidPriceDeclineMultiplier',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'cstBidPriceDeclineMultiplierChangeDivisor',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'reinitialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
+    name: 'setBidCstRewardAmountMultiplier',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
+    name: 'setCstBidPriceDeclineMultiplier',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
+    name: 'setCstBidPriceDeclineMultiplierChangeDivisor',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
+    name: 'setCstDutchAuctionDuration',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
+    name: 'setCstDutchAuctionDurationChangeDivisor',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
+    name: 'setMainPrizeNumCosmicSignatureNfts',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
+    name: 'setRoundLateBidDurationDivisor',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
+    name: 'setRoundLateBidPricePremiumAmountBaseMultiplier',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
+    name: 'setRoundLateBidPricePremiumAmountExponent',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
 ] as const;
 

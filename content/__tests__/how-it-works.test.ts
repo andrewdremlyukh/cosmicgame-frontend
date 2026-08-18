@@ -3,7 +3,12 @@ import {
   howItWorksContentEn,
   howItWorksContentZh,
 } from '@/content/how-it-works';
-import { cstRewardFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import {
+  cstRewardFacts,
+  ethDistributionFacts,
+  isV3Mechanics,
+  protocolFacts,
+} from '@/content/protocol-facts';
 
 describe('how-it-works content', () => {
   it('selects the requested locale', () => {
@@ -97,13 +102,13 @@ describe('how-it-works protocol-fact interpolation', () => {
 
   it('derives the allocation percentages and CST amounts from protocolFacts', () => {
     expect(howItWorksContentEn.overview.cards[2].tooltip).toContain(
-      `${protocolFacts.mainEthPercentage}% of the Cycle Reserve`,
+      `${ethDistributionFacts.mainEthPercentage}% of the Cycle Reserve`,
     );
     expect(howItWorksContentEn.rewardBreakdown.items[1].tooltip).toContain(
-      `${protocolFacts.stellarSelectionEthPercentage}% of the Cycle Reserve`,
+      `${ethDistributionFacts.stellarSelectionEthPercentage}% of the Cycle Reserve`,
     );
     expect(howItWorksContentEn.rewardBreakdown.items[3].description).toContain(
-      `${protocolFacts.mainEthPercentage}% of the Cycle Reserve in ETH, ${protocolFacts.specialAllocationCst.toLocaleString()} CST`,
+      `${ethDistributionFacts.mainEthPercentage}% of the Cycle Reserve in ETH, ${protocolFacts.specialAllocationCst.toLocaleString()} CST`,
     );
     expect(howItWorksContentEn.gameCycle.phases[4].description).toContain(
       `${protocolFacts.specialAllocationCst.toLocaleString()} CST`,
@@ -131,7 +136,7 @@ describe('how-it-works protocol-fact interpolation', () => {
 
   it('interpolates the same protocolFacts into the Chinese copy', () => {
     expect(howItWorksContentZh.overview.cards[2].tooltip).toContain(
-      `${protocolFacts.mainEthPercentage}%`,
+      `${ethDistributionFacts.mainEthPercentage}%`,
     );
     expect(howItWorksContentZh.gameCycle.phases[0].description).toContain(
       `${protocolFacts.initialCstCalibrationWindowHours} 小时`,

@@ -1,4 +1,4 @@
-import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import { ethDistributionFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { CST_GECKOTERMINAL_POOL_URL } from '@/config/geckoterminal';
 import { COSMIC_SIGNATURE_MARKETPLACE_URL } from '@/config/marketplace';
@@ -220,7 +220,7 @@ export const landingContentZh = {
   anchoring: {
     eyebrow: '锚定',
     heading: '将 Cosmic Signature NFT 锚定至协议。',
-    body: `每个周期，${protocolFacts.anchorDistributionPercentage}% 的 ETH 周期储备会用于锚定派发。已锚定的 Cosmic Signature NFT 会按比例累积相应份额，解锚时即可取回。每枚 NFT 仅可锚定一次，但可随时解锚；一旦解锚，便永久失去再次锚定的资格。已锚定的 Random Walk NFT 可获得锚定 NFT 星选资格；入选锚定者将获配 ${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT（不含 ETH）。`,
+    body: `每个周期，${ethDistributionFacts.anchorDistributionPercentage}% 的 ETH 周期储备会用于锚定派发。已锚定的 Cosmic Signature NFT 会按比例累积相应份额，解锚时即可取回。每枚 NFT 仅可锚定一次，但可随时解锚；一旦解锚，便永久失去再次锚定的资格。已锚定的 Random Walk NFT 可获得锚定 NFT 星选资格；入选锚定者将获配 ${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT（不含 ETH）。`,
     bullets: [
       '每个周期累积 ETH 锚定派发，解锚时取回',
       '可随时解锚；每枚 NFT 仅可锚定一次',
@@ -232,8 +232,8 @@ export const landingContentZh = {
 
   publicGoods: {
     eyebrow: '公共物品',
-    heading: `${protocolFacts.publicGoodsPercentage}% 的周期储备，流向以太坊核心贡献者。`,
-    body: `每个演绎周期都会将 ETH 储备的 ${protocolFacts.publicGoodsPercentage}% 转拨给 Protocol Guild——为 170 多位以太坊核心贡献者提供资助的集体机制。协议使用得越多，流向以太坊底层基础设施的资源也越多。`,
+    heading: `${ethDistributionFacts.publicGoodsPercentage}% 的周期储备，流向以太坊核心贡献者。`,
+    body: `每个演绎周期都会将 ETH 储备的 ${ethDistributionFacts.publicGoodsPercentage}% 转拨给 Protocol Guild——为 170 多位以太坊核心贡献者提供资助的集体机制。协议使用得越多，流向以太坊底层基础设施的资源也越多。`,
     disclaimerHeading: '免责声明',
     // lexicon-allow-start: 明确否认慈善捐赠及相关税务定性。
     disclaimer:
@@ -241,7 +241,7 @@ export const landingContentZh = {
     // lexicon-allow-end
     card: {
       label: '周期分配',
-      percentage: `${protocolFacts.publicGoodsPercentage}%`,
+      percentage: `${ethDistributionFacts.publicGoodsPercentage}%`,
       description: '每个演绎周期都会将这部分储备转拨给 Protocol Guild。',
       tableRows: [
         { label: 'Protocol Guild 贡献者', value: '170+' },

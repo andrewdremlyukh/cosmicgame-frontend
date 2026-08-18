@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { ethDistributionFacts, protocolFacts } from '@/content/protocol-facts';
 import { faqContentEn, findFaqItemById, getAllFaqItems } from '@/content/faq';
 
 const faqCategories = faqContentEn.categories;
@@ -190,11 +190,11 @@ describe('FAQ contract accuracy', () => {
 
   describe('every percentage quoted in an answer derives from protocol facts', () => {
     const allowedPercents = new Set<number>([
-      protocolFacts.mainEthPercentage,
-      protocolFacts.chronoWarriorEthPercentage,
-      protocolFacts.stellarSelectionEthPercentage,
-      protocolFacts.anchorDistributionPercentage,
-      protocolFacts.publicGoodsPercentage,
+      ethDistributionFacts.mainEthPercentage,
+      ethDistributionFacts.chronoWarriorEthPercentage,
+      ethDistributionFacts.stellarSelectionEthPercentage,
+      ethDistributionFacts.anchorDistributionPercentage,
+      ethDistributionFacts.publicGoodsPercentage,
       protocolFacts.compoundingReservePercentage,
       protocolFacts.randomWalkDiscountPercentage,
       protocolFacts.cstCalibrationWindowIncreasePercentPerCstGesture,

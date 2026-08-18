@@ -6,7 +6,7 @@ import {
   getFaqContent,
   type FAQContent,
 } from '@/content/faq';
-import { protocolFacts } from '@/content/protocol-facts';
+import { ethDistributionFacts, protocolFacts } from '@/content/protocol-facts';
 
 import { faqPageJsonLd } from '@/utils/jsonLd';
 
@@ -69,7 +69,7 @@ describe('localized FAQ content', () => {
       String(protocolFacts.secondaryRetrievalTimeoutWeeks),
     );
     expect(answer('how-does-anchoring-work')).toContain(
-      `${protocolFacts.anchorDistributionPercentage}%`,
+      `${ethDistributionFacts.anchorDistributionPercentage}%`,
     );
     expect(answer(CALIBRATION_WINDOW_ID)).toContain(
       `1/${protocolFacts.ethCalibrationFloorDivisor}`,

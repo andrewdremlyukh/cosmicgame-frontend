@@ -21,9 +21,9 @@ interface GameConfigurationProps {
   initialIncrement: number;
   /** V3-only parameters; null on V2 deployments (cards hidden). */
   v3Config?: {
-    lastBidderRewardPercent: number;
     mainPrizeNumNfts: number;
     lateBidDurationSeconds: number;
+    cstBidPriceDeclinePerSecond: number;
   } | null;
   loading?: boolean;
 }
@@ -109,10 +109,12 @@ export function GameConfiguration({
     ...(v3Config
       ? [
           {
-            label: t('configuration.cards.v3OutbidShare.label'),
-            value: `${v3Config.lastBidderRewardPercent}%`,
+            label: t('configuration.cards.v3CstDecline.label'),
+            value: t('configuration.cards.v3CstDecline.value', {
+              amount: formatCstAmount(v3Config.cstBidPriceDeclinePerSecond * 60),
+            }),
             icon: <Coins className="h-4 w-4" />,
-            tooltip: t('configuration.cards.v3OutbidShare.tooltip'),
+            tooltip: t('configuration.cards.v3CstDecline.tooltip'),
           },
           {
             label: t('configuration.cards.v3SignatureNfts.label'),

@@ -1,4 +1,4 @@
-import { protocolFacts } from '@/content/protocol-facts';
+import { ethDistributionFacts, protocolFacts } from '@/content/protocol-facts';
 
 import { checkA11y, render, screen } from '@/test-utils';
 
@@ -94,11 +94,17 @@ describe('AllocationRecipientsPage', () => {
   it('renders contract-aligned allocation track percentages', () => {
     mockUseRoundList.mockReturnValue({ data: [], isLoading: false });
     render(<AllocationRecipientsPage />);
-    expect(screen.getByText(`${protocolFacts.mainEthPercentage}%`)).toBeInTheDocument();
-    expect(screen.getByText(`${protocolFacts.chronoWarriorEthPercentage}%`)).toBeInTheDocument();
-    expect(screen.getByText(`${protocolFacts.stellarSelectionEthPercentage}%`)).toBeInTheDocument();
-    expect(screen.getByText(`${protocolFacts.anchorDistributionPercentage}%`)).toBeInTheDocument();
-    expect(screen.getByText(`${protocolFacts.publicGoodsPercentage}%`)).toBeInTheDocument();
+    // Under V3 defaults several tracks share the same percentage, so use
+    // getAllByText and assert at least one element per expected value.
+    for (const percent of [
+      ethDistributionFacts.mainEthPercentage,
+      ethDistributionFacts.chronoWarriorEthPercentage,
+      ethDistributionFacts.stellarSelectionEthPercentage,
+      ethDistributionFacts.anchorDistributionPercentage,
+      ethDistributionFacts.publicGoodsPercentage,
+    ]) {
+      expect(screen.getAllByText(`${percent}%`).length).toBeGreaterThanOrEqual(1);
+    }
     expect(screen.getByText(`~${protocolFacts.compoundingReservePercentage}%`)).toBeInTheDocument();
   });
 

@@ -55,6 +55,9 @@ const CUSTOM_ERROR_MESSAGES: Record<string, string> = {
   MainPrizeClaimDenied:
     'Only the Last Participant is permitted to retrieve the Signature Allocation.',
   NoBidsPlacedInCurrentRound: 'No gestures have been made in the current cycle yet.',
+  BidPlacedWithinCurrentSecond:
+    'Another gesture landed in the same second. Wait a moment and try again.',
+  BidHasBeenPlacedInCurrentRound: 'A gesture has already been made in the current cycle.',
 };
 
 const CUSTOM_ERROR_TRANSLATION_KEYS: Record<string, string> = {
@@ -68,6 +71,8 @@ const CUSTOM_ERROR_TRANSLATION_KEYS: Record<string, string> = {
   MainPrizeEarlyClaim: 'finalize.contractErrors.mainPrizeEarlyClaim',
   MainPrizeClaimDenied: 'finalize.contractErrors.mainPrizeClaimDenied',
   NoBidsPlacedInCurrentRound: 'finalize.contractErrors.noGestures',
+  BidPlacedWithinCurrentSecond: 'gesture.contractErrors.bidPlacedWithinCurrentSecond',
+  BidHasBeenPlacedInCurrentRound: 'gesture.contractErrors.bidHasBeenPlacedInCurrentRound',
 };
 
 type GestureCurrency = 'ETH' | 'CST';

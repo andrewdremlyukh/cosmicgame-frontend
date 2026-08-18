@@ -1,4 +1,4 @@
-import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import { ethDistributionFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { CST_GECKOTERMINAL_POOL_URL } from '@/config/geckoterminal';
 import { COSMIC_SIGNATURE_MARKETPLACE_URL } from '@/config/marketplace';
@@ -219,7 +219,7 @@ export const landingContentEn = {
   anchoring: {
     eyebrow: 'Anchoring',
     heading: 'Anchor Cosmic Signature NFTs to the protocol.',
-    body: `Anchored Cosmic Signature NFTs receive a proportional share of the ${protocolFacts.anchorDistributionPercentage}% Anchor Distribution each cycle, paid out when the anchor is released. Release the anchor whenever you like — but each NFT can be anchored only once, so releasing permanently ends that NFT’s anchoring eligibility. Anchored Random Walk NFTs receive entries into the Anchored-NFT Stellar Selection, where selected anchor-holders receive ${protocolFacts.specialAllocationCst.toLocaleString('en-US')} CST and a Cosmic Signature NFT (no ETH).`,
+    body: `Anchored Cosmic Signature NFTs receive a proportional share of the ${ethDistributionFacts.anchorDistributionPercentage}% Anchor Distribution each cycle, paid out when the anchor is released. Release the anchor whenever you like — but each NFT can be anchored only once, so releasing permanently ends that NFT’s anchoring eligibility. Anchored Random Walk NFTs receive entries into the Anchored-NFT Stellar Selection, where selected anchor-holders receive ${protocolFacts.specialAllocationCst.toLocaleString('en-US')} CST and a Cosmic Signature NFT (no ETH).`,
     bullets: [
       'Per-cycle ETH accrual, retrieved at anchor release',
       'Release anchors at any time — each NFT anchors only once',

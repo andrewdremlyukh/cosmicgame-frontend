@@ -131,9 +131,10 @@
         "label": "Max Message Length",
         "tooltip": "Maximum character length allowed in gesture messages"
       },
-      "v3OutbidShare": {
-        "label": "Outbid Participant CST Share",
-        "tooltip": "Share of each Participation CST imprint credited to the participant being outbid; the gesturer receives the remainder immediately."
+      "v3CstDecline": {
+        "label": "CST Price Decline Rate",
+        "value": "{amount} CST/min",
+        "tooltip": "How fast the CST gesture price declines during the Dutch auction. Each Participation CST imprint is credited in full to the participant being outbid."
       },
       "v3SignatureNfts": {
         "label": "Signature Allocation NFTs",

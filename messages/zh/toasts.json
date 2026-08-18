@@ -63,7 +63,9 @@
       "wrongBidType": "所选落笔类型不正确。",
       "fundTransferFailed": "资金转移失败。",
       "ethCostChanged": "ETH 落笔价格已变为 {required} ETH，比提交时高 {increase} ETH。请重试。",
-      "cstCostChanged": "交易处理期间，CST 落笔价格已变化。当前需 {required} CST，超过设置的 {maximum} CST 落笔价格上限。请刷新后重试。"
+      "cstCostChanged": "交易处理期间，CST 落笔价格已变化。当前需 {required} CST，超过设置的 {maximum} CST 落笔价格上限。请刷新后重试。",
+      "bidPlacedWithinCurrentSecond": "同一秒内已有另一笔落笔。请稍候片刻后重试。",
+      "bidHasBeenPlacedInCurrentRound": "当前周期已有落笔。"
     }
   },
   "anchor": {

@@ -55,10 +55,11 @@ interface GestureFormProps {
   gestureCstRewardAmountMin?: number | null;
   isCstRewardLoading?: boolean;
   /**
-   * V3 reward split: percentage of the quoted Participation CST minted to the OUTBID
-   * participant (default 90). `null` on V2 contracts — no split, whole reward to the gesturer.
+   * V3: the entire quoted Participation CST is minted to the OUTBID previous
+   * participant (the gesturer earns the next gesture's CST when someone outbids
+   * them). `false` on V2 contracts — whole reward to the gesturer.
    */
-  lastBidderCstRewardPercent?: number | null;
+  cstRewardToOutbidBidder?: boolean;
   cstRewardTolerancePercent?: number;
   setCstRewardTolerancePercent?: (value: number) => void;
   acceptAnyCstReward?: boolean;
@@ -110,7 +111,7 @@ export function GestureForm({
   gestureCstRewardAmount = null,
   gestureCstRewardAmountMin = null,
   isCstRewardLoading = false,
-  lastBidderCstRewardPercent = null,
+  cstRewardToOutbidBidder = false,
   cstRewardTolerancePercent = 1,
   setCstRewardTolerancePercent,
   acceptAnyCstReward = false,
@@ -137,20 +138,11 @@ export function GestureForm({
         });
   const rewardPreviewTitle =
     gestureType === 'CST' ? t('form.reward.economicsTitle') : t('form.reward.previewTitle');
-  /** V3 split: the gesturer immediately receives `100 - lastBidderCstRewardPercent` % of the quoted reward. */
-  const yourCstSharePercent =
-    lastBidderCstRewardPercent != null && lastBidderCstRewardPercent > 0
-      ? 100 - lastBidderCstRewardPercent
-      : null;
-  const yourCstShareAmount =
-    yourCstSharePercent != null && hasCstReward
-      ? (gestureCstRewardAmount * yourCstSharePercent) / 100
-      : null;
   const rewardPreviewDescription =
     gestureType === 'CST'
       ? t('form.reward.economicsDescription')
-      : yourCstSharePercent != null
-        ? t('form.reward.previewDescriptionV3', { share: yourCstSharePercent })
+      : cstRewardToOutbidBidder
+        ? t('form.reward.previewDescriptionV3')
         : t('form.reward.previewDescription');
   const minAcceptedCstLabel = acceptAnyCstReward
     ? t('form.reward.minAcceptedAny')
@@ -314,12 +306,9 @@ export function GestureForm({
                       })}
                 </p>
               )}
-              {yourCstShareAmount != null && yourCstSharePercent != null && !isCstRewardLoading && (
+              {cstRewardToOutbidBidder && !isCstRewardLoading && hasCstReward && (
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {t('form.reward.immediateShare', { share: yourCstSharePercent })}{' '}
-                  <span className="font-semibold text-emerald-300">
-                    {t('form.reward.cstAmount', { amount: formatCstAmount(yourCstShareAmount) })}
-                  </span>
+                  {t('form.reward.goesToOutbid')}
                 </p>
               )}
               <p className="mt-1 flex items-center justify-end gap-1 text-xs text-muted-foreground">

@@ -1,4 +1,5 @@
 import { howItWorksContentEn } from '@/content/how-it-works';
+import { ethDistributionFacts } from '@/content/protocol-facts';
 
 import { TooltipProvider } from '@/components/ui/tooltip';
 
@@ -69,7 +70,11 @@ describe('RewardBreakdown', () => {
     expect(
       screen.getByText(/receive 1,000 CST and a unique Cosmic Signature NFT/),
     ).toBeInTheDocument();
-    expect(screen.getByText(/25% of the Cycle Reserve/)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        new RegExp(`${ethDistributionFacts.mainEthPercentage}% of the Cycle Reserve`),
+      ),
+    ).toBeInTheDocument();
   });
 
   it('has no accessibility violations', async () => {

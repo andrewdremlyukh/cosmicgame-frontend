@@ -1,4 +1,4 @@
-import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import { ethDistributionFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { TermsContent, type TermsCopy } from './TermsContent';
 
@@ -95,12 +95,12 @@ export const termsCopyZh = {
         {
           id: 'signature',
           subtitle: '签名分配',
-          text: `完成收官之笔的参与者可以取回 ${protocolFacts.mainEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString()} CST 表彰铭刻、1 枚 Cosmic Signature NFT，以及该周期中可能存在的已附加代币。`,
+          text: `完成收官之笔的参与者可以取回 ${ethDistributionFacts.mainEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString()} CST 表彰铭刻、1 枚 Cosmic Signature NFT，以及该周期中可能存在的已附加代币。`,
         },
         {
           id: 'chrono',
           subtitle: '时之勇士',
-          text: `连续保持坚守冠军身份时间最长的参与者将获得 ${protocolFacts.chronoWarriorEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString()} CST 表彰铭刻与 1 枚 Cosmic Signature NFT。`,
+          text: `连续保持坚守冠军身份时间最长的参与者将获得 ${ethDistributionFacts.chronoWarriorEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString()} CST 表彰铭刻与 1 枚 Cosmic Signature NFT。`,
         },
         {
           id: 'endurance',
@@ -115,7 +115,7 @@ export const termsCopyZh = {
         {
           id: 'eth-selection',
           subtitle: 'ETH 星选',
-          text: `${protocolFacts.ethStellarSelectionRecipients} 位获配者共同分得周期储备中 ${protocolFacts.stellarSelectionEthPercentage}% 的 ETH。`,
+          text: `${protocolFacts.ethStellarSelectionRecipients} 位获配者共同分得周期储备中 ${ethDistributionFacts.stellarSelectionEthPercentage}% 的 ETH。`,
         },
         {
           id: 'nft-selection',
@@ -130,12 +130,12 @@ export const termsCopyZh = {
         {
           id: 'anchor-distribution',
           subtitle: '锚定派发',
-          text: `${protocolFacts.anchorDistributionPercentage}% 的 ETH 按已锚定 Cosmic Signature NFT 的数量比例派发。`,
+          text: `${ethDistributionFacts.anchorDistributionPercentage}% 的 ETH 按已锚定 Cosmic Signature NFT 的数量比例派发。`,
         },
         {
           id: 'public-goods',
           subtitle: '公共物品',
-          text: `${protocolFacts.publicGoodsPercentage}% 的 ETH 会转拨给当前公共物品受益方 Protocol Guild。`,
+          text: `${ethDistributionFacts.publicGoodsPercentage}% 的 ETH 会转拨给当前公共物品受益方 Protocol Guild。`,
         },
         {
           id: 'compounding',

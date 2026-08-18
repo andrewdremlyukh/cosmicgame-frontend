@@ -1,4 +1,5 @@
 import { howItWorksContentEn } from '@/content/how-it-works';
+import { ethDistributionFacts } from '@/content/protocol-facts';
 
 import { TooltipProvider } from '@/components/ui/tooltip';
 
@@ -79,7 +80,11 @@ describe('GameCycle', () => {
       expect(screen.getByText(phase.description)).toBeInTheDocument();
     }
     expect(screen.getByText(/first ETH Calibration Window opens/)).toBeInTheDocument();
-    expect(screen.getByText(/25% of the Cycle Reserve/)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        new RegExp(`${ethDistributionFacts.mainEthPercentage}% of the Cycle Reserve`),
+      ),
+    ).toBeInTheDocument();
     expect(screen.getByText(/Three ETH Stellar Selection recipients/)).toBeInTheDocument();
   });
 

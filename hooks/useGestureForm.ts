@@ -120,7 +120,7 @@ export function useGestureForm() {
    * `null` on V2 contracts (no split) — the UI then shows the whole reward as the
    * participant's own, matching V2 behavior.
    */
-  const [lastBidderCstRewardPercent, setLastBidderCstRewardPercent] = useState<number | null>(null);
+  const [cstRewardToOutbidBidder, setCstRewardToOutbidBidder] = useState<boolean>(false);
 
   const cstGestureData = useMemo<CSTGestureData>(() => {
     return mapCTPriceInfo(ctPriceData, contractCstDurations, contractCstPriceWei);
@@ -306,29 +306,31 @@ export function useGestureForm() {
     };
   }, [contractAddrs.cosmicGame, cosmicGameContract, publicClient, uxScenario]);
 
-  // One-shot read of the V3 reward split percentage; the selector does not exist on V2,
-  // in which case the state stays null and the UI keeps V2 semantics (whole reward to gesturer).
+  // One-shot V3 detection: cstBidPriceDeclineMultiplier() only exists on V3, where the
+  // entire per-gesture Participation CST is minted to the outbid previous participant.
+  // The selector does not exist on V2, in which case the state stays false and the UI
+  // keeps V2 semantics (whole reward to the gesturer).
   useEffect(() => {
     if (uxScenario || !cosmicGameContract) {
-      setLastBidderCstRewardPercent(null);
+      setCstRewardToOutbidBidder(false);
       return;
     }
     let cancelled = false;
     (async () => {
       try {
-        const value = (await cosmicGameContract.read.lastBidderBidCstRewardAmountPercentage?.()) as
+        const value = (await cosmicGameContract.read.cstBidPriceDeclineMultiplier?.()) as
           | bigint
           | undefined;
         if (!cancelled && value !== undefined) {
-          setLastBidderCstRewardPercent(Number(value));
+          setCstRewardToOutbidBidder(true);
         }
       } catch (err) {
         // Expected on V2 deployments (selector absent; behind the proxy this surfaces as a
         // reasonless revert rather than "unrecognized selector"). Anything else is worth reporting.
         if (!cancelled && !isMissingFunctionReadError(err)) {
-          reportError(err, 'lastBidderBidCstRewardAmountPercentage');
+          reportError(err, 'cstBidPriceDeclineMultiplier');
         }
-        if (!cancelled) setLastBidderCstRewardPercent(null);
+        if (!cancelled) setCstRewardToOutbidBidder(false);
       }
     })();
     return () => {
@@ -935,7 +937,7 @@ export function useGestureForm() {
     gestureCstRewardAmountMin,
     gestureCstRewardAmountMinLimitWei,
     isCstRewardLoading,
-    lastBidderCstRewardPercent,
+    cstRewardToOutbidBidder,
     cstRewardTolerancePercent,
     setCstRewardTolerancePercent: updateCstRewardTolerancePercent,
     acceptAnyCstReward,

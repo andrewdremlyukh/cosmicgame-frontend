@@ -1,4 +1,4 @@
-import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import { ethDistributionFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { TermsContent, type TermsCopy } from './TermsContent';
 
@@ -96,12 +96,12 @@ export const termsCopyEn = {
         {
           id: 'signature',
           subtitle: 'Signature Allocation',
-          text: `The participant who made the Final Gesture may retrieve ${protocolFacts.mainEthPercentage}% ETH, ${protocolFacts.specialAllocationCst.toLocaleString()} Recognition CST, one Cosmic Signature NFT, and attached tokens from the cycle, if any.`,
+          text: `The participant who made the Final Gesture may retrieve ${ethDistributionFacts.mainEthPercentage}% ETH, ${protocolFacts.specialAllocationCst.toLocaleString()} Recognition CST, one Cosmic Signature NFT, and attached tokens from the cycle, if any.`,
         },
         {
           id: 'chrono',
           subtitle: 'Chrono-Warrior',
-          text: `The participant who held the Endurance Champion position for the longest consecutive interval receives ${protocolFacts.chronoWarriorEthPercentage}% ETH, ${protocolFacts.specialAllocationCst.toLocaleString()} Recognition CST, and one Cosmic Signature NFT.`,
+          text: `The participant who held the Endurance Champion position for the longest consecutive interval receives ${ethDistributionFacts.chronoWarriorEthPercentage}% ETH, ${protocolFacts.specialAllocationCst.toLocaleString()} Recognition CST, and one Cosmic Signature NFT.`,
         },
         {
           id: 'endurance',
@@ -116,7 +116,7 @@ export const termsCopyEn = {
         {
           id: 'eth-selection',
           subtitle: 'ETH Stellar Selection',
-          text: `${protocolFacts.ethStellarSelectionRecipients} selected participants share ${protocolFacts.stellarSelectionEthPercentage}% ETH from the Cycle Reserve.`,
+          text: `${protocolFacts.ethStellarSelectionRecipients} selected participants share ${ethDistributionFacts.stellarSelectionEthPercentage}% ETH from the Cycle Reserve.`,
         },
         {
           id: 'nft-selection',
@@ -131,12 +131,12 @@ export const termsCopyEn = {
         {
           id: 'anchor-distribution',
           subtitle: 'Anchor Distribution',
-          text: `${protocolFacts.anchorDistributionPercentage}% ETH is distributed proportionally across all anchored Cosmic Signature NFTs.`,
+          text: `${ethDistributionFacts.anchorDistributionPercentage}% ETH is distributed proportionally across all anchored Cosmic Signature NFTs.`,
         },
         {
           id: 'public-goods',
           subtitle: 'Public Goods',
-          text: `${protocolFacts.publicGoodsPercentage}% ETH is forwarded to Protocol Guild, the current Public Goods Beneficiary.`,
+          text: `${ethDistributionFacts.publicGoodsPercentage}% ETH is forwarded to Protocol Guild, the current Public Goods Beneficiary.`,
         },
         {
           id: 'compounding',

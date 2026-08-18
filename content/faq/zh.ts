@@ -1,4 +1,9 @@
-import { cstRewardFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import {
+  cstRewardFacts,
+  ethDistributionFacts,
+  isV3Mechanics,
+  protocolFacts,
+} from '@/content/protocol-facts';
 
 import type { FAQContent } from './types';
 
@@ -71,8 +76,7 @@ export const faqContentZh = {
         {
           id: 'what-is-the-main-allocation',
           question: '什么是签名分配？',
-          answer:
-            '签名分配由周期收官之笔的参与者获得，其中包括 1 枚 Cosmic Signature NFT、1,000 CST 的表彰铭刻、周期储备中 25% 的 ETH，以及该周期内随参与者落笔附加的所有代币或 NFT。',
+          answer: `签名分配由周期收官之笔的参与者获得，其中包括 1 枚 Cosmic Signature NFT、1,000 CST 的表彰铭刻、周期储备中 ${ethDistributionFacts.mainEthPercentage}% 的 ETH，以及该周期内随参与者落笔附加的所有代币或 NFT。`,
           hashAnchor: 'main-allocation',
         },
         {
@@ -83,13 +87,12 @@ export const faqContentZh = {
         {
           id: 'how-does-the-stellarSelection-work',
           question: '星选如何运作？',
-          answer: `每笔落笔都会记录 1 次星选资格。每个周期结束时，智能合约会从资格池中进行程序化随机选择：${protocolFacts.ethStellarSelectionRecipients} 次选择共同分得周期储备中 ${protocolFacts.stellarSelectionEthPercentage}% 的 ETH；${protocolFacts.nftStellarSelectionRecipients} 次选择各获得 ${protocolFacts.specialAllocationCst.toLocaleString()} CST 与 1 枚 Cosmic Signature NFT；已锚定 Random Walk NFT 中另有 ${protocolFacts.anchoredRwlkNftSelectionRecipients} 次选择，也各获得 ${protocolFacts.specialAllocationCst.toLocaleString()} CST 与 1 枚 Cosmic Signature NFT。选择采用放回方式，同一地址在同一周期内可能被选中多次。落笔次数越多，被选中的频次也会增加。`,
+          answer: `每笔落笔都会记录 1 次星选资格。每个周期结束时，智能合约会从资格池中进行程序化随机选择：${protocolFacts.ethStellarSelectionRecipients} 次选择共同分得周期储备中 ${ethDistributionFacts.stellarSelectionEthPercentage}% 的 ETH；${protocolFacts.nftStellarSelectionRecipients} 次选择各获得 ${protocolFacts.specialAllocationCst.toLocaleString()} CST 与 1 枚 Cosmic Signature NFT；已锚定 Random Walk NFT 中另有 ${protocolFacts.anchoredRwlkNftSelectionRecipients} 次选择，也各获得 ${protocolFacts.specialAllocationCst.toLocaleString()} CST 与 1 枚 Cosmic Signature NFT。选择采用放回方式，同一地址在同一周期内可能被选中多次。${isV3Mechanics ? 'ETH 星选按每笔落笔当时的未折扣 ETH 成本加权，成本越高，被选中的概率按比例越大；NFT 星选仍为每笔落笔 1 次资格。' : '落笔次数越多，被选中的频次也会增加。'}`,
         },
         {
           id: 'how-random-selection-works',
           question: '程序化随机选择是怎样完成的？',
-          answer:
-            '星选在周期收官时使用链上随机源，包括 Arbitrum 提供的区块上下文与备用熵源。参与者星选按资格加权：每笔落笔增加 1 次资格，因此落笔越多，被选中的频次越高。锚定 NFT 星选则是独立机制，依据已锚定 Random Walk NFT 的资格，而不是参与者落笔资格池。',
+          answer: `星选在周期收官时使用链上随机源，包括 Arbitrum 提供的区块上下文与备用熵源。${isV3Mechanics ? '参与者 ETH 星选按成本加权：每次资格携带该笔落笔当时的未折扣 ETH 成本，成本越高被选中的概率按比例越大；NFT 星选仍按资格计数（每笔落笔 1 次资格）。' : '参与者星选按资格加权：每笔落笔增加 1 次资格，因此落笔越多，被选中的频次越高。'}锚定 NFT 星选则是独立机制，依据已锚定 Random Walk NFT 的资格，而不是参与者落笔资格池。`,
         },
         {
           id: 'how-do-i-claim-my-allocation',
@@ -99,7 +102,7 @@ export const faqContentZh = {
         {
           id: 'how-does-anchoring-work',
           question: '锚定如何运作？',
-          answer: `Cosmic Signature NFT 可锚定至协议，以获得 ETH 锚定派发：每个已收官周期会划出周期储备的 ${protocolFacts.anchorDistributionPercentage}%，按当时已锚定的 Cosmic Signature NFT 数量平均分配；累积的 ETH 会在解锚时派发。Random Walk NFT 也可以锚定，但只用于取得锚定 NFT 星选资格——被选中的锚定者会获得 CST 与 Cosmic Signature NFT，而不是 ETH。还需注意两条规则：每枚 NFT 永远只能锚定一次（解锚后不可再次锚定）；若周期收官时没有任何 Cosmic Signature NFT 处于锚定状态，该周期的 ${protocolFacts.anchorDistributionPercentage}% 会留在周期储备中。CST（ERC-20）不能锚定。可从账户菜单进入"我的锚定"页面管理锚定。`,
+          answer: `Cosmic Signature NFT 可锚定至协议，以获得 ETH 锚定派发：每个已收官周期会划出周期储备的 ${ethDistributionFacts.anchorDistributionPercentage}%，按当时已锚定的 Cosmic Signature NFT 数量平均分配；累积的 ETH 会在解锚时派发。Random Walk NFT 也可以锚定，但只用于取得锚定 NFT 星选资格——被选中的锚定者会获得 CST 与 Cosmic Signature NFT，而不是 ETH。还需注意两条规则：每枚 NFT 永远只能锚定一次（解锚后不可再次锚定）；若周期收官时没有任何 Cosmic Signature NFT 处于锚定状态，该周期的 ${ethDistributionFacts.anchorDistributionPercentage}% 会留在周期储备中。CST（ERC-20）不能锚定。可从账户菜单进入"我的锚定"页面管理锚定。`,
         },
         {
           id: 'what-are-marketing-rewards',
@@ -125,8 +128,7 @@ export const faqContentZh = {
         {
           id: 'who-receives-10-percent',
           question: '周期储备中的公共物品分配会发给谁？',
-          answer:
-            '周期收官时，周期储备的 7% 会转入公共物品金库；此后任何人都可将金库余额转给已配置的公共物品受益方。当前受益方为 Protocol Guild，这是支持 170 多位以太坊核心贡献者的集体资助机制。目前，受益方地址由协议所有者设置；待协议所有权交由宇宙议会后，设计目标是由议会决定受益方。',
+          answer: `周期收官时，周期储备的 ${ethDistributionFacts.publicGoodsPercentage}% 会转入公共物品金库；此后任何人都可将金库余额转给已配置的公共物品受益方。当前受益方为 Protocol Guild，这是支持 170 多位以太坊核心贡献者的集体资助机制。目前，受益方地址由协议所有者设置；待协议所有权交由宇宙议会后，设计目标是由议会决定受益方。`,
         },
       ],
     },
@@ -187,7 +189,7 @@ export const faqContentZh = {
         {
           id: 'what-is-chrono-warrior',
           question: '什么是时之勇士？',
-          answer: `时之勇士是在坚守冠军位置上连续保持最久的参与者。坚守冠军对应保持"最近一笔落笔者"身份最久的人，时之勇士则对应保持坚守冠军身份最久的人。周期收官时，时之勇士将获得周期储备中 ${protocolFacts.chronoWarriorEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString()} CST 与 1 枚 Cosmic Signature NFT。`,
+          answer: `时之勇士是在坚守冠军位置上连续保持最久的参与者。坚守冠军对应保持"最近一笔落笔者"身份最久的人，时之勇士则对应保持坚守冠军身份最久的人。周期收官时，时之勇士将获得周期储备中 ${ethDistributionFacts.chronoWarriorEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString()} CST 与 1 枚 Cosmic Signature NFT。`,
           hashAnchor: 'chrono-warrior',
         },
         {
@@ -230,8 +232,7 @@ export const faqContentZh = {
         {
           id: 'what-are-cst-and-dao',
           question: 'CST 代币与宇宙议会是什么？',
-          answer:
-            '每笔落笔都可能铭刻 CST 代币；CST 用于表达宇宙议会中的协调权重。议会在链上协调协议：CST 持有者可以提交协调提案，并表达支持或反对。要启用权重，需先把 CST 委托给自己或其他地址。待合约所有权交由议会后，议会按设计将管理协议参数，包括决定哪个公共物品受益方获得 7% 的分配；目前这些设置仍由协议所有者管理。',
+          answer: `每笔落笔都可能铭刻 CST 代币；CST 用于表达宇宙议会中的协调权重。议会在链上协调协议：CST 持有者可以提交协调提案，并表达支持或反对。要启用权重，需先把 CST 委托给自己或其他地址。待合约所有权交由议会后，议会按设计将管理协议参数，包括决定哪个公共物品受益方获得 ${ethDistributionFacts.publicGoodsPercentage}% 的分配；目前这些设置仍由协议所有者管理。`,
         },
         {
           id: 'what-can-i-do-with-cst',

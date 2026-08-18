@@ -131,9 +131,10 @@
         "label": "消息长度上限",
         "tooltip": "落笔消息允许输入的最大字符数。"
       },
-      "v3OutbidShare": {
-        "label": "被超越参与者 CST 份额",
-        "tooltip": "每次参与 CST 铭刻中记入被超越参与者的份额；落笔者立即获得其余部分。"
+      "v3CstDecline": {
+        "label": "CST 价格下降速率",
+        "value": "{amount} CST/分钟",
+        "tooltip": "CST 落笔价格在荷兰式拍卖中的下降速度。每次参与 CST 铭刻全额记入被超越的参与者。"
       },
       "v3SignatureNfts": {
         "label": "签名配额 NFT 数量",

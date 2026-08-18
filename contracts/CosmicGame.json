@@ -3293,19 +3293,6 @@
   },
   {
     "inputs": [],
-    "name": "lastBidderBidCstRewardAmountPercentage",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "mainPrizeNumCosmicSignatureNfts",
     "outputs": [
       {
@@ -3404,7 +3391,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "cstDutchAuctionDuration",
+        "name": "cstBidPriceDeclineMultiplier",
         "type": "uint256"
       },
       {
@@ -3465,5 +3452,331 @@
     ],
     "name": "MainPrizeClaimed",
     "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "bidCstRewardAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bidCstRewardAmountMinLimit",
+        "type": "uint256"
+      }
+    ],
+    "name": "BidCstRewardAmountMinLimitNotReached",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "BidPlacedWithinCurrentSecond",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotImplemented",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroValue",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "BidCstRewardAmountMultiplierChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "CstBidPriceDeclineMultiplierChangeDivisorChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "CstBidPriceDeclineMultiplierChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "CstDutchAuctionDurationChangeDivisorChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "CstDutchAuctionDurationChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "MainPrizeNumCosmicSignatureNftsChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "RoundLateBidDurationDivisorChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "RoundLateBidPricePremiumAmountBaseMultiplierChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "RoundLateBidPricePremiumAmountExponentChanged",
+    "type": "event"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "fallback"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "roundNum",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bidNum",
+        "type": "uint256"
+      }
+    ],
+    "name": "bidRaffleCumulativeWeights",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "cumulativeWeight",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "cstBidPriceDeclineMultiplier",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "cstBidPriceDeclineMultiplierChangeDivisor",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "reinitialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newValue_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setBidCstRewardAmountMultiplier",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newValue_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setCstBidPriceDeclineMultiplier",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newValue_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setCstBidPriceDeclineMultiplierChangeDivisor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newValue_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setCstDutchAuctionDuration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newValue_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setCstDutchAuctionDurationChangeDivisor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newValue_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMainPrizeNumCosmicSignatureNfts",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newValue_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRoundLateBidDurationDivisor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newValue_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRoundLateBidPricePremiumAmountBaseMultiplier",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newValue_",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRoundLateBidPricePremiumAmountExponent",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ]

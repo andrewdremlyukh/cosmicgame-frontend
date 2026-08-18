@@ -113,7 +113,7 @@ export const protocolFacts = {
    * new getters) should prefer these once the upgrade lands; the top-level facts above
    * keep describing the live V2 deployment until then.
    *
-   * Verified against the v3-2026-06-23 branch Solidity defaults
+   * Verified against the v3-2026-07-24 branch Solidity defaults at commit 51221556
    * (`CosmicSignatureConstants.sol`, `docs/v3-vs-v2-changes.md`).
    */
   v3: {
@@ -135,8 +135,26 @@ export const protocolFacts = {
     ],
     /** Initial accrual with launch parameters: ~1 CST per minute (declines ~1% per cycle). */
     dynamicCstRewardPerMinuteAtLaunch: 1,
-    /** Share of each Participation CST imprint minted to the participant being outbid. */
-    lastBidderCstRewardPercentDefault: 90,
+    /**
+     * The entire Participation CST imprint is minted to the participant being
+     * outbid (nothing is minted on a cycle's first gesture); the gesturer earns
+     * the next gesture's full CST when someone outbids them.
+     */
+    cstRewardToOutbidParticipantPercent: 100,
+    /** ETH distribution (reinitialize defaults): 20/15/5/5/5 = 50% paid, 50% rollover. */
+    mainEthPercentage: 20,
+    chronoWarriorEthPercentage: 15,
+    stellarSelectionEthPercentage: 5,
+    anchorDistributionPercentage: 5,
+    publicGoodsPercentage: 5,
+    /** At most one gesture per contract per second (BidPlacedWithinCurrentSecond). */
+    oneGesturePerSecond: true,
+    /** CST Gesture Cost declines ~1 CST per minute at launch (cstBidPriceDeclineMultiplier ≈ 1 ether / 60 per second). */
+    cstGestureCostDeclinePerMinuteAtLaunch: 1,
+    /** The decline speed shifts ~1% per gesture (change divisor 100): up on ETH gestures, down on CST gestures. */
+    cstGestureCostDeclineChangePercentPerGesture: 1,
+    /** The CST Calibration ceiling floor drops from 200 CST to 1 CST at reinitialize. */
+    cstCalibrationCeilingMinCst: 1,
     /** Signature Allocation recipient receives this many sequential Cosmic Signature NFTs. */
     mainPrizeNftsPerCycleDefault: 3,
     /** 24 V2-era NFTs + 2 extra Signature Allocation NFTs; CST imprint totals are unchanged. */
@@ -145,6 +163,14 @@ export const protocolFacts = {
     lateGestureWindowMinutesAtLaunch: 20,
     /** Gesture cost at the end of the late window is about 5x the unadjusted cost. */
     lateGestureMaxCostMultiplier: 5,
+    /**
+     * The late-window premium is a one-time toll on the gesture that pays it:
+     * subsequent posted costs resume from the premium-free base once the
+     * window closes.
+     */
+    lateGesturePremiumIsOneTimeToll: true,
+    /** ETH Stellar Selection odds are weighted by each gesture's undiscounted ETH cost at the moment it was made. */
+    weightedStellarSelection: true,
   },
 } as const;
 
@@ -169,6 +195,35 @@ export const isV3Mechanics = contractMechanicsVersion === 3;
  * that FAQ/learn/landing/legal copy flips from the V2 square-root wording to
  * the V3 linear wording together with `contractMechanicsVersion`.
  */
+/**
+ * Version-appropriate ETH distribution percentages. Static content must use
+ * this instead of reading `protocolFacts.mainEthPercentage` (etc.) directly,
+ * so that copy flips from the live V2 split (25/8/4/6/7) to the V3 reinitialize
+ * defaults (20/15/5/5/5) together with `contractMechanicsVersion`. Both splits
+ * pay out 50% and roll the remaining 50% into the next cycle.
+ */
+export const ethDistributionFacts: {
+  mainEthPercentage: number;
+  chronoWarriorEthPercentage: number;
+  stellarSelectionEthPercentage: number;
+  anchorDistributionPercentage: number;
+  publicGoodsPercentage: number;
+} = isV3Mechanics
+  ? {
+      mainEthPercentage: protocolFacts.v3.mainEthPercentage,
+      chronoWarriorEthPercentage: protocolFacts.v3.chronoWarriorEthPercentage,
+      stellarSelectionEthPercentage: protocolFacts.v3.stellarSelectionEthPercentage,
+      anchorDistributionPercentage: protocolFacts.v3.anchorDistributionPercentage,
+      publicGoodsPercentage: protocolFacts.v3.publicGoodsPercentage,
+    }
+  : {
+      mainEthPercentage: protocolFacts.mainEthPercentage,
+      chronoWarriorEthPercentage: protocolFacts.chronoWarriorEthPercentage,
+      stellarSelectionEthPercentage: protocolFacts.stellarSelectionEthPercentage,
+      anchorDistributionPercentage: protocolFacts.anchorDistributionPercentage,
+      publicGoodsPercentage: protocolFacts.publicGoodsPercentage,
+    };
+
 export const cstRewardFacts: {
   formula: string;
   examples: readonly { elapsed: string; cst: string }[];

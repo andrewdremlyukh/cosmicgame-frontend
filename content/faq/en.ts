@@ -1,4 +1,9 @@
-import { cstRewardFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import {
+  cstRewardFacts,
+  ethDistributionFacts,
+  isV3Mechanics,
+  protocolFacts,
+} from '@/content/protocol-facts';
 
 import type { FAQContent } from './types';
 
@@ -71,8 +76,7 @@ export const faqContentEn = {
         {
           id: 'what-is-the-main-allocation',
           question: 'What is the Signature Allocation?',
-          answer:
-            'The Signature Allocation is received by the participant who made the Final Gesture of a cycle. It includes one Cosmic Signature NFT, a Recognition CST imprint of 1,000 CST, and 25% of the Cycle Reserve in ETH, plus any tokens or NFTs attached to participant gestures during the cycle.',
+          answer: `The Signature Allocation is received by the participant who made the Final Gesture of a cycle. It includes one Cosmic Signature NFT, a Recognition CST imprint of 1,000 CST, and ${ethDistributionFacts.mainEthPercentage}% of the Cycle Reserve in ETH, plus any tokens or NFTs attached to participant gestures during the cycle.`,
           hashAnchor: 'main-allocation',
         },
         {
@@ -83,13 +87,12 @@ export const faqContentEn = {
         {
           id: 'how-does-the-stellarSelection-work',
           question: 'How does Stellar Selection work?',
-          answer: `Each gesture records one entry in Stellar Selection. At the end of each cycle, the smart contract randomly selects entries from the pool: ${protocolFacts.ethStellarSelectionRecipients} selections share ${protocolFacts.stellarSelectionEthPercentage}% of the Cycle Reserve in ETH, ${protocolFacts.nftStellarSelectionRecipients} selections each receive ${protocolFacts.specialAllocationCst.toLocaleString()} CST and a Cosmic Signature NFT, and ${protocolFacts.anchoredRwlkNftSelectionRecipients} selections among anchored Random Walk NFTs also receive ${protocolFacts.specialAllocationCst.toLocaleString()} CST and Cosmic Signature NFTs. Selections are drawn with replacement, so the same address can be selected more than once in a cycle. Selection frequency increases with the number of gestures you make.`,
+          answer: `Each gesture records one entry in Stellar Selection. At the end of each cycle, the smart contract randomly selects entries from the pool: ${protocolFacts.ethStellarSelectionRecipients} selections share ${ethDistributionFacts.stellarSelectionEthPercentage}% of the Cycle Reserve in ETH, ${protocolFacts.nftStellarSelectionRecipients} selections each receive ${protocolFacts.specialAllocationCst.toLocaleString()} CST and a Cosmic Signature NFT, and ${protocolFacts.anchoredRwlkNftSelectionRecipients} selections among anchored Random Walk NFTs also receive ${protocolFacts.specialAllocationCst.toLocaleString()} CST and Cosmic Signature NFTs. Selections are drawn with replacement, so the same address can be selected more than once in a cycle. ${isV3Mechanics ? 'ETH selections are weighted by the undiscounted ETH cost of each gesture at the moment it was made, so costlier gestures carry proportionally better odds; NFT selections remain one entry per gesture.' : 'Selection frequency increases with the number of gestures you make.'}`,
         },
         {
           id: 'how-random-selection-works',
           question: 'How are random selections made?',
-          answer:
-            'Stellar Selection uses on-chain randomness sources at cycle finalization time, including Arbitrum-provided block context and fallback entropy sources. Participant Stellar Selection is entry-weighted: each gesture adds an entry, so more gestures increase selection frequency. Anchored-NFT Stellar Selection is separate and is based on anchored Random Walk NFT eligibility rather than the participant gesture-entry pool.',
+          answer: `Stellar Selection uses on-chain randomness sources at cycle finalization time, including Arbitrum-provided block context and fallback entropy sources. ${isV3Mechanics ? 'Participant ETH Stellar Selection is cost-weighted: each entry carries the undiscounted ETH cost of its gesture, so costlier gestures are proportionally more likely to be selected. NFT Stellar Selection remains entry-weighted (one entry per gesture).' : 'Participant Stellar Selection is entry-weighted: each gesture adds an entry, so more gestures increase selection frequency.'} Anchored-NFT Stellar Selection is separate and is based on anchored Random Walk NFT eligibility rather than the participant gesture-entry pool.`,
         },
         {
           id: 'how-do-i-claim-my-allocation',
@@ -99,7 +102,7 @@ export const faqContentEn = {
         {
           id: 'how-does-anchoring-work',
           question: 'How does Anchoring work?',
-          answer: `Cosmic Signature NFTs can be anchored to the protocol to receive ETH Anchor Distributions: each finalized cycle allocates ${protocolFacts.anchorDistributionPercentage}% of the Cycle Reserve, split equally per anchored Cosmic Signature NFT, and the accumulated ETH is paid out when you release the anchor. Random Walk NFTs can also be anchored, but only for Anchored-NFT Stellar Selection eligibility — selected anchor-holders receive CST and Cosmic Signature NFTs, not ETH. Two rules to know: every NFT can be anchored only once, ever (after you release an anchor, that NFT can never be anchored again), and if no Cosmic Signature NFTs are anchored when a cycle finalizes, that cycle's ${protocolFacts.anchorDistributionPercentage}% simply stays in the Cycle Reserve. CST (ERC-20) cannot be anchored. Visit the My Anchors page (from your account menu) to manage anchors.`,
+          answer: `Cosmic Signature NFTs can be anchored to the protocol to receive ETH Anchor Distributions: each finalized cycle allocates ${ethDistributionFacts.anchorDistributionPercentage}% of the Cycle Reserve, split equally per anchored Cosmic Signature NFT, and the accumulated ETH is paid out when you release the anchor. Random Walk NFTs can also be anchored, but only for Anchored-NFT Stellar Selection eligibility — selected anchor-holders receive CST and Cosmic Signature NFTs, not ETH. Two rules to know: every NFT can be anchored only once, ever (after you release an anchor, that NFT can never be anchored again), and if no Cosmic Signature NFTs are anchored when a cycle finalizes, that cycle's ${ethDistributionFacts.anchorDistributionPercentage}% simply stays in the Cycle Reserve. CST (ERC-20) cannot be anchored. Visit the My Anchors page (from your account menu) to manage anchors.`,
         },
         {
           id: 'what-are-marketing-rewards',
@@ -125,8 +128,7 @@ export const faqContentEn = {
         {
           id: 'who-receives-10-percent',
           question: 'Who receives the public-goods allocation from the Cycle Reserve?',
-          answer:
-            'Seven percent of the Cycle Reserve is forwarded to the Public Goods Vault at finalization, and anyone can then forward the vault balance to the configured Public Goods Beneficiary. The current beneficiary is Protocol Guild — the collective funding mechanism for 170+ Ethereum core contributors. Today the beneficiary address is set by the protocol owner; the intent is for the Cosmic Council to direct it once ownership moves under Council control.',
+          answer: `${ethDistributionFacts.publicGoodsPercentage}% of the Cycle Reserve is forwarded to the Public Goods Vault at finalization, and anyone can then forward the vault balance to the configured Public Goods Beneficiary. The current beneficiary is Protocol Guild — the collective funding mechanism for 170+ Ethereum core contributors. Today the beneficiary address is set by the protocol owner; the intent is for the Cosmic Council to direct it once ownership moves under Council control.`,
         },
       ],
     },
@@ -187,7 +189,7 @@ export const faqContentEn = {
         {
           id: 'what-is-chrono-warrior',
           question: 'What is a Chrono-Warrior?',
-          answer: `The participant who held the Endurance Champion position for the longest consecutive interval. Analogous to the Endurance Champion being the longest-reigning recent gesture maker, the Chrono-Warrior is the longest-reigning Endurance Champion. When the cycle finalizes, the Chrono-Warrior receives ${protocolFacts.chronoWarriorEthPercentage}% of the Cycle Reserve in ETH, ${protocolFacts.specialAllocationCst.toLocaleString()} CST, and one Cosmic Signature NFT.`,
+          answer: `The participant who held the Endurance Champion position for the longest consecutive interval. Analogous to the Endurance Champion being the longest-reigning recent gesture maker, the Chrono-Warrior is the longest-reigning Endurance Champion. When the cycle finalizes, the Chrono-Warrior receives ${ethDistributionFacts.chronoWarriorEthPercentage}% of the Cycle Reserve in ETH, ${protocolFacts.specialAllocationCst.toLocaleString()} CST, and one Cosmic Signature NFT.`,
           hashAnchor: 'chrono-warrior',
         },
         {
@@ -230,8 +232,7 @@ export const faqContentEn = {
         {
           id: 'what-are-cst-and-dao',
           question: 'What are CST tokens and the Cosmic Council?',
-          answer:
-            'Every gesture can imprint CST tokens, which express Coordination Weight on the Cosmic Council. The Council coordinates the protocol on-chain: CST holders submit Coordination Proposals and express Support or Opposition (delegate your CST — to yourself or another address — to activate that weight). The Council is designed to direct protocol parameters, including which Public Goods Beneficiary receives the 7% allocation, once contract ownership moves under Council control; today those settings are still managed by the protocol owner.',
+          answer: `Every gesture can imprint CST tokens, which express Coordination Weight on the Cosmic Council. The Council coordinates the protocol on-chain: CST holders submit Coordination Proposals and express Support or Opposition (delegate your CST — to yourself or another address — to activate that weight). The Council is designed to direct protocol parameters, including which Public Goods Beneficiary receives the ${ethDistributionFacts.publicGoodsPercentage}% allocation, once contract ownership moves under Council control; today those settings are still managed by the protocol owner.`,
         },
         {
           id: 'what-can-i-do-with-cst',
