@@ -134,7 +134,7 @@
       "v3CstDecline": {
         "label": "CST 价格下降速率",
         "value": "{amount} CST/分钟",
-        "tooltip": "CST 落笔价格在荷兰式拍卖中的下降速度。每次参与 CST 铭刻全额记入被超越的参与者。"
+        "tooltip": "CST 落笔成本在 CST 校准窗口中的下降速度。每次参与 CST 铭刻全额记入被超越的参与者。"
       },
       "v3SignatureNfts": {
         "label": "签名配额 NFT 数量",

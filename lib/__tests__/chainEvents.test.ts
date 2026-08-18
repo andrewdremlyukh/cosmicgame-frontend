@@ -75,10 +75,12 @@ describe('buildEventTopicMap', () => {
     // than the watched-name list. Every watched name must be represented.
     expect(map.size).toBeGreaterThanOrEqual(WATCHED_COSMIC_EVENTS.length);
     expect(new Set(map.values())).toEqual(new Set(WATCHED_COSMIC_EVENTS));
-    const bidPlacedTopics = [...map.entries()].filter(([, name]) => name === 'BidPlaced');
-    expect(bidPlacedTopics).toHaveLength(2);
-    const mainPrizeTopics = [...map.entries()].filter(([, name]) => name === 'MainPrizeClaimed');
-    expect(mainPrizeTopics).toHaveLength(2);
+    const gesturePlacedTopics = [...map.entries()].filter(([, name]) => name === 'BidPlaced');
+    expect(gesturePlacedTopics).toHaveLength(2);
+    const allocationClaimedTopics = [...map.entries()].filter(
+      ([, name]) => name === 'MainPrizeClaimed',
+    );
+    expect(allocationClaimedTopics).toHaveLength(2);
     for (const topic of map.keys()) {
       expect(topic).toMatch(/^0x[0-9a-f]{64}$/);
     }
