@@ -232,10 +232,10 @@
     "metrics": {
       "signatureAllocation": "签名分配",
       "signatureTooltip": {
-        "base": "签名分配中的 ETH 部分；获配者还将获得 1,000 CST 与一枚 Cosmic Signature NFT。",
-        "withNft": "签名分配中的 ETH 部分；获配者还将获得 1,000 CST、一枚 Cosmic Signature NFT，以及 {nftCount} 枚已附加 NFT。",
-        "withErc20": "签名分配中的 ETH 部分；获配者还将获得 1,000 CST、一枚 Cosmic Signature NFT，以及 {erc20Count} 笔已附加的 ERC-20 代币存入。",
-        "withBoth": "签名分配中的 ETH 部分；获配者还将获得 1,000 CST、一枚 Cosmic Signature NFT，以及 {nftCount} 枚已附加 NFT 与 {erc20Count} 笔已附加的 ERC-20 代币存入。"
+        "base": "签名分配中的 ETH 部分；获配者还将获得 1,000 CST 与 {cscNftCount} 枚 Cosmic Signature NFT。",
+        "withNft": "签名分配中的 ETH 部分；获配者还将获得 1,000 CST、{cscNftCount} 枚 Cosmic Signature NFT，以及 {nftCount} 枚已附加 NFT。",
+        "withErc20": "签名分配中的 ETH 部分；获配者还将获得 1,000 CST、{cscNftCount} 枚 Cosmic Signature NFT，以及 {erc20Count} 笔已附加的 ERC-20 代币存入。",
+        "withBoth": "签名分配中的 ETH 部分；获配者还将获得 1,000 CST、{cscNftCount} 枚 Cosmic Signature NFT，以及 {nftCount} 枚已附加 NFT 与 {erc20Count} 笔已附加的 ERC-20 代币存入。"
       },
       "ethGesture": "ETH 落笔",
       "ethGestureTooltip": "当前以 ETH 落笔的价格。",
@@ -252,10 +252,10 @@
       "title": "你在本周期的位置",
       "tooltip": "显示你当前是否处于收官之笔位置，以及依据本周期落笔计算的星选入选频次。",
       "leader": {
-        "base": "最新一笔由你写下。若无人再落笔，签名分配（{amount} ETH、1,000 CST、1 枚 Cosmic Signature NFT）便归你所有。",
-        "withNft": "最新一笔由你写下。若无人再落笔，签名分配（{amount} ETH、1,000 CST、1 枚 Cosmic Signature NFT，外加下方展示的 {nftCount} 枚已附加 NFT）便归你所有。",
-        "withErc20": "最新一笔由你写下。若无人再落笔，签名分配（{amount} ETH、1,000 CST、1 枚 Cosmic Signature NFT，外加下方展示的 {erc20Count} 笔已附加的 ERC-20 代币存入）便归你所有。",
-        "withBoth": "最新一笔由你写下。若无人再落笔，签名分配（{amount} ETH、1,000 CST、1 枚 Cosmic Signature NFT，外加下方展示的 {nftCount} 枚已附加 NFT 与 {erc20Count} 笔 ERC-20 代币存入）便归你所有。"
+        "base": "最新一笔由你写下。若无人再落笔，签名分配（{amount} ETH、1,000 CST、{cscNftCount} 枚 Cosmic Signature NFT）便归你所有。",
+        "withNft": "最新一笔由你写下。若无人再落笔，签名分配（{amount} ETH、1,000 CST、{cscNftCount} 枚 Cosmic Signature NFT，外加下方展示的 {nftCount} 枚已附加 NFT）便归你所有。",
+        "withErc20": "最新一笔由你写下。若无人再落笔，签名分配（{amount} ETH、1,000 CST、{cscNftCount} 枚 Cosmic Signature NFT，外加下方展示的 {erc20Count} 笔已附加的 ERC-20 代币存入）便归你所有。",
+        "withBoth": "最新一笔由你写下。若无人再落笔，签名分配（{amount} ETH、1,000 CST、{cscNftCount} 枚 Cosmic Signature NFT，外加下方展示的 {nftCount} 枚已附加 NFT 与 {erc20Count} 笔 ERC-20 代币存入）便归你所有。"
       },
       "notLeader": "最新一笔不是你写下的——再落一笔即可领先；即使不再落笔，你的星选资格依然有效。",
       "ethStellar": "ETH 星选",
@@ -403,12 +403,13 @@
       "fixedCstEach": "每位 1,000 CST",
       "nft": "1 枚 Cosmic Signature NFT",
       "nftEach": "每位 1 枚 Cosmic Signature NFT",
+      "signatureNft": "{count} 枚 Cosmic Signature NFT",
       "attachedTokens": "已附加代币（如有）"
     },
     "cards": {
       "signature": {
         "name": "签名分配",
-        "tooltip": "倒计时归零时写下收官之笔的参与者，可取回这份分配：ETH、1,000 CST、一枚 Cosmic Signature NFT，以及已附加的代币。"
+        "tooltip": "倒计时归零时写下收官之笔的参与者，可取回这份分配：ETH、1,000 CST、{cscNftCount} 枚 Cosmic Signature NFT，以及已附加的代币。"
       },
       "publicGoods": {
         "name": "公共物品",

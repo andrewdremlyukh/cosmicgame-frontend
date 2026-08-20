@@ -232,10 +232,10 @@
     "metrics": {
       "signatureAllocation": "Signature Allocation",
       "signatureTooltip": {
-        "base": "The ETH portion of the Signature Allocation; the recipient also receives 1,000 CST, a Cosmic Signature NFT.",
-        "withNft": "The ETH portion of the Signature Allocation; the recipient also receives 1,000 CST, a Cosmic Signature NFT, and {nftCount, plural, one {the attached NFT} other {all # attached NFTs}}.",
-        "withErc20": "The ETH portion of the Signature Allocation; the recipient also receives 1,000 CST, a Cosmic Signature NFT, and {erc20Count, plural, one {the attached ERC20 token deposit} other {all # attached ERC20 token deposits}}.",
-        "withBoth": "The ETH portion of the Signature Allocation; the recipient also receives 1,000 CST, a Cosmic Signature NFT, and {nftCount, plural, one {the attached NFT} other {all # attached NFTs}} and {erc20Count, plural, one {the attached ERC20 token deposit} other {all # attached ERC20 token deposits}}."
+        "base": "The ETH portion of the Signature Allocation; the recipient also receives 1,000 CST, {cscNftCount, plural, one {a Cosmic Signature NFT} other {# Cosmic Signature NFTs}}.",
+        "withNft": "The ETH portion of the Signature Allocation; the recipient also receives 1,000 CST, {cscNftCount, plural, one {a Cosmic Signature NFT} other {# Cosmic Signature NFTs}}, and {nftCount, plural, one {the attached NFT} other {all # attached NFTs}}.",
+        "withErc20": "The ETH portion of the Signature Allocation; the recipient also receives 1,000 CST, {cscNftCount, plural, one {a Cosmic Signature NFT} other {# Cosmic Signature NFTs}}, and {erc20Count, plural, one {the attached ERC20 token deposit} other {all # attached ERC20 token deposits}}.",
+        "withBoth": "The ETH portion of the Signature Allocation; the recipient also receives 1,000 CST, {cscNftCount, plural, one {a Cosmic Signature NFT} other {# Cosmic Signature NFTs}}, and {nftCount, plural, one {the attached NFT} other {all # attached NFTs}} and {erc20Count, plural, one {the attached ERC20 token deposit} other {all # attached ERC20 token deposits}}."
       },
       "ethGesture": "ETH Gesture",
       "ethGestureTooltip": "Current cost to make a gesture with ETH",
@@ -252,10 +252,10 @@
       "title": "Your Cycle Standing",
       "tooltip": "Shows your current Final Gesture standing and Stellar Selection frequency based on your gestures this cycle.",
       "leader": {
-        "base": "You made the most recent gesture. If no one else gestures, you receive the Signature Allocation ({amount} ETH, 1,000 CST, 1 Cosmic Signature NFT).",
-        "withNft": "You made the most recent gesture. If no one else gestures, you receive the Signature Allocation ({amount} ETH, 1,000 CST, 1 Cosmic Signature NFT, plus {nftCount, plural, one {the attached NFT} other {all # attached NFTs}} shown below).",
-        "withErc20": "You made the most recent gesture. If no one else gestures, you receive the Signature Allocation ({amount} ETH, 1,000 CST, 1 Cosmic Signature NFT, plus {erc20Count, plural, one {the attached ERC20 token deposit} other {all # attached ERC20 token deposits}} shown below).",
-        "withBoth": "You made the most recent gesture. If no one else gestures, you receive the Signature Allocation ({amount} ETH, 1,000 CST, 1 Cosmic Signature NFT, plus {nftCount, plural, one {the attached NFT} other {all # attached NFTs}} and {erc20Count, plural, one {the attached ERC20 token deposit} other {all # attached ERC20 token deposits}} shown below)."
+        "base": "You made the most recent gesture. If no one else gestures, you receive the Signature Allocation ({amount} ETH, 1,000 CST, {cscNftCount, plural, one {1 Cosmic Signature NFT} other {# Cosmic Signature NFTs}}).",
+        "withNft": "You made the most recent gesture. If no one else gestures, you receive the Signature Allocation ({amount} ETH, 1,000 CST, {cscNftCount, plural, one {1 Cosmic Signature NFT} other {# Cosmic Signature NFTs}}, plus {nftCount, plural, one {the attached NFT} other {all # attached NFTs}} shown below).",
+        "withErc20": "You made the most recent gesture. If no one else gestures, you receive the Signature Allocation ({amount} ETH, 1,000 CST, {cscNftCount, plural, one {1 Cosmic Signature NFT} other {# Cosmic Signature NFTs}}, plus {erc20Count, plural, one {the attached ERC20 token deposit} other {all # attached ERC20 token deposits}} shown below).",
+        "withBoth": "You made the most recent gesture. If no one else gestures, you receive the Signature Allocation ({amount} ETH, 1,000 CST, {cscNftCount, plural, one {1 Cosmic Signature NFT} other {# Cosmic Signature NFTs}}, plus {nftCount, plural, one {the attached NFT} other {all # attached NFTs}} and {erc20Count, plural, one {the attached ERC20 token deposit} other {all # attached ERC20 token deposits}} shown below)."
       },
       "notLeader": "You are not the most recent participant — gesture again to take the lead, or remain eligible for Stellar Selection.",
       "ethStellar": "ETH Stellar Selection",
@@ -403,12 +403,13 @@
       "fixedCstEach": "1,000 CST each",
       "nft": "1 Cosmic Signature NFT",
       "nftEach": "1 Cosmic Signature NFT each",
+      "signatureNft": "{count, plural, one {1 Cosmic Signature NFT} other {# Cosmic Signature NFTs}}",
       "attachedTokens": "Attached tokens (if any)"
     },
     "cards": {
       "signature": {
         "name": "Signature Allocation",
-        "tooltip": "The participant who made the Final Gesture when the countdown reaches zero may retrieve this allocation: ETH, 1,000 CST, a Cosmic Signature NFT, and attached tokens."
+        "tooltip": "The participant who made the Final Gesture when the countdown reaches zero may retrieve this allocation: ETH, 1,000 CST, {cscNftCount, plural, one {a Cosmic Signature NFT} other {# Cosmic Signature NFTs}}, and attached tokens."
       },
       "publicGoods": {
         "name": "Public Goods",

@@ -3391,7 +3391,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "cstBidPriceDeclineMultiplier",
+        "name": "cstDutchAuctionDuration",
         "type": "uint256"
       },
       {
@@ -3476,11 +3476,6 @@
   },
   {
     "inputs": [],
-    "name": "NotImplemented",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "ZeroValue",
     "type": "error"
   },
@@ -3495,32 +3490,6 @@
       }
     ],
     "name": "BidCstRewardAmountMultiplierChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newValue",
-        "type": "uint256"
-      }
-    ],
-    "name": "CstBidPriceDeclineMultiplierChangeDivisorChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newValue",
-        "type": "uint256"
-      }
-    ],
-    "name": "CstBidPriceDeclineMultiplierChanged",
     "type": "event"
   },
   {
@@ -3631,32 +3600,6 @@
   },
   {
     "inputs": [],
-    "name": "cstBidPriceDeclineMultiplier",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "cstBidPriceDeclineMultiplierChangeDivisor",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "reinitialize",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -3671,32 +3614,6 @@
       }
     ],
     "name": "setBidCstRewardAmountMultiplier",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "newValue_",
-        "type": "uint256"
-      }
-    ],
-    "name": "setCstBidPriceDeclineMultiplier",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "newValue_",
-        "type": "uint256"
-      }
-    ],
-    "name": "setCstBidPriceDeclineMultiplierChangeDivisor",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

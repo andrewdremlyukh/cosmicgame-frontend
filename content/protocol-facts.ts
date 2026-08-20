@@ -113,8 +113,10 @@ export const protocolFacts = {
    * new getters) should prefer these once the upgrade lands; the top-level facts above
    * keep describing the live V2 deployment until then.
    *
-   * Verified against the v3-2026-07-24 branch Solidity defaults at commit 51221556
-   * (`CosmicSignatureConstants.sol`, `docs/v3-vs-v2-changes.md`).
+   * Verified against the v3-2026-07-24 branch Solidity defaults at commit 0bc80af0
+   * (`CosmicSignatureConstants.sol`). That commit reverted the CST Calibration
+   * Window to the exact V2 behavior, so the shared window facts above apply to
+   * V3 unchanged and are deliberately not restated here.
    */
   v3: {
     /** Linear Participation CST (replaces the V2 sqrt formula). */
@@ -149,10 +151,6 @@ export const protocolFacts = {
     publicGoodsPercentage: 5,
     /** At most one gesture per contract per second (BidPlacedWithinCurrentSecond). */
     oneGesturePerSecond: true,
-    /** CST Gesture Cost declines ~1 CST per minute at launch (cstBidPriceDeclineMultiplier ≈ 1 ether / 60 per second). */
-    cstGestureCostDeclinePerMinuteAtLaunch: 1,
-    /** The decline speed shifts ~1% per gesture (change divisor 100): up on ETH gestures, down on CST gestures. */
-    cstGestureCostDeclineChangePercentPerGesture: 1,
     /** The CST Calibration ceiling floor drops from 200 CST to 1 CST at reinitialize. */
     cstCalibrationCeilingMinCst: 1,
     /** Signature Allocation recipient receives this many sequential Cosmic Signature NFTs. */

@@ -23,7 +23,6 @@ interface GameConfigurationProps {
   v3Config?: {
     mainPrizeNumNfts: number;
     lateBidDurationSeconds: number;
-    cstBidPriceDeclinePerSecond: number;
   } | null;
   loading?: boolean;
 }
@@ -108,14 +107,6 @@ export function GameConfiguration({
     // V3-only parameters — present once the protocol runs the V3 implementation.
     ...(v3Config
       ? [
-          {
-            label: t('configuration.cards.v3CstDecline.label'),
-            value: t('configuration.cards.v3CstDecline.value', {
-              amount: formatCstAmount(v3Config.cstBidPriceDeclinePerSecond * 60),
-            }),
-            icon: <Coins className="h-4 w-4" />,
-            tooltip: t('configuration.cards.v3CstDecline.tooltip'),
-          },
           {
             label: t('configuration.cards.v3SignatureNfts.label'),
             value: v3Config.mainPrizeNumNfts,

@@ -131,11 +131,6 @@
         "label": "Max Message Length",
         "tooltip": "Maximum character length allowed in gesture messages"
       },
-      "v3CstDecline": {
-        "label": "CST Price Decline Rate",
-        "value": "{amount} CST/min",
-        "tooltip": "How fast the CST Gesture Cost declines during the CST Calibration Window. Each Participation CST imprint is credited in full to the participant being outbid."
-      },
       "v3SignatureNfts": {
         "label": "Signature Allocation NFTs",
         "tooltip": "Number of Cosmic Signature NFTs (sequential ids) imprinted for the Signature Allocation recipient when a cycle finalizes."

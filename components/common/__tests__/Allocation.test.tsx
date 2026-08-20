@@ -1,8 +1,13 @@
 import '@testing-library/jest-dom';
 
+import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+
 import Prize from '@/components/common/Allocation';
 
 import { checkA11y, render, screen } from '@/test-utils';
+
+// Signature Allocation NFT count baked into the copy (V3: 3, V2: 1).
+const cscNftCount = isV3Mechanics ? protocolFacts.v3.mainPrizeNftsPerCycleDefault : 1;
 
 const mockData = {
   PrizeAmountEth: 1.5,
@@ -102,7 +107,10 @@ describe('Allocation Breakdown', () => {
     expect(screen.getByText('home.allocation.cards.chronoWarrior.name')).toBeInTheDocument();
     expect(screen.getByText('home.allocation.amounts.eth(amount=0.5000)')).toBeInTheDocument();
     expect(screen.getAllByText('home.allocation.amounts.fixedCst')).toHaveLength(4);
-    expect(screen.getAllByText('home.allocation.amounts.nft')).toHaveLength(4);
+    expect(screen.getAllByText('home.allocation.amounts.nft')).toHaveLength(3);
+    expect(
+      screen.getByText(`home.allocation.amounts.signatureNft(count=${cscNftCount})`),
+    ).toBeInTheDocument();
   });
 
   it('renders with null data without crashing', () => {

@@ -26,6 +26,7 @@ import { toast } from 'sonner';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { getExplorerUrl, formatEthValue, shortenHex, getEnduranceChampions } from '@/utils';
+import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { formatFixed } from '@/utils/format';
 import { Link } from '@/i18n/navigation';
@@ -766,7 +767,9 @@ const AllocationInfoPage = ({ roundNum }: AllocationInfoPageProps) => {
           <RecipientCard
             icon={<Trophy className="h-5 w-5" />}
             title={t('details.recipientSection.cards.signature.title')}
-            tooltip={t('details.recipientSection.cards.signature.tooltip')}
+            tooltip={t('details.recipientSection.cards.signature.tooltip', {
+              cscNftCount: isV3Mechanics ? protocolFacts.v3.mainPrizeNftsPerCycleDefault : 1,
+            })}
             address={allocationInfo.WinnerAddr}
             rewards={[
               {

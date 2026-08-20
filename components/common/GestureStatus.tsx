@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { formatSeconds } from '@/utils';
+import { isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
 
 import { useHydrationSafeDateTime } from '@/components/common/HydrationSafeDateTime';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
@@ -25,6 +26,9 @@ import {
 
 import Counter from './Counter';
 import { SmoothCountdown } from './SmoothCountdown';
+
+/** Cosmic Signature NFTs in the Signature Allocation: V3 awards 3 sequential NFTs, V2 awards 1. */
+const signatureNftCount = isV3Mechanics ? protocolFacts.v3.mainPrizeNftsPerCycleDefault : 1;
 
 interface EthGestureInfo {
   ETHPrice: number;
@@ -296,10 +300,10 @@ export const GestureStatus = ({
                 value={`${(data?.PrizeAmountEth ?? 0).toFixed(4)} ETH`}
                 icon={<Trophy className="h-5 w-5" />}
                 tone="signature"
-                tooltip={t(
-                  `status.metrics.signatureTooltip.${attachedAssetVariant}`,
-                  attachedAssetValues,
-                )}
+                tooltip={t(`status.metrics.signatureTooltip.${attachedAssetVariant}`, {
+                  cscNftCount: signatureNftCount,
+                  ...attachedAssetValues,
+                })}
               />
             </motion.div>
 
@@ -408,6 +412,7 @@ export const GestureStatus = ({
                 <p className="text-sm font-medium text-emerald-400">
                   {t(`status.standing.leader.${attachedAssetVariant}`, {
                     amount: (data.PrizeAmountEth ?? 0).toFixed(4),
+                    cscNftCount: signatureNftCount,
                     ...attachedAssetValues,
                   })}
                 </p>

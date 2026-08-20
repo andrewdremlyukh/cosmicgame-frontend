@@ -2916,7 +2916,7 @@ export const cosmicGameAbi = [
         indexed: false,
       },
       {
-        name: 'cstBidPriceDeclineMultiplier',
+        name: 'cstDutchAuctionDuration',
         internalType: 'uint256',
         type: 'uint256',
         indexed: false,
@@ -2992,7 +2992,6 @@ export const cosmicGameAbi = [
     name: 'BidCstRewardAmountMinLimitNotReached',
   },
   { type: 'error', inputs: [], name: 'BidPlacedWithinCurrentSecond' },
-  { type: 'error', inputs: [], name: 'NotImplemented' },
   { type: 'error', inputs: [], name: 'ZeroValue' },
   {
     type: 'event',
@@ -3006,32 +3005,6 @@ export const cosmicGameAbi = [
       },
     ],
     name: 'BidCstRewardAmountMultiplierChanged',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'newValue',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'CstBidPriceDeclineMultiplierChangeDivisorChanged',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'newValue',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'CstBidPriceDeclineMultiplierChanged',
   },
   {
     type: 'event',
@@ -3125,20 +3098,6 @@ export const cosmicGameAbi = [
   {
     type: 'function',
     inputs: [],
-    name: 'cstBidPriceDeclineMultiplier',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'cstBidPriceDeclineMultiplierChangeDivisor',
-    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
     name: 'reinitialize',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -3147,20 +3106,6 @@ export const cosmicGameAbi = [
     type: 'function',
     inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
     name: 'setBidCstRewardAmountMultiplier',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
-    name: 'setCstBidPriceDeclineMultiplier',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'newValue_', internalType: 'uint256', type: 'uint256' }],
-    name: 'setCstBidPriceDeclineMultiplierChangeDivisor',
     outputs: [],
     stateMutability: 'nonpayable',
   },

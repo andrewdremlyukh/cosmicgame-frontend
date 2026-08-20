@@ -4,7 +4,10 @@ import { useMemo } from 'react';
 import { Trophy, Gavel, Layers, Users } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { ethDistributionFacts, protocolFacts } from '@/content/protocol-facts';
+import { ethDistributionFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+
+/** Cosmic Signature NFTs in the Signature Allocation: V3 awards 3 sequential NFTs, V2 awards 1. */
+const signatureNftCount = isV3Mechanics ? protocolFacts.v3.mainPrizeNftsPerCycleDefault : 1;
 
 import { PageHeader } from '@/components/layout/PageHeader';
 import { PageShell } from '@/components/ui/page-shell';
@@ -121,7 +124,10 @@ const AllocationRecipientsPage = () => {
         className="mb-10 grid gap-6 lg:grid-cols-[1fr_360px] lg:items-center"
       >
         <p className="type-body-md text-muted-foreground">
-          {t('recipients.intro', { percentage: ethDistributionFacts.mainEthPercentage })}
+          {t('recipients.intro', {
+            percentage: ethDistributionFacts.mainEthPercentage,
+            cscNftCount: signatureNftCount,
+          })}
         </p>
         <div className="space-y-3">
           <div className="flex items-center gap-2">

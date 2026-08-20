@@ -13,7 +13,7 @@
       "scope": "仅显示已收官周期记录",
       "scopeTooltip": "本页仅汇总周期 API 中已收官的演绎周期；待收官周期及不属于这些周期的分配取回记录不计入统计。"
     },
-    "intro": "周期收官后，写下收官之笔的参与者会取回签名分配——{percentage}% 的周期储备、1,000 CST 与一枚专属 Cosmic Signature NFT。其他分配则通过时之勇士、星选、锚定派发、公共物品与滚动储备等轨道流转。",
+    "intro": "周期收官后，写下收官之笔的参与者会取回签名分配——{percentage}% 的周期储备、1,000 CST 与 {cscNftCount} 枚专属 Cosmic Signature NFT。其他分配则通过时之勇士、星选、锚定派发、公共物品与滚动储备等轨道流转。",
     "reserveSplit": {
       "label": "周期储备分配",
       "tooltip": "这些百分比表示周期收官后，ETH 储备如何沿协议各条轨道分配。",
@@ -122,7 +122,7 @@
       "cards": {
         "signature": {
           "title": "签名分配",
-          "tooltip": "收官倒计时归零时写下收官之笔的参与者，可取回 ETH、1,000 CST 与一枚 Cosmic Signature NFT。"
+          "tooltip": "收官倒计时归零时写下收官之笔的参与者，可取回 ETH、1,000 CST 与 {cscNftCount} 枚 Cosmic Signature NFT。"
         },
         "chrono": {
           "title": "时之勇士",
