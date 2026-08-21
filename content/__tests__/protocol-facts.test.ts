@@ -1,4 +1,10 @@
-import { contractMechanicsVersion, cstRewardFacts, protocolFacts } from '@/content/protocol-facts';
+import {
+  contractMechanicsVersion,
+  cstRewardFacts,
+  isV3Mechanics,
+  nftAllocationFacts,
+  protocolFacts,
+} from '@/content/protocol-facts';
 
 /**
  * Deployed Solidity constants these facts are derived from
@@ -49,6 +55,46 @@ describe('protocolFacts', () => {
       protocolFacts.typicalNftsPerCycle * protocolFacts.specialAllocationCst +
         protocolFacts.outreachReserveCst,
     );
+  });
+
+  it('V3 adds NFTs only to the Signature Allocation, and adds no CST', () => {
+    const extraNfts =
+      protocolFacts.v3.mainPrizeNftsPerCycleDefault - protocolFacts.mainPrizeNftsPerCycle;
+    expect(protocolFacts.v3.typicalNftsPerCycle).toBe(
+      protocolFacts.typicalNftsPerCycle + extraNfts,
+    );
+
+    // The extra NFTs ride along with the existing Signature Allocation, so the
+    // number of NFT-bearing allocations - and therefore the CST total - is unchanged.
+    expect(nftAllocationFacts.nftBearingAllocations).toBe(protocolFacts.typicalNftsPerCycle);
+    expect(protocolFacts.typicalCstImprintsPerCycle).toBe(
+      nftAllocationFacts.nftBearingAllocations * protocolFacts.specialAllocationCst +
+        protocolFacts.outreachReserveCst,
+    );
+  });
+
+  it('exposes NFT counts that follow the configured mechanics version', () => {
+    const expected = isV3Mechanics
+      ? {
+          mainPrizeNfts: protocolFacts.v3.mainPrizeNftsPerCycleDefault,
+          typicalNftsPerCycle: protocolFacts.v3.typicalNftsPerCycle,
+        }
+      : {
+          mainPrizeNfts: protocolFacts.mainPrizeNftsPerCycle,
+          typicalNftsPerCycle: protocolFacts.typicalNftsPerCycle,
+        };
+
+    expect(nftAllocationFacts.mainPrizeNfts).toBe(expected.mainPrizeNfts);
+    expect(nftAllocationFacts.typicalNftsPerCycle).toBe(expected.typicalNftsPerCycle);
+
+    // The phrases must agree with the count they describe, in both locales.
+    for (const locale of ['en', 'zh'] as const) {
+      expect(nftAllocationFacts.mainPrizeNftPhrase[locale]).toContain(
+        nftAllocationFacts.mainPrizeNftsWord[locale],
+      );
+    }
+    expect(nftAllocationFacts.mainPrizeNftsWord.en).toBe(isV3Mechanics ? 'three' : 'one');
+    expect(nftAllocationFacts.mainPrizeNftsWord.zh).toBe(String(expected.mainPrizeNfts));
   });
 
   it('allocation percentages plus the compounding reserve account for the whole Cycle Reserve', () => {

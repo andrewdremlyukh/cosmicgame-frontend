@@ -101,6 +101,19 @@ jest.mock('../../../../../hooks/useApiQuery', () => ({
   useDashboardInfo: (...args: unknown[]) => mockUseDashboardInfo(...args),
 }));
 
+/* ── useRequireChain mock (PublicGoodsVaultAction gates its write on it) ── */
+
+jest.mock('../../../../../hooks/useRequireChain', () => ({
+  useRequireChain: () => ({
+    requiredChainId: 421614,
+    connectedChainId: 421614,
+    isWrongChain: false,
+    isConnected: true,
+    switchToRequiredChain: jest.fn(),
+    ensureCorrectChain: jest.fn().mockResolvedValue(true),
+  }),
+}));
+
 /* ── useContractNoSigner mock ──────────────────────────────────── */
 
 const mockUseContractNoSigner = jest.fn().mockReturnValue(null);

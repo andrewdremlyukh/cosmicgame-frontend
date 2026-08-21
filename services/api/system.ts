@@ -1,14 +1,19 @@
-import { apiGet, getAPIUrl, apiCall, flattenTxArray, pagedPath } from './client';
+import { apiGet, getAPIUrl, apiCall, apiCallRequired, flattenTxArray, pagedPath } from './client';
 import type { ApiListRequestOptions, ApiRequestOptions } from './client';
 import { SystemModeChangeEventSchema, safeValidateListSample } from './schemas';
 import type { SystemModeChangeEvent, AdminEventRow } from './types';
 
-/** Fetches the current server timestamp (Unix seconds). */
+/**
+ * Fetches the current server timestamp (Unix seconds).
+ *
+ * Required read: every countdown is anchored to this sample, so a fallback of 0
+ * would silently date the whole page to 1970 instead of reporting the failure.
+ */
 export function get_current_time(opts?: ApiRequestOptions): Promise<number> {
-  return apiCall(async () => {
+  return apiCallRequired(async () => {
     const { data } = await apiGet(getAPIUrl('time/current'), opts);
     return data.CurrentTimeStamp;
-  }, 0);
+  });
 }
 
 /** Fetches the history of system-mode changes, optionally paged (maintenance, runtime, etc.). */

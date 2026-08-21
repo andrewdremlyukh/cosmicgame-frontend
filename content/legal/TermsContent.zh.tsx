@@ -1,4 +1,9 @@
-import { ethDistributionFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import {
+  ethDistributionFacts,
+  isV3Mechanics,
+  nftAllocationFacts,
+  protocolFacts,
+} from '@/content/protocol-facts';
 
 import { TermsContent, type TermsCopy } from './TermsContent';
 
@@ -90,12 +95,12 @@ export const termsCopyZh = {
         {
           id: 'distribution',
           subtitle: '分配发放',
-          text: `分配按照智能合约规则自动发放。通常，每个周期会沿下列分配轨道铭刻 ${protocolFacts.typicalNftsPerCycle} 枚 Cosmic Signature NFT 与 ${protocolFacts.typicalCstImprintsPerCycle.toLocaleString()} CST。`,
+          text: `分配按照智能合约规则自动发放。通常，每个周期会沿下列分配轨道铭刻 ${nftAllocationFacts.typicalNftsPerCycle} 枚 Cosmic Signature NFT 与 ${protocolFacts.typicalCstImprintsPerCycle.toLocaleString()} CST。`,
         },
         {
           id: 'signature',
           subtitle: '签名分配',
-          text: `完成收官之笔的参与者可以取回 ${ethDistributionFacts.mainEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString()} CST 表彰铭刻、1 枚 Cosmic Signature NFT，以及该周期中可能存在的已附加代币。`,
+          text: `完成收官之笔的参与者可以取回 ${ethDistributionFacts.mainEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString()} CST 表彰铭刻、${nftAllocationFacts.mainPrizeNftPhrase.zh}，以及该周期中可能存在的已附加代币。`,
         },
         {
           id: 'chrono',

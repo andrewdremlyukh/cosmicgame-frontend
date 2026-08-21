@@ -58,6 +58,18 @@ jest.mock('../../../hooks/web3', () => ({
   }),
 }));
 
+const mockEnsureCorrectChain = jest.fn<Promise<boolean>, []>();
+jest.mock('../../../hooks/useRequireChain', () => ({
+  useRequireChain: () => ({
+    requiredChainId: 421614,
+    connectedChainId: 421614,
+    isWrongChain: false,
+    isConnected: true,
+    switchToRequiredChain: jest.fn(),
+    ensureCorrectChain: mockEnsureCorrectChain,
+  }),
+}));
+
 jest.mock('../../../utils/errors', () => {
   const actual = jest.requireActual('../../../utils/errors');
   return {
@@ -128,6 +140,7 @@ function submitForm() {
 describe('CosmicSignatureNftTransferForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockEnsureCorrectChain.mockResolvedValue(true);
     mockAccount = SOURCE;
     mockActive = true;
     mockContractAddresses = TEST_APP_CONTRACT_ADDRESSES;
@@ -362,6 +375,18 @@ describe('CosmicSignatureNftTransferForm', () => {
     submitForm();
 
     expect(toast.error).toHaveBeenCalledWith('toasts.transfer.nft.recipientMustDiffer');
+    expect(mockWriteContract).not.toHaveBeenCalled();
+  });
+
+  it('does not sign anything when the wallet is on the wrong chain', async () => {
+    mockEnsureCorrectChain.mockResolvedValue(false);
+    renderForm();
+    selectToken('Alpha');
+    fillRecipient();
+
+    submitForm();
+
+    await waitFor(() => expect(mockEnsureCorrectChain).toHaveBeenCalled());
     expect(mockWriteContract).not.toHaveBeenCalled();
   });
 

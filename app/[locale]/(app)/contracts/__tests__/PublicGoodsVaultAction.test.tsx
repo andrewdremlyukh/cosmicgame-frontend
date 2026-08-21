@@ -24,6 +24,18 @@ jest.mock('../../../../../hooks/web3', () => ({
   useActiveWeb3React: () => mockUseActiveWeb3React(),
 }));
 
+const mockEnsureCorrectChain = jest.fn<Promise<boolean>, []>();
+jest.mock('../../../../../hooks/useRequireChain', () => ({
+  useRequireChain: () => ({
+    requiredChainId: 421614,
+    connectedChainId: 421614,
+    isWrongChain: false,
+    isConnected: true,
+    switchToRequiredChain: jest.fn(),
+    ensureCorrectChain: mockEnsureCorrectChain,
+  }),
+}));
+
 jest.mock('../../../../../utils/errors', () => {
   const actual = jest.requireActual('../../../../../utils/errors');
   return {
@@ -49,6 +61,7 @@ describe('PublicGoodsVaultAction', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockEnsureCorrectChain.mockResolvedValue(true);
     mockWriteContract.mockResolvedValue('0xhash');
     mockWaitForTransactionReceipt.mockResolvedValue({ status: 'success' });
     mockUseActiveWeb3React.mockReturnValue({
@@ -92,6 +105,16 @@ describe('PublicGoodsVaultAction', () => {
     });
     expect(mockWaitForTransactionReceipt).toHaveBeenCalledWith({ hash: '0xhash' });
     expect(toast.success).toHaveBeenCalledWith('toasts.contribution.publicGoodsVault.forwarded');
+  });
+
+  it('does not sign anything when the wallet is on the wrong chain', async () => {
+    mockEnsureCorrectChain.mockResolvedValue(false);
+    renderWithQuery(<PublicGoodsVaultAction {...defaultProps} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /forward public goods vault/i }));
+
+    await waitFor(() => expect(mockEnsureCorrectChain).toHaveBeenCalled());
+    expect(mockWriteContract).not.toHaveBeenCalled();
   });
 
   it('shows informational cancellation for wallet rejection code 4001', async () => {

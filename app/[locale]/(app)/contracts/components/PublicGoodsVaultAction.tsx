@@ -18,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { InfoTooltip } from '@/components/ui/info-tooltip';
 import { activeChain } from '@/config/chains';
 import { useActiveWeb3React } from '@/hooks/web3';
+import { useRequireChain } from '@/hooks/useRequireChain';
 
 interface PublicGoodsVaultActionProps {
   vaultAddress: string;
@@ -43,6 +44,7 @@ export function PublicGoodsVaultAction({
   const publicClient = usePublicClient({ chainId: activeChain.id });
   const queryClient = useQueryClient();
   const { account, active } = useActiveWeb3React();
+  const { ensureCorrectChain } = useRequireChain();
 
   if (!vaultAddress) return null;
 
@@ -66,6 +68,8 @@ export function PublicGoodsVaultAction({
       return;
     }
 
+    if (!(await ensureCorrectChain())) return;
+
     setSubmitting(true);
     try {
       const hash = await writeContract(config, {
@@ -73,6 +77,8 @@ export function PublicGoodsVaultAction({
         abi: CHARITY_WALLET_ABI,
         functionName: 'send',
         args: [],
+        account: account as `0x${string}`,
+        chainId: activeChain.id,
       });
 
       const receipt = await publicClient?.waitForTransactionReceipt({ hash });

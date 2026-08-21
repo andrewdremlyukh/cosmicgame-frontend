@@ -15,6 +15,7 @@ import { getExplorerUrl, shortenHex } from '@/utils';
 import { activeChain } from '@/config/chains';
 import { useContractAddresses } from '@/contexts/ContractAddressesContext';
 import { useActiveWeb3React } from '@/hooks/web3';
+import { useRequireChain } from '@/hooks/useRequireChain';
 import { Link } from '@/i18n/navigation';
 import { getEthErrorMessage, isUserRejection, reportError } from '@/utils/errors';
 import { assertSuccessfulTransactionReceipt } from '@/utils/transactions';
@@ -73,6 +74,7 @@ export function MarketingCstRewardForm({
   const queryClient = useQueryClient();
   const contractAddrs = useContractAddresses();
   const { account, active } = useActiveWeb3React();
+  const { ensureCorrectChain } = useRequireChain();
 
   const normalizedMarketingWallet = useMemo(
     () => normalizeAddress(marketingWalletAddress),
@@ -204,6 +206,7 @@ export function MarketingCstRewardForm({
     event.preventDefault();
     const validReward = validateReward();
     if (!validReward || !normalizedMarketingWallet) return;
+    if (!(await ensureCorrectChain())) return;
 
     setSubmitting(true);
     setTxHash(null);

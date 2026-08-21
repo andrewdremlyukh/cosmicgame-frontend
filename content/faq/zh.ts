@@ -2,6 +2,7 @@ import {
   cstRewardFacts,
   ethDistributionFacts,
   isV3Mechanics,
+  nftAllocationFacts,
   protocolFacts,
 } from '@/content/protocol-facts';
 
@@ -76,7 +77,7 @@ export const faqContentZh = {
         {
           id: 'what-is-the-main-allocation',
           question: '什么是签名分配？',
-          answer: `签名分配由周期收官之笔的参与者获得，其中包括 1 枚 Cosmic Signature NFT、1,000 CST 的表彰铭刻、周期储备中 ${ethDistributionFacts.mainEthPercentage}% 的 ETH，以及该周期内随参与者落笔附加的所有代币或 NFT。`,
+          answer: `签名分配由周期收官之笔的参与者获得，其中包括 ${nftAllocationFacts.mainPrizeNftPhrase.zh}、1,000 CST 的表彰铭刻、周期储备中 ${ethDistributionFacts.mainEthPercentage}% 的 ETH，以及该周期内随参与者落笔附加的所有代币或 NFT。`,
           hashAnchor: 'main-allocation',
         },
         {
@@ -112,7 +113,7 @@ export const faqContentZh = {
         {
           id: 'how-many-nfts-minted',
           question: '每个周期会铭刻多少枚 Cosmic Signature NFT？',
-          answer: `绝大多数周期会铭刻 ${protocolFacts.typicalNftsPerCycle} 枚 Cosmic Signature NFT：签名分配获配者、CST 收官之笔获配者、坚守冠军与时之勇士各 1 枚；参与者 NFT 星选获配者共 ${protocolFacts.nftStellarSelectionRecipients} 枚；通过锚定 NFT 星选选出的 Random Walk NFT 锚定者共 ${protocolFacts.anchoredRwlkNftSelectionRecipients} 枚。这 ${protocolFacts.typicalNftsPerCycle} 份 NFT 分配还会各附带 ${protocolFacts.specialAllocationCst.toLocaleString()} CST。若某周期没有 CST 落笔或没有已锚定的 Random Walk NFT，对应的铭刻便会在该周期跳过。`,
+          answer: `绝大多数周期会铭刻 ${nftAllocationFacts.typicalNftsPerCycle} 枚 Cosmic Signature NFT：签名分配获配者 ${nftAllocationFacts.mainPrizeNftsWord.zh} 枚；CST 收官之笔获配者、坚守冠军与时之勇士各 1 枚；参与者 NFT 星选获配者共 ${protocolFacts.nftStellarSelectionRecipients} 枚；通过锚定 NFT 星选选出的 Random Walk NFT 锚定者共 ${protocolFacts.anchoredRwlkNftSelectionRecipients} 枚。这 ${nftAllocationFacts.nftBearingAllocations} 份 NFT 分配还会各附带 ${protocolFacts.specialAllocationCst.toLocaleString()} CST。若某周期没有 CST 落笔或没有已锚定的 Random Walk NFT，对应的铭刻便会在该周期跳过。`,
         },
         {
           id: 'what-happens-to-remaining-eth',

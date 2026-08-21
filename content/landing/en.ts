@@ -1,4 +1,9 @@
-import { ethDistributionFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import {
+  ethDistributionFacts,
+  isV3Mechanics,
+  nftAllocationFacts,
+  protocolFacts,
+} from '@/content/protocol-facts';
 
 import { CST_GECKOTERMINAL_POOL_URL } from '@/config/geckoterminal';
 import { COSMIC_SIGNATURE_MARKETPLACE_URL } from '@/config/marketplace';
@@ -156,7 +161,7 @@ export const landingContentEn = {
       {
         percent: '25%',
         title: 'Signature Allocation',
-        body: 'To the participant who made the Final Gesture. Includes 1,000 CST and one Cosmic Signature NFT.',
+        body: `To the participant who made the Final Gesture. Includes 1,000 CST and ${nftAllocationFacts.mainPrizeNftPhrase.en}.`,
         tone: 'primary',
       },
       {

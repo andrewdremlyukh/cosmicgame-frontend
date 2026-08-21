@@ -68,6 +68,21 @@ describe('useRequireChain — wallet already on the app chain', () => {
     expect(mockNotify).not.toHaveBeenCalled();
   });
 
+  // Regression: an unreadable chain id used to fall back to the wallet's cached
+  // value (or the app chain outright), which silently let the write through.
+  it('requests a switch instead of assuming the app chain when the id is unreadable', async () => {
+    mockGetChainId.mockRejectedValueOnce(new Error('transport down'));
+    const { result } = renderHook(() => useRequireChain());
+
+    let allowed: boolean | undefined;
+    await act(async () => {
+      allowed = await result.current.ensureCorrectChain();
+    });
+
+    expect(mockSwitchChainAsync).toHaveBeenCalledWith({ chainId: APP_CHAIN_ID });
+    expect(allowed).toBe(true);
+  });
+
   it('treats switchToRequiredChain as a no-op', async () => {
     const { result } = renderHook(() => useRequireChain());
 

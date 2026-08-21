@@ -76,6 +76,12 @@ export const protocolFacts = {
   ethGestureCostStepUpPercent: 1,
   specialAllocationCst: 1_000,
   outreachReserveCst: 3_000,
+  /**
+   * Cosmic Signature NFTs imprinted for the Signature Allocation recipient.
+   * V3 raises this to 3 (`v3.mainPrizeNftsPerCycleDefault`); static copy must
+   * read `nftAllocationFacts.mainPrizeNfts` rather than assuming either value.
+   */
+  mainPrizeNftsPerCycle: 1,
   roleNftsPerCycle: 4,
   stellarNftsPerCycle: 20,
   typicalNftsPerCycle: 24,
@@ -237,4 +243,53 @@ export const cstRewardFacts: {
       formula: protocolFacts.dynamicCstRewardFormula,
       examples: protocolFacts.dynamicCstRewardExamples,
       curve: 'sqrt',
+    };
+
+/**
+ * Version-appropriate Cosmic Signature NFT counts. Static content must use this
+ * instead of spelling out "one Cosmic Signature NFT" or reading
+ * `protocolFacts.typicalNftsPerCycle` directly, so that FAQ/learn/landing/legal
+ * copy follows `contractMechanicsVersion` the way the live UI already does.
+ *
+ * Only the Signature Allocation changes in V3: it mints
+ * `v3.mainPrizeNftsPerCycleDefault` sequential NFTs instead of one. Every other
+ * track (Endurance Champion, Chrono-Warrior, Final CST Gesture, and both
+ * Stellar Selections) still mints exactly one, so copy describing those must
+ * keep saying "one" and must not use `mainPrizeNfts`.
+ *
+ * The extra V3 NFTs carry no extra CST: the number of NFT-bearing allocations
+ * stays at `nftBearingAllocations`, which is why `typicalCstImprintsPerCycle`
+ * is unchanged between the two versions.
+ */
+export const nftAllocationFacts: {
+  /** NFTs imprinted for the Signature Allocation recipient (V2: 1, V3: 3). */
+  mainPrizeNfts: number;
+  /** Total NFTs imprinted in a typical cycle across every track (V2: 24, V3: 26). */
+  typicalNftsPerCycle: number;
+  /** Allocations that each pair an NFT with `specialAllocationCst`. Same in both versions. */
+  nftBearingAllocations: number;
+  /** Ready-made noun phrase for the Signature Allocation NFTs, per locale. */
+  mainPrizeNftPhrase: { en: string; zh: string };
+  /** Bare cardinal for `mainPrizeNfts`, for prose that supplies its own noun. */
+  mainPrizeNftsWord: { en: string; zh: string };
+} = isV3Mechanics
+  ? {
+      mainPrizeNfts: protocolFacts.v3.mainPrizeNftsPerCycleDefault,
+      typicalNftsPerCycle: protocolFacts.v3.typicalNftsPerCycle,
+      nftBearingAllocations: protocolFacts.typicalNftsPerCycle,
+      mainPrizeNftPhrase: {
+        en: 'three sequential Cosmic Signature NFTs',
+        zh: '3 枚连续编号的 Cosmic Signature NFT',
+      },
+      mainPrizeNftsWord: { en: 'three', zh: '3' },
+    }
+  : {
+      mainPrizeNfts: protocolFacts.mainPrizeNftsPerCycle,
+      typicalNftsPerCycle: protocolFacts.typicalNftsPerCycle,
+      nftBearingAllocations: protocolFacts.typicalNftsPerCycle,
+      mainPrizeNftPhrase: {
+        en: 'one Cosmic Signature NFT',
+        zh: '1 枚 Cosmic Signature NFT',
+      },
+      mainPrizeNftsWord: { en: 'one', zh: '1' },
     };

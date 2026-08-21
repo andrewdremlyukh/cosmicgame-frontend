@@ -108,25 +108,19 @@ export function useRequireChain(options: UseRequireChainOptions = {}): RequireCh
       return false;
     }
 
-    let actualChainId: number;
+    let actualChainId: number | null;
     try {
       actualChainId = await getChainId(signer as Client);
     } catch {
-      actualChainId = walletChainId ?? requiredChainId;
+      // Unverifiable. Assuming the app chain here would silently defeat the
+      // guard, so fall through to an explicit switch request instead: the
+      // wallet resolves it as a no-op when it is already on the right chain.
+      actualChainId = null;
     }
 
     if (actualChainId === requiredChainId) return true;
     return requestSwitch();
-  }, [
-    config,
-    connectorClient,
-    notify,
-    requestSwitch,
-    requiredChainId,
-    t,
-    walletChainId,
-    walletClient,
-  ]);
+  }, [config, connectorClient, notify, requestSwitch, requiredChainId, t, walletClient]);
 
   return {
     requiredChainId,

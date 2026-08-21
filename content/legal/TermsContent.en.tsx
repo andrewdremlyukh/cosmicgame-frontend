@@ -1,4 +1,9 @@
-import { ethDistributionFacts, isV3Mechanics, protocolFacts } from '@/content/protocol-facts';
+import {
+  ethDistributionFacts,
+  isV3Mechanics,
+  nftAllocationFacts,
+  protocolFacts,
+} from '@/content/protocol-facts';
 
 import { TermsContent, type TermsCopy } from './TermsContent';
 
@@ -91,12 +96,12 @@ export const termsCopyEn = {
         {
           id: 'distribution',
           subtitle: 'Allocation Distribution',
-          text: `Allocations are distributed automatically according to the smart contract rules. In a typical cycle, ${protocolFacts.typicalNftsPerCycle} Cosmic Signature NFTs and ${protocolFacts.typicalCstImprintsPerCycle.toLocaleString()} CST are imprinted across the allocation tracks below.`,
+          text: `Allocations are distributed automatically according to the smart contract rules. In a typical cycle, ${nftAllocationFacts.typicalNftsPerCycle} Cosmic Signature NFTs and ${protocolFacts.typicalCstImprintsPerCycle.toLocaleString()} CST are imprinted across the allocation tracks below.`,
         },
         {
           id: 'signature',
           subtitle: 'Signature Allocation',
-          text: `The participant who made the Final Gesture may retrieve ${ethDistributionFacts.mainEthPercentage}% ETH, ${protocolFacts.specialAllocationCst.toLocaleString()} Recognition CST, one Cosmic Signature NFT, and attached tokens from the cycle, if any.`,
+          text: `The participant who made the Final Gesture may retrieve ${ethDistributionFacts.mainEthPercentage}% ETH, ${protocolFacts.specialAllocationCst.toLocaleString()} Recognition CST, ${nftAllocationFacts.mainPrizeNftPhrase.en}, and attached tokens from the cycle, if any.`,
         },
         {
           id: 'chrono',

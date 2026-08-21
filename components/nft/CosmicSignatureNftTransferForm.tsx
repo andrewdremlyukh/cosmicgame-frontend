@@ -16,6 +16,7 @@ import { Link } from '@/i18n/navigation';
 import { activeChain } from '@/config/chains';
 import { useContractAddresses } from '@/contexts/ContractAddressesContext';
 import { useActiveWeb3React } from '@/hooks/web3';
+import { useRequireChain } from '@/hooks/useRequireChain';
 import { cn } from '@/lib/utils';
 import type { CSTTokenInfo } from '@/services/api';
 import { getEthErrorMessage, isUserRejection, reportError } from '@/utils/errors';
@@ -112,6 +113,7 @@ export function CosmicSignatureNftTransferForm({
   const queryClient = useQueryClient();
   const contractAddrs = useContractAddresses();
   const { account, active } = useActiveWeb3React();
+  const { ensureCorrectChain } = useRequireChain();
 
   const normalizedSource = useMemo(() => {
     if (!sourceAddress) return null;
@@ -233,6 +235,8 @@ export function CosmicSignatureNftTransferForm({
 
   const executeTransfer = async (validTransfer: ValidTransfer) => {
     if (!normalizedSource || !contractAddrs.cosmicSignature) return;
+    // Checked once for the whole batch; every token below is signed in sequence.
+    if (!(await ensureCorrectChain())) return;
 
     setSubmitting(true);
     setTxHashes([]);

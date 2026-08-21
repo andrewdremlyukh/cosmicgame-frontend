@@ -34,6 +34,7 @@ import { useSystemMode } from '@/contexts/SystemModeContext';
 import useRWLKNFTContract from '@/hooks/useRWLKNFTContract';
 import { HEADER_POLL_INTERVAL_MS } from '@/config/constants';
 import { formatFixed } from '@/utils/format';
+import { reportErrorThrottled } from '@/utils/errors';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
@@ -155,8 +156,10 @@ const Header: FC = () => {
           | readonly bigint[]
           | undefined;
         setRwlkCount(tokens?.length ?? 0);
-      } catch {
-        setRwlkCount(0);
+      } catch (err) {
+        // Keep the last known count: resetting to 0 on a transient RPC failure
+        // tells the user their NFTs are gone. Throttled because this polls.
+        reportErrorThrottled(err, 'header RWLK balance');
       }
     };
     fetchRwlk();

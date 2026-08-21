@@ -43,18 +43,18 @@ describe('system API', () => {
       expect(mockedAxios.get).toHaveBeenCalledWith(expect.stringMatching(/time.*current/));
     });
 
-    it('returns 0 on 400 response', async () => {
+    // Required read: a 0 fallback would date every countdown to 1970 while
+    // React Query still reported success.
+    it('rejects on 400 rather than falling back to 0', async () => {
       mockedAxios.get.mockRejectedValue(make400());
 
-      const result = await get_current_time();
-
-      expect(result).toBe(0);
+      await expect(get_current_time()).rejects.toThrow();
     });
 
     it('throws on network error', async () => {
       mockedAxios.get.mockRejectedValue(new Error('Network Error'));
 
-      await expect(get_current_time()).rejects.toThrow('Network response was not OK');
+      await expect(get_current_time()).rejects.toThrow('Network Error');
     });
   });
 

@@ -114,12 +114,17 @@ export function get_round_info(
   });
 }
 
-/** Fetches the allocation-claim timestamp for the current round. */
+/**
+ * Fetches the allocation-claim timestamp for the current round.
+ *
+ * Required read: a fallback of 0 would be epoch, which renders as a countdown
+ * that has already elapsed rather than as a failed fetch.
+ */
 export function get_prize_time(opts?: ApiRequestOptions): Promise<number> {
-  return apiCall(async () => {
+  return apiCallRequired(async () => {
     const { data } = await apiGet(getAPIUrl('rounds/current/time'), opts);
     return data.CurRoundPrizeTime;
-  }, 0);
+  });
 }
 
 /** Fetches the global allocation-claim history with flattened transaction fields (optionally paged). */

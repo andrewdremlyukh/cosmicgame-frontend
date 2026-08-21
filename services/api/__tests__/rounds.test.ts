@@ -362,14 +362,16 @@ describe('rounds API', () => {
       expect(mockedAxios.get).toHaveBeenCalledWith(expect.stringMatching(/rounds.*current.*time/));
     });
 
-    it('returns 0 on 400 response', async () => {
+    // Required read: a 0 fallback would render an already-elapsed countdown
+    // instead of surfacing the failed fetch.
+    it('rejects on 400 rather than falling back to 0', async () => {
       mockedAxios.get.mockRejectedValue(make400());
-      expect(await get_prize_time()).toBe(0);
+      await expect(get_prize_time()).rejects.toThrow();
     });
 
     it('throws on network error', async () => {
       mockedAxios.get.mockRejectedValue(new Error('fail'));
-      await expect(get_prize_time()).rejects.toThrow('Network response was not OK');
+      await expect(get_prize_time()).rejects.toThrow('fail');
     });
   });
 

@@ -15,6 +15,7 @@ import { getExplorerUrl, shortenHex } from '@/utils';
 import { activeChain } from '@/config/chains';
 import { useContractAddresses } from '@/contexts/ContractAddressesContext';
 import { useActiveWeb3React } from '@/hooks/web3';
+import { useRequireChain } from '@/hooks/useRequireChain';
 import { getEthErrorMessage, isUserRejection, reportError } from '@/utils/errors';
 import { assertSuccessfulTransactionReceipt } from '@/utils/transactions';
 import { Button } from '@/components/ui/button';
@@ -73,6 +74,7 @@ export function CstTransferForm({
   const queryClient = useQueryClient();
   const contractAddrs = useContractAddresses();
   const { account, active } = useActiveWeb3React();
+  const { ensureCorrectChain } = useRequireChain();
 
   const normalizedSource = useMemo(() => {
     if (!sourceAddress) return null;
@@ -192,6 +194,7 @@ export function CstTransferForm({
     event.preventDefault();
     const validTransfer = validateTransfer();
     if (!validTransfer) return;
+    if (!(await ensureCorrectChain())) return;
 
     setSubmitting(true);
     setTxHash(null);

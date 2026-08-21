@@ -2,6 +2,7 @@ import {
   cstRewardFacts,
   ethDistributionFacts,
   isV3Mechanics,
+  nftAllocationFacts,
   protocolFacts,
 } from '@/content/protocol-facts';
 
@@ -55,7 +56,7 @@ export const howItWorksContentZh = {
         number: '03',
         title: '获配',
         description: '周期收官后，即可参与各项分配——签名分配、星选、锚定派发等。',
-        tooltip: `写下收官之笔的参与者会获得周期储备的 ${ethDistributionFacts.mainEthPercentage}%、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。星选获配者、锚定者及其他参与者也会获得相应分配。`,
+        tooltip: `写下收官之笔的参与者会获得周期储备的 ${ethDistributionFacts.mainEthPercentage}%、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 ${nftAllocationFacts.mainPrizeNftPhrase.zh}。星选获配者、锚定者及其他参与者也会获得相应分配。`,
       },
     ],
   },
@@ -80,7 +81,7 @@ export const howItWorksContentZh = {
       },
       {
         title: '签名分配',
-        description: `写下收官之笔的参与者，可取回周期储备中 ${ethDistributionFacts.mainEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。`,
+        description: `写下收官之笔的参与者，可取回周期储备中 ${ethDistributionFacts.mainEthPercentage}% 的 ETH、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 ${nftAllocationFacts.mainPrizeNftPhrase.zh}。`,
         tooltip: '周期储备随每一笔增长。写下收官之笔的参与者通过协议合约取回签名分配。',
       },
     ],
@@ -111,7 +112,7 @@ export const howItWorksContentZh = {
       },
       {
         label: '周期收官',
-        description: `写下收官之笔的参与者取回签名分配：周期储备的 ${ethDistributionFacts.mainEthPercentage}%、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 1 枚 Cosmic Signature NFT。`,
+        description: `写下收官之笔的参与者取回签名分配：周期储备的 ${ethDistributionFacts.mainEthPercentage}%、${protocolFacts.specialAllocationCst.toLocaleString('zh-CN')} CST 与 ${nftAllocationFacts.mainPrizeNftPhrase.zh}。`,
         tooltip: '签名分配经由协议合约取回；CST 与 Cosmic Signature NFT 会自动完成铭刻。',
       },
       {

@@ -58,6 +58,18 @@ jest.mock('../../../hooks/web3', () => ({
   }),
 }));
 
+const mockEnsureCorrectChain = jest.fn<Promise<boolean>, []>();
+jest.mock('../../../hooks/useRequireChain', () => ({
+  useRequireChain: () => ({
+    requiredChainId: 421614,
+    connectedChainId: 421614,
+    isWrongChain: false,
+    isConnected: true,
+    switchToRequiredChain: jest.fn(),
+    ensureCorrectChain: mockEnsureCorrectChain,
+  }),
+}));
+
 jest.mock('../../../utils/errors', () => {
   const actual = jest.requireActual('../../../utils/errors');
   return {
@@ -117,6 +129,7 @@ function submitRewardForm() {
 describe('MarketingCstRewardForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockEnsureCorrectChain.mockResolvedValue(true);
     mockAccount = TREASURER;
     mockActive = true;
     mockContractAddresses = TEST_APP_CONTRACT_ADDRESSES;
@@ -171,6 +184,17 @@ describe('MarketingCstRewardForm', () => {
     fillRewardForm('3000.01');
     submitRewardForm();
     expect(toast.error).toHaveBeenCalledWith('toasts.transfer.marketingCst.insufficientBalance');
+    expect(mockWriteContract).not.toHaveBeenCalled();
+  });
+
+  it('does not sign anything when the wallet is on the wrong chain', async () => {
+    mockEnsureCorrectChain.mockResolvedValue(false);
+    await renderReadyForm();
+    fillRewardForm('12.5');
+
+    submitRewardForm();
+
+    await waitFor(() => expect(mockEnsureCorrectChain).toHaveBeenCalled());
     expect(mockWriteContract).not.toHaveBeenCalled();
   });
 
