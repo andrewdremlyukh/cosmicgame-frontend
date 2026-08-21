@@ -59,12 +59,12 @@ const files: FileEntry[] = SERVICE_FILES.map((name) => {
 
 const EXPECTED_COUNTS: Record<string, number> = {
   'client.ts': 21,
-  'rounds.ts': 18,
+  'rounds.ts': 15,
   'tokens.ts': 18,
   'anchoring.ts': 20,
-  'donations.ts': 22,
-  'users.ts': 12,
-  'stellarSelection.ts': 6,
+  'donations.ts': 14,
+  'users.ts': 11,
+  'stellarSelection.ts': 3,
   'marketing.ts': 2,
   'system.ts': 3,
 };
@@ -90,9 +90,9 @@ describe('API service JSDoc coverage', () => {
   });
 
   describe('no function is missing from the inventory', () => {
-    it('total exported functions across all service files is 122', () => {
+    it('total exported functions across all service files is 107', () => {
       const total = files.reduce((sum, f) => sum + f.exports.length, 0);
-      expect(total).toBe(122);
+      expect(total).toBe(107);
     });
   });
 

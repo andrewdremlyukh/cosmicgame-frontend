@@ -12,16 +12,12 @@ import {
   useGestureInfo,
   useGestureListByCycle,
   useCurrentSpecialRecipients,
-  useAllocationDepositsList,
-  useAllocationDepositsByCycle,
   useBannedGestures,
   useGestureEthCost,
-  useTimeUntilAllocation,
   useCSTList,
   useCSTTokensByUser,
   useCSTInfo,
   useNameHistory,
-  useTokenByName,
   useNamedNFTs,
   useCSTTransfers,
   useCSTDistribution,
@@ -35,7 +31,6 @@ import {
   useCSTAnchorDistributionsToRetrieveByUser,
   useCSTAnchorDistributionsRetrievedByUser,
   useAnchoredCSTokensByUser,
-  useCSTActionIdsByDepositId,
   useCSTAnchorActionsByUser,
   useCSTAnchorActions,
   useCSTAnchorActionInfo,
@@ -52,25 +47,16 @@ import {
   useRWLKAnchorImprintsByUser,
   useGlobalAnchoredRWLKTokens,
   useAnchoredRWLKTokensByUser,
-  useDonationsCGSimpleList,
-  useDonationsCGSimpleByRound,
-  useDonationsCGWithInfoList,
   useDonationsCGWithInfoByRound,
   useDonationsWithInfoById,
-  useDonationsEthByUser,
   useDonationsBothByRound,
   useDonationsBoth,
-  useCharityDonationsDeposits,
   useCharityCGDeposits,
   useCharityVoluntary,
   useCharityWithdrawals,
   useDonationsNFTList,
-  useDonatedNFTInfo,
-  useDonatedNFTClaimsAll,
   useClaimedDonatedNFTByUser,
-  useNFTDonationStats,
   useDonationsNFTByRound,
-  useDonationsNFTUnclaimedByRound,
   useUnclaimedDonatedNFTByUser,
   useDonationsERC20ByRound,
   useDonationsERC20ByUser,
@@ -82,12 +68,8 @@ import {
   useUniqueDonors,
   useUniqueCSTAnchorHolders,
   useUniqueRWLKAnchorHolders,
-  useUniqueBothAnchorHolders,
   useStellarSelectionDepositsByUser,
-  useChronoWarriorDepositsByUser,
   useUnretrievedStellarSelectionDepositsByUser,
-  useStellarSelectionNFTRecipientsList,
-  useStellarSelectionNFTRecipientsByCycle,
   useStellarSelectionNFTAllocationsByUser,
   useMarketingRewards,
   useMarketingRewardsByUser,
@@ -210,7 +192,6 @@ describe('useApiQuery hooks', () => {
       ['useGestureListByCycle', () => useGestureListByCycle(1)],
       ['useCurrentSpecialRecipients', () => useCurrentSpecialRecipients()],
       ['useGestureEthCost', () => useGestureEthCost()],
-      ['useTimeUntilAllocation', () => useTimeUntilAllocation()],
       ['useCurrentTime', () => useCurrentTime()],
     ];
 
@@ -418,36 +399,6 @@ describe('useApiQuery hooks', () => {
     });
   });
 
-  describe('useAllocationDepositsList', () => {
-    it('calls useQuery with the correct query key', () => {
-      renderHook(() => useAllocationDepositsList());
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['prizeDepositsList'] }),
-      );
-    });
-
-    it('has staleTime of 30s', () => {
-      renderHook(() => useAllocationDepositsList());
-      expect(getOptions().staleTime).toBe(30_000);
-    });
-  });
-
-  describe('useAllocationDepositsByCycle', () => {
-    it('includes round in the query key', () => {
-      renderHook(() => useAllocationDepositsByCycle(5));
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['prizeDepositsByRound', 5] }),
-      );
-    });
-
-    it('is enabled for round >= 0', () => {
-      renderHook(() => useAllocationDepositsByCycle(0));
-      expect(getOptions().enabled).toBe(true);
-    });
-  });
-
   describe('useBannedGestures', () => {
     it('calls useQuery with the correct query key', () => {
       renderHook(() => useBannedGestures());
@@ -478,25 +429,6 @@ describe('useApiQuery hooks', () => {
       const options = getOptions();
       expect(options.staleTime).toBe(10_000);
       expect(options.refetchInterval).toBe(15_000);
-      expect(options.refetchIntervalInBackground).toBe(false);
-    });
-  });
-
-  describe('useTimeUntilAllocation', () => {
-    it('calls useQuery with the correct query key', () => {
-      renderHook(() => useTimeUntilAllocation());
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['timeUntilPrize'] }),
-      );
-    });
-
-    it('polls frequently', () => {
-      renderHook(() => useTimeUntilAllocation());
-
-      const options = getOptions();
-      expect(options.staleTime).toBe(5_000);
-      expect(options.refetchInterval).toBe(10_000);
       expect(options.refetchIntervalInBackground).toBe(false);
     });
   });
@@ -571,26 +503,6 @@ describe('useApiQuery hooks', () => {
 
     it('is enabled for tokenId = 0', () => {
       renderHook(() => useNameHistory(0));
-      expect(getOptions().enabled).toBe(true);
-    });
-  });
-
-  describe('useTokenByName', () => {
-    it('includes name in the query key', () => {
-      renderHook(() => useTokenByName('Alpha'));
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['tokenByName', 'Alpha'] }),
-      );
-    });
-
-    it('is disabled when name is null', () => {
-      renderHook(() => useTokenByName(null));
-      expect(getOptions().enabled).toBe(false);
-    });
-
-    it('is enabled for a non-empty name', () => {
-      renderHook(() => useTokenByName('test'));
       expect(getOptions().enabled).toBe(true);
     });
   });
@@ -841,31 +753,6 @@ describe('useApiQuery hooks', () => {
       expect(options.refetchInterval).toBe(30_000);
       expect(options.refetchIntervalInBackground).toBe(false);
       expect(options.staleTime).toBe(15_000);
-    });
-  });
-
-  describe('useCSTActionIdsByDepositId', () => {
-    it('includes address and depositId in the query key', () => {
-      renderHook(() => useCSTActionIdsByDepositId('0xccc', 7));
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['cstActionIdsByDeposit', '0xccc', 7] }),
-      );
-    });
-
-    it('is disabled when address is null', () => {
-      renderHook(() => useCSTActionIdsByDepositId(null, 7));
-      expect(getOptions().enabled).toBe(false);
-    });
-
-    it('is disabled when depositId is null', () => {
-      renderHook(() => useCSTActionIdsByDepositId('0xccc', null));
-      expect(getOptions().enabled).toBe(false);
-    });
-
-    it('is enabled when both params are valid', () => {
-      renderHook(() => useCSTActionIdsByDepositId('0xccc', 0));
-      expect(getOptions().enabled).toBe(true);
     });
   });
 
@@ -1151,51 +1038,6 @@ describe('useApiQuery hooks', () => {
   // Donations – ETH
   // ---------------------------------------------------------------------------
 
-  describe('useDonationsCGSimpleList', () => {
-    it('calls useQuery with the correct query key', () => {
-      renderHook(() => useDonationsCGSimpleList());
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['donationsCGSimpleList'] }),
-      );
-    });
-
-    it('has staleTime of 30s', () => {
-      renderHook(() => useDonationsCGSimpleList());
-      expect(getOptions().staleTime).toBe(30_000);
-    });
-  });
-
-  describe('useDonationsCGSimpleByRound', () => {
-    it('includes round in the query key', () => {
-      renderHook(() => useDonationsCGSimpleByRound(2));
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['donationsCGSimpleByRound', 2] }),
-      );
-    });
-
-    it('is enabled for round >= 0', () => {
-      renderHook(() => useDonationsCGSimpleByRound(0));
-      expect(getOptions().enabled).toBe(true);
-    });
-  });
-
-  describe('useDonationsCGWithInfoList', () => {
-    it('calls useQuery with the correct query key', () => {
-      renderHook(() => useDonationsCGWithInfoList());
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['donationsCGWithInfoList'] }),
-      );
-    });
-
-    it('has staleTime of 30s', () => {
-      renderHook(() => useDonationsCGWithInfoList());
-      expect(getOptions().staleTime).toBe(30_000);
-    });
-  });
-
   describe('useDonationsCGWithInfoByRound', () => {
     it('includes round in the query key', () => {
       renderHook(() => useDonationsCGWithInfoByRound(4));
@@ -1228,21 +1070,6 @@ describe('useApiQuery hooks', () => {
     it('is enabled for id = 0', () => {
       renderHook(() => useDonationsWithInfoById(0));
       expect(getOptions().enabled).toBe(true);
-    });
-  });
-
-  describe('useDonationsEthByUser', () => {
-    it('includes address in the query key', () => {
-      renderHook(() => useDonationsEthByUser('0x666'));
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['donationsEthByUser', '0x666'] }),
-      );
-    });
-
-    it('is disabled when address is null', () => {
-      renderHook(() => useDonationsEthByUser(null));
-      expect(getOptions().enabled).toBe(false);
     });
   });
 
@@ -1279,21 +1106,6 @@ describe('useApiQuery hooks', () => {
   // ---------------------------------------------------------------------------
   // Donations – Charity
   // ---------------------------------------------------------------------------
-
-  describe('useCharityDonationsDeposits', () => {
-    it('calls useQuery with the correct query key', () => {
-      renderHook(() => useCharityDonationsDeposits());
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['charityDonationsDeposits'] }),
-      );
-    });
-
-    it('has staleTime of 60s', () => {
-      renderHook(() => useCharityDonationsDeposits());
-      expect(getOptions().staleTime).toBe(60_000);
-    });
-  });
 
   describe('useCharityCGDeposits', () => {
     it('calls useQuery with the correct query key', () => {
@@ -1354,41 +1166,6 @@ describe('useApiQuery hooks', () => {
     });
   });
 
-  describe('useDonatedNFTInfo', () => {
-    it('includes recordId in the query key', () => {
-      renderHook(() => useDonatedNFTInfo(12));
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['donatedNFTInfo', 12] }),
-      );
-    });
-
-    it('is disabled when recordId is null', () => {
-      renderHook(() => useDonatedNFTInfo(null));
-      expect(getOptions().enabled).toBe(false);
-    });
-
-    it('is enabled for recordId = 0', () => {
-      renderHook(() => useDonatedNFTInfo(0));
-      expect(getOptions().enabled).toBe(true);
-    });
-  });
-
-  describe('useDonatedNFTClaimsAll', () => {
-    it('calls useQuery with the correct query key', () => {
-      renderHook(() => useDonatedNFTClaimsAll());
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['donatedNFTClaimsAll'] }),
-      );
-    });
-
-    it('has staleTime of 30s', () => {
-      renderHook(() => useDonatedNFTClaimsAll());
-      expect(getOptions().staleTime).toBe(30_000);
-    });
-  });
-
   describe('useClaimedDonatedNFTByUser', () => {
     it('includes address in the query key', () => {
       renderHook(() => useClaimedDonatedNFTByUser('0x777'));
@@ -1401,21 +1178,6 @@ describe('useApiQuery hooks', () => {
     it('is disabled when address is null', () => {
       renderHook(() => useClaimedDonatedNFTByUser(null));
       expect(getOptions().enabled).toBe(false);
-    });
-  });
-
-  describe('useNFTDonationStats', () => {
-    it('calls useQuery with the correct query key', () => {
-      renderHook(() => useNFTDonationStats());
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['nftDonationStats'] }),
-      );
-    });
-
-    it('has staleTime of 60s', () => {
-      renderHook(() => useNFTDonationStats());
-      expect(getOptions().staleTime).toBe(60_000);
     });
   });
 
@@ -1436,21 +1198,6 @@ describe('useApiQuery hooks', () => {
     it('refreshes attached NFT asset context on window focus', () => {
       renderHook(() => useDonationsNFTByRound(0));
       expect(getOptions().refetchOnWindowFocus).toBe(true);
-    });
-  });
-
-  describe('useDonationsNFTUnclaimedByRound', () => {
-    it('includes round in the query key', () => {
-      renderHook(() => useDonationsNFTUnclaimedByRound(7));
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['donationsNFTUnclaimedByRound', 7] }),
-      );
-    });
-
-    it('is enabled for round >= 0', () => {
-      renderHook(() => useDonationsNFTUnclaimedByRound(0));
-      expect(getOptions().enabled).toBe(true);
     });
   });
 
@@ -1660,21 +1407,6 @@ describe('useApiQuery hooks', () => {
     });
   });
 
-  describe('useUniqueBothAnchorHolders', () => {
-    it('calls useQuery with the correct query key', () => {
-      renderHook(() => useUniqueBothAnchorHolders());
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['uniqueBothStakers'] }),
-      );
-    });
-
-    it('has staleTime of 60s', () => {
-      renderHook(() => useUniqueBothAnchorHolders());
-      expect(getOptions().staleTime).toBe(60_000);
-    });
-  });
-
   // ---------------------------------------------------------------------------
   // Raffle
   // ---------------------------------------------------------------------------
@@ -1690,21 +1422,6 @@ describe('useApiQuery hooks', () => {
 
     it('is disabled when address is null', () => {
       renderHook(() => useStellarSelectionDepositsByUser(null));
-      expect(getOptions().enabled).toBe(false);
-    });
-  });
-
-  describe('useChronoWarriorDepositsByUser', () => {
-    it('includes address in the query key', () => {
-      renderHook(() => useChronoWarriorDepositsByUser('0xccc'));
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['chronoWarriorDepositsByUser', '0xccc'] }),
-      );
-    });
-
-    it('is disabled when address is null', () => {
-      renderHook(() => useChronoWarriorDepositsByUser(null));
       expect(getOptions().enabled).toBe(false);
     });
   });
@@ -1730,36 +1447,6 @@ describe('useApiQuery hooks', () => {
       expect(options.refetchInterval).toBe(30_000);
       expect(options.refetchIntervalInBackground).toBe(false);
       expect(options.staleTime).toBe(15_000);
-    });
-  });
-
-  describe('useStellarSelectionNFTRecipientsList', () => {
-    it('calls useQuery with the correct query key', () => {
-      renderHook(() => useStellarSelectionNFTRecipientsList());
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['raffleNFTWinnersList'] }),
-      );
-    });
-
-    it('has staleTime of 30s', () => {
-      renderHook(() => useStellarSelectionNFTRecipientsList());
-      expect(getOptions().staleTime).toBe(30_000);
-    });
-  });
-
-  describe('useStellarSelectionNFTRecipientsByCycle', () => {
-    it('includes round in the query key', () => {
-      renderHook(() => useStellarSelectionNFTRecipientsByCycle(5));
-
-      expect(mockUseQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ queryKey: ['raffleNFTWinnersByRound', 5] }),
-      );
-    });
-
-    it('is enabled for round >= 0', () => {
-      renderHook(() => useStellarSelectionNFTRecipientsByCycle(0));
-      expect(getOptions().enabled).toBe(true);
     });
   });
 

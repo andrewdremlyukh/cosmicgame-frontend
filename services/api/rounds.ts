@@ -204,25 +204,6 @@ export function get_current_special_winners(
   });
 }
 
-/** Fetches stellarSelection ETH deposits across all rounds (optionally paged). */
-export function get_prize_deposits_list(opts?: ApiListRequestOptions): Promise<TxInfo[]> {
-  return apiCall(async () => {
-    const { data } = await apiGet(getAPIUrl(`raffle/deposits/list/${pagedPath(opts)}`), opts);
-    return flattenTxArray<TxInfo>(data.RaffleDeposits);
-  }, []);
-}
-
-/** Fetches stellarSelection ETH deposits for a specific round. */
-export function get_prize_deposits_by_round(
-  round: number,
-  opts?: ApiRequestOptions,
-): Promise<TxInfo[]> {
-  return apiCall(async () => {
-    const { data } = await apiGet(getAPIUrl(`raffle/deposits/by_round/${round}`), opts);
-    return flattenTxArray<TxInfo>(data.RaffleDeposits);
-  }, []);
-}
-
 /**
  * Fetches the list of administratively banned gestures (Cosmic Game / Go API).
  * Optional read: the route is admin-gated and answers 403 to ordinary clients.
@@ -259,14 +240,6 @@ export function get_bid_eth_price(opts?: ApiRequestOptions): Promise<GestureEthC
     const { data } = await apiGet(getAPIUrl(`bid/eth_price`), opts);
     return data as GestureEthCostInfo;
   }, null);
-}
-
-/** Fetches the number of seconds remaining until the next allocation can be claimed. */
-export function get_time_until_prize(opts?: ApiRequestOptions): Promise<number> {
-  return apiCall(async () => {
-    const { data } = await apiGet(getAPIUrl('time/until_prize'), opts);
-    return data.TimeUntilPrize;
-  }, 0);
 }
 
 // lexicon-allow-end

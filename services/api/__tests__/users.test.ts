@@ -11,7 +11,6 @@ import {
   get_unique_donors,
   get_unique_cst_stakers,
   get_unique_rwalk_stakers,
-  get_unique_both_stakers,
 } from '@/services/api/users';
 
 jest.mock('axios', () => {
@@ -268,30 +267,6 @@ describe('users API', () => {
     it('throws on network error', async () => {
       mockedAxios.get.mockRejectedValue(new Error('fail'));
       await expect(get_unique_rwalk_stakers()).rejects.toThrow('Network response was not OK');
-    });
-  });
-
-  describe('get_unique_both_stakers', () => {
-    it('returns unique combined anchorHolders on success', async () => {
-      const anchorHolders = [{ Addr: '0xb1', StakeCount: 6 }];
-      mockedAxios.get.mockResolvedValue({ data: { UniqueStakersBoth: anchorHolders } });
-
-      const result = await get_unique_both_stakers();
-
-      expect(result).toEqual(anchorHolders);
-      expect(mockedAxios.get).toHaveBeenCalledWith(
-        expect.stringMatching(/statistics\/unique\/stakers\/both/),
-      );
-    });
-
-    it('returns empty array on 400 response', async () => {
-      mockedAxios.get.mockRejectedValue(make400());
-      expect(await get_unique_both_stakers()).toEqual([]);
-    });
-
-    it('throws on network error', async () => {
-      mockedAxios.get.mockRejectedValue(new Error('fail'));
-      await expect(get_unique_both_stakers()).rejects.toThrow('Network response was not OK');
     });
   });
 });

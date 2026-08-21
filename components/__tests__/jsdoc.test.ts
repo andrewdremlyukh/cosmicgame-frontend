@@ -6,10 +6,8 @@ const COMPONENTS_DIR = resolve(__dirname, '..');
 const COMPONENT_FILES = [
   'home/AuctionInfo.tsx',
   'home/GestureForm.tsx',
-  'home/CustomTabPanel.tsx',
   'home/DonatedTokensSection.tsx',
   'home/RoundInfoSection.tsx',
-  'home/WinningHistorySection.tsx',
   'common/VideoPlayerDialog.tsx',
   'UserStatisticsView.tsx',
   'nft/NFTTrait.tsx',
@@ -71,10 +69,8 @@ const files: FileEntry[] = COMPONENT_FILES.map((name) => {
 const EXPECTED_COUNTS: Record<string, number> = {
   'home/AuctionInfo.tsx': 1,
   'home/GestureForm.tsx': 1,
-  'home/CustomTabPanel.tsx': 2,
   'home/DonatedTokensSection.tsx': 1,
   'home/RoundInfoSection.tsx': 1,
-  'home/WinningHistorySection.tsx': 1,
   'common/VideoPlayerDialog.tsx': 1,
   'UserStatisticsView.tsx': 1,
   'nft/NFTTrait.tsx': 1,
@@ -101,9 +97,9 @@ describe('Component JSDoc coverage', () => {
   });
 
   describe('no export is missing from the inventory', () => {
-    it('total exported symbols across all component files is 10', () => {
+    it('total exported symbols across all component files is 7', () => {
       const total = files.reduce((sum, f) => sum + f.exports.length, 0);
-      expect(total).toBe(10);
+      expect(total).toBe(7);
     });
   });
 

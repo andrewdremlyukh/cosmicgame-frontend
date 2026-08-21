@@ -13,13 +13,10 @@ import {
   get_bid_info,
   get_bid_list_by_round,
   get_current_special_winners,
-  get_prize_deposits_list,
-  get_prize_deposits_by_round,
   get_banned_bids,
   ban_bid,
   unban_gesture,
   get_bid_eth_price,
-  get_time_until_prize,
 } from '@/services/api/rounds';
 
 jest.mock('axios', () => {
@@ -624,61 +621,6 @@ describe('rounds API', () => {
     });
   });
 
-  describe('get_prize_deposits_list', () => {
-    it('returns flattened deposits on success', async () => {
-      mockedAxios.get.mockResolvedValue({
-        data: { RaffleDeposits: [mockTx(1)] },
-      });
-
-      const result = await get_prize_deposits_list();
-
-      expect(result).toHaveLength(1);
-      expect(result[0]).toHaveProperty('TxHash', '0x1');
-      expect(mockedAxios.get).toHaveBeenCalledWith(expect.stringMatching(/raffle\/deposits\/list/));
-    });
-
-    it('returns empty array when RaffleDeposits is missing', async () => {
-      mockedAxios.get.mockResolvedValue({ data: {} });
-      expect(await get_prize_deposits_list()).toEqual([]);
-    });
-
-    it('returns empty array on 400 response', async () => {
-      mockedAxios.get.mockRejectedValue(make400());
-      expect(await get_prize_deposits_list()).toEqual([]);
-    });
-
-    it('throws on network error', async () => {
-      mockedAxios.get.mockRejectedValue(new Error('fail'));
-      await expect(get_prize_deposits_list()).rejects.toThrow('Network response was not OK');
-    });
-  });
-
-  describe('get_prize_deposits_by_round', () => {
-    it('returns flattened deposits for the given round', async () => {
-      mockedAxios.get.mockResolvedValue({
-        data: { RaffleDeposits: [mockTx(2)] },
-      });
-
-      const result = await get_prize_deposits_by_round(10);
-
-      expect(result).toHaveLength(1);
-      expect(result[0]).toHaveProperty('TxHash', '0x2');
-      expect(mockedAxios.get).toHaveBeenCalledWith(
-        expect.stringMatching(/raffle\/deposits\/by_round\/10/),
-      );
-    });
-
-    it('returns empty array on 400 response', async () => {
-      mockedAxios.get.mockRejectedValue(make400());
-      expect(await get_prize_deposits_by_round(1)).toEqual([]);
-    });
-
-    it('throws on network error', async () => {
-      mockedAxios.get.mockRejectedValue(new Error('fail'));
-      await expect(get_prize_deposits_by_round(1)).rejects.toThrow('Network response was not OK');
-    });
-  });
-
   describe('get_banned_bids', () => {
     it('returns banned gestures from the main API', async () => {
       const gestures = [{ BidId: 1, UserAddr: '0x1' }];
@@ -762,27 +704,6 @@ describe('rounds API', () => {
     it('throws on network error', async () => {
       mockedAxios.get.mockRejectedValue(new Error('fail'));
       await expect(get_bid_eth_price()).rejects.toThrow('Network response was not OK');
-    });
-  });
-
-  describe('get_time_until_prize', () => {
-    it('returns TimeUntilPrize on success', async () => {
-      mockedAxios.get.mockResolvedValue({ data: { TimeUntilPrize: 3600 } });
-
-      const result = await get_time_until_prize();
-
-      expect(result).toBe(3600);
-      expect(mockedAxios.get).toHaveBeenCalledWith(expect.stringMatching(/time.*until_prize/));
-    });
-
-    it('returns 0 on 400 response', async () => {
-      mockedAxios.get.mockRejectedValue(make400());
-      expect(await get_time_until_prize()).toBe(0);
-    });
-
-    it('throws on network error', async () => {
-      mockedAxios.get.mockRejectedValue(new Error('fail'));
-      await expect(get_time_until_prize()).rejects.toThrow('Network response was not OK');
     });
   });
 });

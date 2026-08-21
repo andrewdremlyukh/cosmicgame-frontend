@@ -243,10 +243,6 @@ jest.mock('../../../../components/home/RoundInfoSection', () => ({
   RoundInfoSection: () => <div data-testid="round-info-section">RoundInfoSection</div>,
 }));
 
-jest.mock('../../../../components/home/WinningHistorySection', () => ({
-  WinningHistorySection: () => <div data-testid="winning-history">WinningHistorySection</div>,
-}));
-
 jest.mock('../../../../components/nft/LatestNFTs', () => ({
   __esModule: true,
   default: () => <div data-testid="latest-nfts">LatestNFTs</div>,

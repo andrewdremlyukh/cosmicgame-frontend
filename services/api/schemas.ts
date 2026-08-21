@@ -54,8 +54,6 @@ export const TxInfoSchema = z
     DateTime: z.string().optional(),
   })
   .loose();
-export type TxInfoParsed = z.infer<typeof TxInfoSchema>;
-
 /* ------------------------------------------------------------------------- *
  *  Dashboard / Statistics
  * ------------------------------------------------------------------------- */
@@ -130,8 +128,6 @@ export const DashboardInfoSchema = z
     NumRaffleNFTWinnersStakingRWalk: z.number(),
   })
   .loose();
-export type DashboardInfoParsed = z.infer<typeof DashboardInfoSchema>;
-
 /* ------------------------------------------------------------------------- *
  *  Rounds
  * ------------------------------------------------------------------------- */
@@ -223,8 +219,6 @@ export const RoundInfoSchema = z
     ChronoWarriorAddr: AddressSchema,
   })
   .loose();
-export type RoundInfoParsed = z.infer<typeof RoundInfoSchema>;
-
 /* ------------------------------------------------------------------------- *
  *  Gestures
  * ------------------------------------------------------------------------- */
@@ -249,8 +243,6 @@ export const GestureInfoSchema = z
     Message: z.string().optional(),
   })
   .loose();
-export type GestureInfoParsed = z.infer<typeof GestureInfoSchema>;
-
 /* ------------------------------------------------------------------------- *
  *  Users
  * ------------------------------------------------------------------------- */
@@ -294,8 +286,6 @@ export const SpecialRecipientsSchema = z
     SourceBlockTimeStamp: z.number().optional(),
   })
   .loose();
-export type SpecialRecipientsParsed = z.infer<typeof SpecialRecipientsSchema>;
-
 /* ------------------------------------------------------------------------- *
  *  Claim / allocation data
  * ------------------------------------------------------------------------- */

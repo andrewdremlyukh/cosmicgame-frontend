@@ -9,7 +9,6 @@ import api from '@/services/api';
 import { getLiveDataPollIntervalMs, getRemainingMsToAllocationTime } from '@/lib/pollingCadence';
 import { useUxScenarioSnapshot } from '@/lib/uxCycleScenarios';
 import type {
-  ActionIdWithClaimInfo,
   AdminEventRow,
   BannedGesture,
   GestureEthCostInfo,
@@ -35,7 +34,6 @@ import type {
   ETHDonation,
   MarketingReward,
   NameHistoryRecord,
-  NFTDonationStatsEntry,
   NotifyRedBoxResult,
   StellarSelectionETHDeposit,
   StellarSelectionNFTRecipient,
@@ -248,23 +246,6 @@ export function useCurrentSpecialRecipients() {
   return withUxScenarioData(query, scenario?.specialRecipients ?? undefined, scenario?.createdAtMs);
 }
 
-export function useAllocationDepositsList() {
-  return useQuery<TxInfo[]>({
-    queryKey: ['prizeDepositsList'],
-    queryFn: ({ signal }) => api.get_prize_deposits_list({ signal }),
-    staleTime: 30_000,
-  });
-}
-
-export function useAllocationDepositsByCycle(round: number) {
-  return useQuery<TxInfo[]>({
-    queryKey: ['prizeDepositsByRound', round],
-    queryFn: ({ signal }) => api.get_prize_deposits_by_round(round, { signal }),
-    enabled: round >= 0,
-    staleTime: 30_000,
-  });
-}
-
 export function useBannedGestures() {
   return useQuery<BannedGesture[]>({
     queryKey: ['bannedBids'],
@@ -285,17 +266,6 @@ export function useGestureEthCost() {
     refetchOnWindowFocus: true,
   });
   return withUxScenarioData(query, scenario?.ethCost ?? undefined, scenario?.createdAtMs);
-}
-
-export function useTimeUntilAllocation() {
-  return useQuery<number>({
-    queryKey: ['timeUntilPrize'],
-    queryFn: ({ signal }) => api.get_time_until_prize({ signal }),
-    staleTime: 5_000,
-    refetchInterval: 10_000,
-    refetchIntervalInBackground: false,
-    refetchOnWindowFocus: true,
-  });
 }
 
 // ---------------------------------------------------------------------------
@@ -333,15 +303,6 @@ export function useNameHistory(tokenId: number | null | undefined) {
     queryKey: ['nameHistory', tokenId],
     queryFn: ({ signal }) => api.get_name_history(tokenId!, { signal }),
     enabled: tokenId != null && tokenId >= 0,
-    staleTime: 30_000,
-  });
-}
-
-export function useTokenByName(name: string | null | undefined) {
-  return useQuery<CSTTokenInfo[]>({
-    queryKey: ['tokenByName', name],
-    queryFn: ({ signal }) => api.get_token_by_name(name!, { signal }),
-    enabled: !!name,
     staleTime: 30_000,
   });
 }
@@ -558,18 +519,6 @@ export function useAnchoredCSTokensByUser(address: string | null | undefined) {
   });
 }
 
-export function useCSTActionIdsByDepositId(
-  address: string | null | undefined,
-  depositId: number | null | undefined,
-) {
-  return useQuery<ActionIdWithClaimInfo[] | null>({
-    queryKey: ['cstActionIdsByDeposit', address, depositId],
-    queryFn: ({ signal }) => api.get_cst_action_ids_by_deposit_id(address!, depositId!, { signal }),
-    enabled: !!address && depositId != null,
-    staleTime: 30_000,
-  });
-}
-
 export function useCSTAnchorActionsByUser(address: string | null | undefined) {
   return useQuery<AnchorAction[]>({
     queryKey: ['stakingCSTActionsByUser', address],
@@ -722,31 +671,6 @@ export function useAnchoredRWLKTokensByUser(address: string | null | undefined) 
 // Donations – ETH
 // ---------------------------------------------------------------------------
 
-export function useDonationsCGSimpleList() {
-  return useQuery<ETHDonation[]>({
-    queryKey: ['donationsCGSimpleList'],
-    queryFn: ({ signal }) => api.get_donations_cg_simple_list({ signal }),
-    staleTime: 30_000,
-  });
-}
-
-export function useDonationsCGSimpleByRound(round: number) {
-  return useQuery<ETHDonation[]>({
-    queryKey: ['donationsCGSimpleByRound', round],
-    queryFn: ({ signal }) => api.get_donations_cg_simple_by_round(round, { signal }),
-    enabled: round >= 0,
-    staleTime: 30_000,
-  });
-}
-
-export function useDonationsCGWithInfoList() {
-  return useQuery<ETHDonation[]>({
-    queryKey: ['donationsCGWithInfoList'],
-    queryFn: ({ signal }) => api.get_donations_cg_with_info_list({ signal }),
-    staleTime: 30_000,
-  });
-}
-
 export function useDonationsCGWithInfoByRound(round: number) {
   return useQuery<ETHDonation[]>({
     queryKey: ['donationsCGWithInfoByRound', round],
@@ -762,15 +686,6 @@ export function useDonationsWithInfoById(id: number | null | undefined) {
     queryFn: ({ signal }) => api.get_donations_with_info_by_id(id!, { signal }),
     enabled: id != null && id >= 0,
     staleTime: 60_000,
-  });
-}
-
-export function useDonationsEthByUser(address: string | null | undefined) {
-  return useQuery<ETHDonation[]>({
-    queryKey: ['donationsEthByUser', address],
-    queryFn: ({ signal }) => api.get_donations_eth_by_user(address!, { signal }),
-    enabled: !!address,
-    staleTime: 30_000,
   });
 }
 
@@ -794,14 +709,6 @@ export function useDonationsBoth() {
 // ---------------------------------------------------------------------------
 // Donations – Charity
 // ---------------------------------------------------------------------------
-
-export function useCharityDonationsDeposits() {
-  return useQuery<ETHDonation[]>({
-    queryKey: ['charityDonationsDeposits'],
-    queryFn: ({ signal }) => api.get_charity_donations_deposits({ signal }),
-    staleTime: 60_000,
-  });
-}
 
 export function useCharityCGDeposits() {
   return useQuery<ETHDonation[]>({
@@ -839,37 +746,12 @@ export function useDonationsNFTList() {
   });
 }
 
-export function useDonatedNFTInfo(recordId: number | null | undefined) {
-  return useQuery<AttachedNFT | null>({
-    queryKey: ['donatedNFTInfo', recordId],
-    queryFn: ({ signal }) => api.get_donated_nft_info(recordId!, { signal }),
-    enabled: recordId != null && recordId >= 0,
-    staleTime: 60_000,
-  });
-}
-
-export function useDonatedNFTClaimsAll() {
-  return useQuery<AttachedNFT[]>({
-    queryKey: ['donatedNFTClaimsAll'],
-    queryFn: ({ signal }) => api.get_donated_nft_claims_all({ signal }),
-    staleTime: 30_000,
-  });
-}
-
 export function useClaimedDonatedNFTByUser(address: string | null | undefined) {
   return useQuery<AttachedNFT[]>({
     queryKey: ['claimedDonatedNFTByUser', address],
     queryFn: ({ signal }) => api.get_claimed_donated_nft_by_user(address!, { signal }),
     enabled: !!address,
     staleTime: 30_000,
-  });
-}
-
-export function useNFTDonationStats() {
-  return useQuery<NFTDonationStatsEntry[]>({
-    queryKey: ['nftDonationStats'],
-    queryFn: ({ signal }) => api.get_nft_donation_stats({ signal }),
-    staleTime: 60_000,
   });
 }
 
@@ -883,15 +765,6 @@ export function useDonationsNFTByRound(round: number) {
     refetchOnWindowFocus: true,
   });
   return withUxScenarioData(query, scenario?.donationsNft, scenario?.createdAtMs);
-}
-
-export function useDonationsNFTUnclaimedByRound(round: number) {
-  return useQuery<AttachedNFT[]>({
-    queryKey: ['donationsNFTUnclaimedByRound', round],
-    queryFn: ({ signal }) => api.get_donations_nft_unclaimed_by_round(round, { signal }),
-    enabled: round >= 0,
-    staleTime: 30_000,
-  });
 }
 
 export function useUnclaimedDonatedNFTByUser(address: string | null | undefined) {
@@ -1030,14 +903,6 @@ export function useUniqueRWLKAnchorHolders() {
   });
 }
 
-export function useUniqueBothAnchorHolders() {
-  return useQuery<UniqueAnchorHolderRWLK[]>({
-    queryKey: ['uniqueBothStakers'],
-    queryFn: ({ signal }) => api.get_unique_both_stakers({ signal }),
-    staleTime: 60_000,
-  });
-}
-
 // ---------------------------------------------------------------------------
 // Raffle
 // ---------------------------------------------------------------------------
@@ -1051,15 +916,6 @@ export function useStellarSelectionDepositsByUser(address: string | null | undef
   });
 }
 
-export function useChronoWarriorDepositsByUser(address: string | null | undefined) {
-  return useQuery<StellarSelectionETHDeposit[]>({
-    queryKey: ['chronoWarriorDepositsByUser', address],
-    queryFn: ({ signal }) => api.get_chrono_warrior_deposits_by_user(address!, { signal }),
-    enabled: !!address,
-    staleTime: 30_000,
-  });
-}
-
 export function useUnretrievedStellarSelectionDepositsByUser(address: string | null | undefined) {
   return useQuery<StellarSelectionETHDeposit[]>({
     queryKey: ['unclaimedRaffleDepositsByUser', address],
@@ -1068,23 +924,6 @@ export function useUnretrievedStellarSelectionDepositsByUser(address: string | n
     staleTime: 15_000,
     refetchInterval: 30_000,
     refetchIntervalInBackground: false,
-  });
-}
-
-export function useStellarSelectionNFTRecipientsList() {
-  return useQuery<StellarSelectionNFTRecipient[]>({
-    queryKey: ['raffleNFTWinnersList'],
-    queryFn: ({ signal }) => api.get_raffle_nft_winners_list({ signal }),
-    staleTime: 30_000,
-  });
-}
-
-export function useStellarSelectionNFTRecipientsByCycle(round: number) {
-  return useQuery<StellarSelectionNFTRecipient[]>({
-    queryKey: ['raffleNFTWinnersByRound', round],
-    queryFn: ({ signal }) => api.get_raffle_nft_winners_by_round(round, { signal }),
-    enabled: round >= 0,
-    staleTime: 30_000,
   });
 }
 

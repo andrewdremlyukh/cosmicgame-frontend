@@ -4,10 +4,7 @@ import axios from 'axios';
 
 import {
   get_raffle_deposits_by_user,
-  get_chrono_warrior_deposits_by_user,
   get_unclaimed_raffle_deposits_by_user,
-  get_raffle_nft_winners_list,
-  get_raffle_nft_winners_by_round,
   get_raffle_nft_winnings_by_user,
 } from '@/services/api/stellarSelection';
 
@@ -75,37 +72,6 @@ describe('stellarSelection API', () => {
     });
   });
 
-  describe('get_chrono_warrior_deposits_by_user', () => {
-    it('calls correct endpoint', async () => {
-      mockedAxios.get.mockResolvedValue({ data: { UserChronoWarriorDeposits: [] } });
-      await get_chrono_warrior_deposits_by_user('0xdef');
-      expect(mockedAxios.get).toHaveBeenCalledWith(
-        expect.stringMatching(/prizes\/eth\/chronowarrior\/by_user.*0xdef/),
-      );
-    });
-
-    it('accepts ChronoWarriorDeposits key from primary Go JSON API', async () => {
-      mockedAxios.get.mockResolvedValue({
-        data: { ChronoWarriorDeposits: [{ EvtLogId: 3, Tx: TX }] },
-      });
-      const result = await get_chrono_warrior_deposits_by_user('0xdef');
-      expect(result).toHaveLength(1);
-      expect(result[0]).toHaveProperty('TxHash', '0xa');
-    });
-
-    it('returns empty array on 400', async () => {
-      mockedAxios.get.mockRejectedValue(make400());
-      expect(await get_chrono_warrior_deposits_by_user('0xdef')).toEqual([]);
-    });
-
-    it('throws on network error', async () => {
-      mockedAxios.get.mockRejectedValue(new Error('fail'));
-      await expect(get_chrono_warrior_deposits_by_user('0xdef')).rejects.toThrow(
-        'Network response was not OK',
-      );
-    });
-  });
-
   describe('get_unclaimed_raffle_deposits_by_user', () => {
     it('calls correct endpoint', async () => {
       mockedAxios.get.mockResolvedValue({ data: { UnclaimedDeposits: [] } });
@@ -135,50 +101,6 @@ describe('stellarSelection API', () => {
     it('throws on network error', async () => {
       mockedAxios.get.mockRejectedValue(new Error('fail'));
       await expect(get_unclaimed_raffle_deposits_by_user('0xghi')).rejects.toThrow('fail');
-    });
-  });
-
-  describe('get_raffle_nft_winners_list', () => {
-    it('returns flattened recipients on success', async () => {
-      mockedAxios.get.mockResolvedValue({
-        data: { RaffleNFTWinners: [{ EvtLogId: 2, Tx: { ...TX, TxHash: '0xb' } }] },
-      });
-      const result = await get_raffle_nft_winners_list();
-      expect(result).toHaveLength(1);
-      expect(result[0]).toHaveProperty('TxHash', '0xb');
-      expect(mockedAxios.get).toHaveBeenCalledWith(expect.stringMatching(/raffle\/nft\/all\/list/));
-    });
-
-    it('returns empty array on 400', async () => {
-      mockedAxios.get.mockRejectedValue(make400());
-      expect(await get_raffle_nft_winners_list()).toEqual([]);
-    });
-
-    it('throws on network error', async () => {
-      mockedAxios.get.mockRejectedValue(new Error('fail'));
-      await expect(get_raffle_nft_winners_list()).rejects.toThrow('Network response was not OK');
-    });
-  });
-
-  describe('get_raffle_nft_winners_by_round', () => {
-    it('calls correct endpoint', async () => {
-      mockedAxios.get.mockResolvedValue({ data: { RaffleNFTWinners: [] } });
-      await get_raffle_nft_winners_by_round(4);
-      expect(mockedAxios.get).toHaveBeenCalledWith(
-        expect.stringMatching(/raffle\/nft\/by_round\/4/),
-      );
-    });
-
-    it('returns empty array on 400', async () => {
-      mockedAxios.get.mockRejectedValue(make400());
-      expect(await get_raffle_nft_winners_by_round(4)).toEqual([]);
-    });
-
-    it('throws on network error', async () => {
-      mockedAxios.get.mockRejectedValue(new Error('fail'));
-      await expect(get_raffle_nft_winners_by_round(4)).rejects.toThrow(
-        'Network response was not OK',
-      );
     });
   });
 

@@ -222,14 +222,4 @@ export function get_unique_rwalk_stakers(
   }, []);
 }
 
-/** Fetches addresses that have staked both CST and RandomWalk tokens. */
-export function get_unique_both_stakers(
-  opts?: ApiRequestOptions,
-): Promise<UniqueAnchorHolderRWLK[]> {
-  return apiCall(async () => {
-    const { data } = await apiGet(getAPIUrl('statistics/unique/stakers/both'), opts);
-    return data.UniqueStakersBoth as UniqueAnchorHolderRWLK[];
-  }, []);
-}
-
 // lexicon-allow-end
